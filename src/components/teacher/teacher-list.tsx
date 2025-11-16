@@ -1,9 +1,6 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { getIcon } from '@/utils/get-icon';
-import * as categoriesIcon from '@/components/icons/category';
-import { SortOrder, Subject } from '@/types';
-import Image from 'next/image';
+import { AcademicYear, GradeLevel, SortOrder, Teacher, Subject, User } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
@@ -12,17 +9,18 @@ import { MappedPaginatorInfo } from '@/types';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
-import { siteSettings } from '@/settings/site.settings';
+import Avatar from '@/components/common/avatar';
+import Badge from '@/components/ui/badge/badge';
 
 export type IProps = {
-  subjects: Subject[] | undefined;
+  teachers: Teacher[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (key: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
-const SubjectList = ({
-  subjects,
+const TeacherList = ({
+  teachers,
   paginatorInfo,
   onPagination,
   onSort,
@@ -42,9 +40,7 @@ const SubjectList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
+        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
       );
       onOrder(column!);
 
@@ -70,64 +66,74 @@ const SubjectList = ({
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj.column === 'id'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'teacher_number',
+      key: 'teacher_number',
       align: alignLeft,
-      width: 180,
-      onHeaderCell: () => onHeaderClick('name'),
-      render: (name: string, { image }: { image: any }) => {
-        return (
-          <div className="flex items-center">
-            <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-              <Image
-                src={image?.thumbnail ?? siteSettings.product.placeholder}
-                alt={name}
-                fill
-                priority={true}
-                sizes="(max-width: 768px) 100vw"
-              />
-            </div>
-            <span className="truncate font-medium">{name}</span>
+      width: 250,
+      ellipsis: true,
+      onHeaderCell: () => onHeaderClick('teacher_number'),
+      render: (
+        teacher_number: string,
+        { profile, email, user }: { profile: any; email: string, user: User }
+      ) => (
+        <div className="flex items-center">
+          <Avatar name={email} src={profile?.avatar?.thumbnail} />
+          <div className="flex flex-col whitespace-nowrap font-medium ms-2">
+            {user.first_name} {user.last_name} 
+            <span className="text-[13px] font-normal text-gray-500/80">
+              {user?.email}
+            </span>
           </div>
-        );
-      },
+        </div>
+      ),
     },
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-slug')}
+          title={t('table:table-item-status')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'slug'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
           }
-          isActive={sortingObj.column === 'slug'}
+          isActive={sortingObj.column === 'is_active'}
         />
       ),
-      className: 'cursor-pointer',
-      dataIndex: 'slug',
-      key: 'slug',
-      align: alignLeft,
       width: 150,
-      onHeaderCell: () => onHeaderClick('slug'),
+      className: 'cursor-pointer',
+      dataIndex: 'is_active',
+      key: 'is_active',
+      align: 'center',
+      onHeaderCell: () => onHeaderClick('is_active'),
+      render: (is_active: boolean) => (
+        <Badge
+          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
+          color={
+            is_active
+              ? 'bg-accent/10 !text-accent'
+              : 'bg-status-failed/10 text-status-failed'
+          }
+        />
+      ),
     },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'slug',
+      dataIndex: 'id',
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (slug: string, record: Subject) => (
+      render: (id: string, record: Teacher) => (
         <LanguageSwitcher
-          slug={slug}
+          slug={id}
           record={record}
-          deleteModalView="DELETE_SUBJECT"
-          deleteBySlug={record.slug}
-          routes={Routes?.subject}
+          deleteModalView="DELETE_TEACHER"
+          deleteBySlug={record.id}
+          routes={Routes?.teacher}
         />
       ),
     },
@@ -148,7 +154,7 @@ const SubjectList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={subjects}
+          data={teachers}
           rowKey="id"
           scroll={{ x: 1000 }}
         />
@@ -168,4 +174,4 @@ const SubjectList = ({
   );
 };
 
-export default SubjectList;
+export default TeacherList;

@@ -25,6 +25,12 @@ export const Routes = {
   user: {
     ...routesFactory('/users'),
   },
+  teacher: {
+    ...routesFactory('/teachers'),
+  },
+  student: {
+    ...routesFactory('/students'),
+  },
   type: {
     ...routesFactory('/groups'),
   },

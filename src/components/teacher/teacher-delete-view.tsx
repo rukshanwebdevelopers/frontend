@@ -3,17 +3,17 @@ import {
   useModalAction,
   useModalState,
 } from '@/components/ui/modal/modal.context';
-import { useDeleteCourseMutation } from '@/data/course';
+import { useDeleteTeacherMutation } from '@/data/teacher';
 
-const CourseDeleteView = () => {
-  const { mutate: deleteCourse, isLoading: loading } =
-    useDeleteCourseMutation();
+const TeacherDeleteView = () => {
+  const { mutate: deleteTeacher, isLoading: loading } =
+    useDeleteTeacherMutation();
 
   const { data } = useModalState();
   const { closeModal } = useModalAction();
 
   function handleDelete() {
-    deleteCourse({
+    deleteTeacher({
       id: data,
     });
     closeModal();
@@ -28,4 +28,4 @@ const CourseDeleteView = () => {
   );
 };
 
-export default CourseDeleteView;
+export default TeacherDeleteView;

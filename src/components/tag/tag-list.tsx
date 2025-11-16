@@ -6,8 +6,6 @@ import { SortOrder } from '@/types';
 import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { MappedPaginatorInfo, Tag } from '@/types';
-import { Config } from '@/config';
-import Link from '@/components/ui/link';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';

@@ -6,6 +6,12 @@ import { MODAL_VIEWS, useModalAction, useModalState } from './modal.context';
 const SubjectDeleteView = dynamic(
   () => import('@/components/subject/subject-delete-view'),
 );
+const CourseDeleteView = dynamic(
+  () => import('@/components/course/course-delete-view'),
+);
+const TeacherDeleteView = dynamic(
+  () => import('@/components/teacher/teacher-delete-view'),
+);
 const FlashSaleDeleteView = dynamic(
   () => import('@/components/flash-sale/flash-sale-delete-view'),
 );
@@ -178,6 +184,10 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <CategoryDeleteView />;
     case 'DELETE_SUBJECT':
       return <SubjectDeleteView />;
+    case 'DELETE_COURSE':
+      return <CourseDeleteView />;
+    case 'DELETE_TEACHER':
+      return <TeacherDeleteView />;
     case 'DELETE_COUPON':
       return <CouponDeleteView />;
     case 'DELETE_TAX':

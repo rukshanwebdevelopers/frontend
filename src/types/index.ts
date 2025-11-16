@@ -254,6 +254,44 @@ export interface Course {
   slug: string;
 }
 
+export interface GradeLevel {
+  id: string;
+  level: string;
+  name: string;
+  description: string;
+}
+
+export interface AcademicYear {
+  id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  is_current: boolean;
+}
+
+export interface Student {
+  id: string;
+  student_number: string;
+  date_of_birth: string;
+  gender: string;
+  is_active: string;
+  user: User;
+  current_grade: GradeLevel;
+  current_academic_year: AcademicYear;
+}
+
+export interface Teacher {
+  id: string;
+  department: string;
+  specialization: string;
+  hire_date: string;
+  office_location: string;
+  user: User;
+  office_hours: string;
+  bio: string;
+  is_active: boolean;
+}
+
 export interface Attribute {
   id: string;
   name: string;
@@ -458,7 +496,8 @@ export interface MakeAdminInput {
 
 export interface User {
   id: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   shops: Shop[];
   managed_shop: Shop;
   is_active: boolean;
@@ -928,6 +967,46 @@ export interface CreateCategoryInput {
 export interface CreateSubjectInput {
   name: string;
   slug: string;
+}
+
+export interface CreateAcademicYearInput {
+  name: string;
+  slug: string;
+}
+
+export interface CreateGradeLevelInput {
+  name: string;
+  slug: string;
+}
+
+export interface CreateUserInput {
+  username: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+export interface CreateStudentInput {
+  username: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  date_of_birth: string;
+  parent_guardian_name: string;
+  parent_guardian_phone: string;
+  current_grade: string;
+  current_academic_year: string;
+}
+
+export interface CreateTeacherInput {
+  department: string;
+  specialization?: string;
+  hire_date?: string;
+  office_location?: string;
+  office_hours?: string;
+  bio?: string;
+  is_active?: boolean;
 }
 
 export interface CreateCourseInput {
@@ -1802,6 +1881,22 @@ export interface SubjectQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface AcademicYearQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface GradeLevelQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface StudentQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface TeacherQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface CourseQueryOptions extends QueryOptions {
   name: string;
 }
@@ -2060,6 +2155,14 @@ export interface ProductPaginator extends PaginatorInfo<Product> {}
 export interface CategoryPaginator extends PaginatorInfo<Category> {}
 
 export interface SubjectPaginator extends PaginatorInfo<Subject> {}
+
+export interface AcademicYearPaginator extends PaginatorInfo<AcademicYear> {}
+
+export interface GradeLevelPaginator extends PaginatorInfo<GradeLevel> {}
+
+export interface StudentPaginator extends PaginatorInfo<Student> {}
+
+export interface TeacherPaginator extends PaginatorInfo<Teacher> {}
 
 export interface CoursePaginator extends PaginatorInfo<Course> {}
 

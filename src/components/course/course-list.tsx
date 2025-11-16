@@ -42,7 +42,9 @@ const CourseList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -97,33 +99,6 @@ const CourseList = ({
       },
     },
     {
-      title: t('table:table-item-details'),
-      dataIndex: 'details',
-      key: 'details',
-      ellipsis: true,
-      align: alignLeft,
-      width: 200,
-    },
-    {
-      title: t('table:table-item-icon'),
-      dataIndex: 'icon',
-      key: 'icon',
-      align: 'center',
-      width: 120,
-      render: (icon: string) => {
-        if (!icon) return null;
-        return (
-          <span className="flex items-center justify-center">
-            {getIcon({
-              iconList: categoriesIcon,
-              iconName: icon,
-              className: 'w-5 h-5 max-h-full max-w-full',
-            })}
-          </span>
-        );
-      },
-    },
-    {
       title: (
         <TitleWithSort
           title={t('table:table-item-slug')}
@@ -141,21 +116,6 @@ const CourseList = ({
       onHeaderCell: () => onHeaderClick('slug'),
     },
     {
-      title: t('table:table-item-group'),
-      dataIndex: 'type',
-      key: 'type',
-      align: 'center',
-      width: 120,
-      render: (type: any) => (
-        <div
-          className="overflow-hidden truncate whitespace-nowrap"
-          title={type?.name}
-        >
-          {type?.name}
-        </div>
-      ),
-    },
-    {
       title: t('table:table-item-actions'),
       dataIndex: 'slug',
       key: 'actions',
@@ -165,7 +125,7 @@ const CourseList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
-          deleteModalView="DELETE_SUBJECT"
+          deleteModalView="DELETE_COURSE"
           deleteBySlug={record.slug}
           routes={Routes?.course}
         />
@@ -191,10 +151,6 @@ const CourseList = ({
           data={courses}
           rowKey="id"
           scroll={{ x: 1000 }}
-          expandable={{
-            expandedRowRender: () => ' ',
-            rowExpandable: rowExpandable,
-          }}
         />
       </div>
 

@@ -23,6 +23,7 @@ import Label from '../ui/label';
 import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
 import { useUsersQuery } from '@/data/user';
+import { animateScroll } from 'react-scroll';
 
 function SelectSubject({
   control,
@@ -44,6 +45,7 @@ function SelectSubject({
         getOptionValue={(option: any) => option.slug}
         options={subjects!}
         isLoading={loading}
+        required
       />
       <ValidationError message={t(errors.subject?.message)} />
     </div>
@@ -63,7 +65,7 @@ function SelectTeacher({
   });
   return (
     <div className="mb-5">
-      <Label>{t('form:input-label-users')}</Label>
+      <Label>{t('form:input-label-teacher')}</Label>
       <SelectInput
         name="teacher"
         control={control}
@@ -71,6 +73,7 @@ function SelectTeacher({
         getOptionValue={(option: any) => option.slug}
         options={users!}
         isLoading={loading}
+        required
       />
       <ValidationError message={t(errors.teacher?.message)} />
     </div>
@@ -108,6 +111,7 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
     register,
     handleSubmit,
     watch,
+    setError,
     control,
     formState: { errors },
   } = useForm<FormValues>({
@@ -149,31 +153,45 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
       teacher: values.teacher.id,
     };
     if (!initialValues) {
-      createCourse({
-        ...input,
-      });
+      createCourse(
+        {
+          ...input,
+        },
+        {
+          onError: (error: any) => {
+            Object.keys(error?.response?.data).forEach((field: any) => {
+              setError(field, {
+                type: 'manual',
+                message: error?.response?.data[field],
+              });
+            });
+            animateScroll.scrollToTop();
+          },
+        },
+      );
     } else {
-      updateCourse({
-        ...input,
-        id: initialValues.slug!,
-      });
+      updateCourse(
+        {
+          ...input,
+          id: initialValues.slug!,
+        },
+        {
+          onError: (error: any) => {
+            Object.keys(error?.response?.data).forEach((field: any) => {
+              setError(field, {
+                type: 'manual',
+                message: error?.response?.data[field],
+              });
+            });
+            animateScroll.scrollToTop();
+          },
+        },
+      );
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-        <Description
-          title={t('form:input-label-image')}
-          details={t('form:category-image-helper-text')}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-        />
-
-        <Card className="w-full sm:w-8/12 md:w-2/3">
-          <FileInput name="image" control={control} multiple={false} />
-        </Card>
-      </div> */}
-
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t('form:input-label-description')}
@@ -192,6 +210,7 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
             error={t(errors.name?.message!)}
             variant="outline"
             className="mb-5"
+            required
           />
 
           {isSlugEditable ? (
@@ -216,6 +235,7 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
             <Input
               label={t('form:input-label-slug')}
               {...register('slug')}
+              error={t(errors.slug?.message!)}
               value={slugAutoSuggest}
               variant="outline"
               className="mb-5"
@@ -229,6 +249,7 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
             error={t(errors.code?.message!)}
             variant="outline"
             className="mb-5"
+            required
           />
 
           <SelectSubject control={control} errors={errors} />

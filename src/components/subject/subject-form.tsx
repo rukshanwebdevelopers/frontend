@@ -18,6 +18,7 @@ import {
   useUpdateSubjectMutation,
 } from '@/data/subject';
 import { subjectValidationSchema } from './subject-validation-schema';
+import { animateScroll } from 'react-scroll';
 
 type FormValues = {
   name: string;
@@ -48,6 +49,7 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({
     // shouldUnregister: true,
@@ -84,34 +86,46 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
       slug: slugAutoSuggest,
       code: values.code,
     };
-    if (
-      !initialValues
-    ) {
-      createSubject({
-        ...input,
-      });
+    if (!initialValues) {
+      createSubject(
+        {
+          ...input,
+        },
+        {
+          onError: (error: any) => {
+            Object.keys(error?.response?.data).forEach((field: any) => {
+              setError(field, {
+                type: 'manual',
+                message: error?.response?.data[field],
+              });
+            });
+            animateScroll.scrollToTop();
+          },
+        },
+      );
     } else {
-      updateSubject({
-        ...input,
-        id: initialValues.slug!,
-      });
+      updateSubject(
+        {
+          ...input,
+          id: initialValues.slug!,
+        },
+        {
+          onError: (error: any) => {
+            Object.keys(error?.response?.data).forEach((field: any) => {
+              setError(field, {
+                type: 'manual',
+                message: error?.response?.data[field],
+              });
+            });
+            animateScroll.scrollToTop();
+          },
+        },
+      );
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-        <Description
-          title={t('form:input-label-image')}
-          details={t('form:category-image-helper-text')}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-        />
-
-        <Card className="w-full sm:w-8/12 md:w-2/3">
-          <FileInput name="image" control={control} multiple={false} />
-        </Card>
-      </div> */}
-
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t('form:input-label-description')}
@@ -130,6 +144,7 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
             error={t(errors.name?.message!)}
             variant="outline"
             className="mb-5"
+            required
           />
 
           {isSlugEditable ? (
@@ -167,6 +182,7 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
             error={t(errors.code?.message!)}
             variant="outline"
             className="mb-5"
+            required
           />
         </Card>
       </div>
