@@ -112,6 +112,23 @@ export const siteSettings = {
               },
             ],
           },
+          {
+            href: '',
+            label: 'sidebar-nav-item-enrollments',
+            icon: 'ShopIcon',
+            childMenu: [
+              {
+                href: Routes.enrollment.list,
+                label: 'text-all-enrollments',
+                icon: 'MyShopIcon',
+              },
+              {
+                href: Routes.enrollment.create,
+                label: 'text-add-all-enrollments',
+                icon: 'ShopIcon',
+              },
+            ],
+          },
         ],
       },
 

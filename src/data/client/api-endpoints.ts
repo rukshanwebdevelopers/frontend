@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
   STUDENTS: 'students',
   GRADE_LEVEL: 'gradeLevel',
   COURSES: 'courses',
+  ENROLLMENTS: 'enrollments',
   CATEGORIES: 'categories',
   TAGS: 'tags',
   TYPES: 'types',

@@ -9,6 +9,9 @@ const SubjectDeleteView = dynamic(
 const CourseDeleteView = dynamic(
   () => import('@/components/course/course-delete-view'),
 );
+const EnrollmentDeleteView = dynamic(
+  () => import('@/components/enrollment/enrollment-delete-view'),
+);
 const TeacherDeleteView = dynamic(
   () => import('@/components/teacher/teacher-delete-view'),
 );
@@ -186,6 +189,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <SubjectDeleteView />;
     case 'DELETE_COURSE':
       return <CourseDeleteView />;
+    case 'DELETE_ENROLLMENT':
+      return <EnrollmentDeleteView />;
     case 'DELETE_TEACHER':
       return <TeacherDeleteView />;
     case 'DELETE_COUPON':

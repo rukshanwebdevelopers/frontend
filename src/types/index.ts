@@ -33,6 +33,11 @@ export enum StoreNoticeType {
   specific_shop = 'specific_shop',
 }
 
+export enum EnrollmentStatusType {
+  ACTIVE = 'ACTIVE',
+  LOCKED = 'LOCKED',
+}
+
 export enum PaymentGateway {
   STRIPE = 'STRIPE',
   COD = 'CASH_ON_DELIVERY',
@@ -252,6 +257,13 @@ export interface Course {
   id: string;
   name: string;
   slug: string;
+}
+
+export interface Enrollment {
+  id: string;
+  student: Student;
+  course: Course;
+  status: EnrollmentStatusType;
 }
 
 export interface GradeLevel {
@@ -1012,6 +1024,11 @@ export interface CreateTeacherInput {
 export interface CreateCourseInput {
   name: string;
   slug: string;
+}
+
+export interface CreateEnrollmentInput {
+  course: string;
+  student: string;
 }
 
 export interface CreateWithdrawInput {
@@ -1901,6 +1918,10 @@ export interface CourseQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface EnrollmentQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface ConversationQueryOptions extends QueryOptions {
   search?: string;
 }
@@ -2165,6 +2186,8 @@ export interface StudentPaginator extends PaginatorInfo<Student> {}
 export interface TeacherPaginator extends PaginatorInfo<Teacher> {}
 
 export interface CoursePaginator extends PaginatorInfo<Course> {}
+
+export interface EnrollmentPaginator extends PaginatorInfo<Enrollment> {}
 
 export interface TaxPaginator extends PaginatorInfo<Tax> {}
 

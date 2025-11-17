@@ -85,6 +85,9 @@ export const Routes = {
   course: {
     ...routesFactory('/courses'),
   },
+  enrollment: {
+    ...routesFactory('/enrollments'),
+  },
   tax: {
     ...routesFactory('/taxes'),
   },
