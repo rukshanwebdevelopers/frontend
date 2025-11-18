@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
   GRADE_LEVEL: 'gradeLevel',
   COURSES: 'courses',
   ENROLLMENTS: 'enrollments',
+  ENROLLMENT_PAYMENTS: 'enrollment-payments',
   CATEGORIES: 'categories',
   TAGS: 'tags',
   TYPES: 'types',

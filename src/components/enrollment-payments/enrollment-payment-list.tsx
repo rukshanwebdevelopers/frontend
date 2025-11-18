@@ -1,12 +1,6 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import {
-  Course,
-  Enrollment,
-  EnrollmentStatusType,
-  SortOrder,
-  Student,
-} from '@/types';
+import { Course, Enrollment, EnrollmentPayment, SortOrder, Student } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
@@ -17,17 +11,17 @@ import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import Avatar from '@/components/common/avatar';
 import Badge from '@/components/ui/badge/badge';
-import StatusColor from '@/utils/status-color';
 
 export type IProps = {
-  enrollments: Enrollment[] | undefined;
+  enrollmentPayments: EnrollmentPayment[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (key: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
-const EnrollmentList = ({
-  enrollments,
+
+const EnrollmentPaymentList = ({
+  enrollmentPayments,
   paginatorInfo,
   onPagination,
   onSort,
@@ -80,22 +74,22 @@ const EnrollmentList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'student',
-      key: 'student',
+      dataIndex: 'enrollment',
+      key: 'enrollment',
       align: alignLeft,
       width: 250,
       ellipsis: true,
-      onHeaderCell: () => onHeaderClick('student'),
+      onHeaderCell: () => onHeaderClick('enrollment'),
       render: (
-        student: Student,
+        enrollment: Enrollment,
         { profile, email }: { profile: any; email: string },
       ) => (
         <div className="flex items-center">
           <Avatar name={email} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {student?.user.first_name} {student?.user.last_name}
+            {enrollment?.student?.user.first_name} {enrollment?.student?.user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              ST No. {student?.student_number}
+              ST No. {enrollment?.student?.student_number}
             </span>
           </div>
         </div>
@@ -103,73 +97,17 @@ const EnrollmentList = ({
     },
     {
       title: t('table:table-item-course'),
-      dataIndex: 'course',
-      key: 'course',
+      dataIndex: 'enrollment',
+      key: 'enrollment',
       align: alignLeft,
       width: 150,
-      render: (course: Course) => (
+      render: (enrollment: Enrollment) => (
         <div
           className="overflow-hidden truncate whitespace-nowrap"
-          title={course?.name}
+          title={enrollment?.course?.name}
         >
-          {course?.name}
+          {enrollment?.course?.name}
         </div>
-      ),
-    },
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      width: 150,
-      className: 'cursor-pointer',
-      dataIndex: 'status',
-      key: 'status',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('status'),
-      render: (status: EnrollmentStatusType) => (
-        <Badge
-          textKey={status}
-          color={
-            status == EnrollmentStatusType.ACTIVE
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
-      ),
-    },
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-active')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      width: 150,
-      className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => (
-        <Badge
-          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-          color={
-            is_active
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
       ),
     },
     {
@@ -178,7 +116,7 @@ const EnrollmentList = ({
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (id: string, record: Enrollment) => (
+      render: (id: string, record: EnrollmentPayment) => (
         <LanguageSwitcher
           slug={id}
           record={record}
@@ -204,7 +142,7 @@ const EnrollmentList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={enrollments}
+          data={enrollmentPayments}
           rowKey="id"
           scroll={{ x: 1000 }}
         />
@@ -224,4 +162,4 @@ const EnrollmentList = ({
   );
 };
 
-export default EnrollmentList;
+export default EnrollmentPaymentList;

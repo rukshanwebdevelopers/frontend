@@ -257,6 +257,7 @@ export interface Course {
   id: string;
   name: string;
   slug: string;
+  fee: number;
 }
 
 export interface Enrollment {
@@ -264,6 +265,11 @@ export interface Enrollment {
   student: Student;
   course: Course;
   status: EnrollmentStatusType;
+}
+
+export interface EnrollmentPayment {
+  id: string;
+  enrollment: Enrollment;
 }
 
 export interface GradeLevel {
@@ -1027,6 +1033,11 @@ export interface CreateCourseInput {
 }
 
 export interface CreateEnrollmentInput {
+  course: string;
+  student: string;
+}
+
+export interface CreateEnrollmentPaymentInput {
   course: string;
   student: string;
 }
@@ -1922,6 +1933,10 @@ export interface EnrollmentQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface EnrollmentPaymentQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface ConversationQueryOptions extends QueryOptions {
   search?: string;
 }
@@ -2188,6 +2203,8 @@ export interface TeacherPaginator extends PaginatorInfo<Teacher> {}
 export interface CoursePaginator extends PaginatorInfo<Course> {}
 
 export interface EnrollmentPaginator extends PaginatorInfo<Enrollment> {}
+
+export interface EnrollmentPaymentPaginator extends PaginatorInfo<EnrollmentPayment> {}
 
 export interface TaxPaginator extends PaginatorInfo<Tax> {}
 

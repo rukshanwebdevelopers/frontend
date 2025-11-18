@@ -129,6 +129,23 @@ export const siteSettings = {
               },
             ],
           },
+          {
+            href: '',
+            label: 'sidebar-nav-item-enrollment-payments',
+            icon: 'ShopIcon',
+            childMenu: [
+              {
+                href: Routes.enrollmentPayment.list,
+                label: 'text-all-enrollment-payments',
+                icon: 'MyShopIcon',
+              },
+              {
+                href: Routes.enrollmentPayment.create,
+                label: 'text-add-all-enrollments',
+                icon: 'ShopIcon',
+              },
+            ],
+          },
         ],
       },
 
