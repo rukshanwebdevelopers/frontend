@@ -265,11 +265,16 @@ export interface Enrollment {
   student: Student;
   course: Course;
   status: EnrollmentStatusType;
+  last_payment_month: number;
+  last_payment_year: number;
 }
 
 export interface EnrollmentPayment {
   id: string;
   enrollment: Enrollment;
+  payment_month: number;
+  payment_year: number;
+  amount: number;
 }
 
 export interface GradeLevel {
@@ -514,6 +519,7 @@ export interface MakeAdminInput {
 
 export interface User {
   id: string;
+  username: string;
   first_name: string;
   last_name: string;
   shops: Shop[];
@@ -1927,6 +1933,11 @@ export interface TeacherQueryOptions extends QueryOptions {
 
 export interface CourseQueryOptions extends QueryOptions {
   name: string;
+}
+
+export interface StudentEnrolledCourseQueryOptions extends QueryOptions {
+  student_id: string;
+  course_name: string;
 }
 
 export interface EnrollmentQueryOptions extends QueryOptions {
