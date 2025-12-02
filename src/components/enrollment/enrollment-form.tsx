@@ -108,9 +108,9 @@ export default function CreateOrUpdateEnrollmentForm({
     defaultValues: initialValues
       ? {
           ...initialValues,
-          ...(isNewTranslation && {
-            type: null,
-          }),
+          // ...(isNewTranslation && {
+          //   type: null,
+          // }),
         }
       : defaultValues,
     //@ts-ignore
@@ -130,45 +130,32 @@ export default function CreateOrUpdateEnrollmentForm({
   const { mutate: updateEnrollment, isLoading: updating } =
     useUpdateEnrollmentMutation();
 
+  const handleMutationError = (error: any) => {
+    Object.keys(error?.response?.data).forEach((field: any) => {
+      setError(field, {
+        type: 'manual',
+        message: error?.response?.data[field],
+      });
+    });
+    animateScroll.scrollToTop();
+  };
+
   const onSubmit = async (values: FormValues) => {
     const input = {
       student: values.student.id,
       course: values.course.id,
     };
+    const mutationOptions = { onError: handleMutationError };
+
     if (!initialValues) {
-      createEnrollment(
-        {
-          ...input,
-        },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
-      );
+      createEnrollment(input, mutationOptions);
     } else {
       updateEnrollment(
         {
           ...input,
           id: initialValues.id!,
         },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
+        mutationOptions,
       );
     }
   };
