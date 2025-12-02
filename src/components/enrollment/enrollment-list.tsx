@@ -117,6 +117,20 @@ const EnrollmentList = ({
       ),
     },
     {
+      title: t('table:table-item-payment-month'),
+      dataIndex: 'last_payment_month',
+      key: 'last_payment_month',
+      align: alignLeft,
+      width: 150,
+      render: (last_payment_month: number, record: Enrollment) => (
+        <div
+          className="overflow-hidden truncate whitespace-nowrap"
+        >
+          {record.last_payment_year}-{last_payment_month}
+        </div>
+      ),
+    },
+    {
       title: (
         <TitleWithSort
           title={t('table:table-item-status')}
@@ -182,7 +196,7 @@ const EnrollmentList = ({
         <LanguageSwitcher
           slug={id}
           record={record}
-          deleteModalView="DELETE_ENROLLMENT"
+          // deleteModalView="DELETE_ENROLLMENT"
           routes={Routes?.enrollment}
         />
       ),
