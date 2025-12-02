@@ -94,6 +94,7 @@ export const API_ENDPOINTS = {
   READ_ALL_NOTIFY_LOG: 'notify-log-read-all',
   REFUND_POLICIES: 'refund-policies',
   REFUND_REASONS: 'refund-reasons',
+  ENROLLED_COURSES: 'enrolled-courses',
   PRODUCTS_BY_FLASH_SALE: 'products-by-flash-sale',
   TOP_RATED_PRODUCTS: 'top-rate-product',
   MY_STAFFS: '/my-staffs',
