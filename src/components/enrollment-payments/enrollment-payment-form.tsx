@@ -1,4 +1,4 @@
-import { Control, FieldErrors, useForm } from 'react-hook-form';
+import { Control, FieldErrors, useForm, useWatch } from 'react-hook-form';
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
@@ -7,30 +7,31 @@ import { Course, Enrollment, Student } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import { useCoursesQuery } from '@/data/course';
-import Label from '../ui/label';
 import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
 import { animateScroll } from 'react-scroll';
-import {
-  useCreateEnrollmentMutation,
-  useUpdateEnrollmentMutation,
-} from '@/data/enrollment';
+import { useUpdateEnrollmentMutation } from '@/data/enrollment';
 import { useStudentsQuery } from '@/data/student';
 import { useCreateEnrollmentPaymentMutation } from '@/data/enrollment-payment';
 import { enrollmentPaymentValidationSchema } from './enrollment-payment-validation-schema';
 import { monthOptions } from '@/constants';
+import { useStudentEnrolledCoursesQuery } from '@/data/student-enrolled-course';
+import { useEffect, useRef } from 'react';
 
 function SelectCourse({
   control,
   errors,
+  studentId,
 }: {
   control: Control<FormValues>;
   errors: FieldErrors;
+  studentId?: string;
 }) {
-  const { locale } = useRouter();
   const { t } = useTranslation();
-  const { courses, loading } = useCoursesQuery({ language: locale });
+  const { courses, loading } = useStudentEnrolledCoursesQuery({
+    student_id: studentId,
+    enabled: !!studentId,
+  });
   return (
     <div className="mb-5">
       <SelectInput
@@ -81,7 +82,7 @@ function SelectStudent({
 type FormValues = {
   student: Student;
   course: Course;
-  month: { label: string; value: number };
+  payment_month: { label: string; value: number };
 };
 
 const defaultValues = {
@@ -103,26 +104,56 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
     handleSubmit,
     setError,
     control,
+    resetField,
     formState: { errors },
   } = useForm<FormValues>({
     // shouldUnregister: true,
     //@ts-ignore
     defaultValues: initialValues
       ? {
-        ...initialValues,
-        ...(isNewTranslation && {
-          type: null,
-        }),
-      }
+          ...initialValues,
+          ...(isNewTranslation && {
+            type: null,
+          }),
+        }
       : defaultValues,
     //@ts-ignore
     resolver: yupResolver(enrollmentPaymentValidationSchema),
   });
 
+  const selectedStudent = useWatch({
+    control,
+    name: 'student',
+  });
+
+  const prevStudentIdRef = useRef<string | undefined>();
+
+  // Reset course field when student changes
+  useEffect(() => {
+    const currentStudentId = selectedStudent?.id;
+    if (
+      prevStudentIdRef.current !== undefined &&
+      prevStudentIdRef.current !== currentStudentId
+    ) {
+      resetField('course');
+    }
+    prevStudentIdRef.current = currentStudentId;
+  }, [selectedStudent?.id, resetField]);
+
   const { mutate: createEnrollmentPayment, isLoading: creating } =
     useCreateEnrollmentPaymentMutation();
   const { mutate: updateEnrollment, isLoading: updating } =
     useUpdateEnrollmentMutation();
+
+  const handleMutationError = (error: any) => {
+    Object.keys(error?.response?.data).forEach((field: any) => {
+      setError(field, {
+        type: 'manual',
+        message: error?.response?.data[field],
+      });
+    });
+    animateScroll.scrollToTop();
+  };
 
   const onSubmit = async (values: FormValues) => {
     const currentYear = new Date().getFullYear();
@@ -131,43 +162,20 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
       student: values.student.id,
       course: values.course.id,
       amount: values.course.fee,
-      payment_month: values.month.value,
+      payment_month: values.payment_month.value,
       payment_year: currentYear,
     };
+    const mutationOptions = { onError: handleMutationError };
+
     if (!initialValues) {
-      createEnrollmentPayment(
-        {
-          ...input,
-        },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
-      );
+      createEnrollmentPayment(input, mutationOptions);
     } else {
       updateEnrollment(
         {
           ...input,
           id: initialValues.id!,
         },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
+        mutationOptions,
       );
     }
   };
@@ -177,25 +185,30 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t('form:input-label-description')}
-          details={`${initialValues
+          details={`${
+            initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-            } ${t('form:category-description-helper-text')}`}
+          } ${t('form:category-description-helper-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <SelectStudent control={control} errors={errors} />
-          <SelectCourse control={control} errors={errors} />
+          <SelectCourse
+            control={control}
+            errors={errors}
+            studentId={selectedStudent?.id}
+          />
           <div className="mb-5">
             <SelectInput
               label="Payment Month"
-              name="month"
+              name="payment_month"
               control={control}
               options={monthOptions}
               required
             />
-            <ValidationError message={t(errors.month?.message)} />
+            <ValidationError message={t(errors.payment_month?.message)} />
           </div>
         </Card>
       </div>
