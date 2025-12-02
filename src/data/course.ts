@@ -55,7 +55,7 @@ export const useUpdateCourseMutation = () => {
     onSuccess: async (data) => {
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.course.list}`
-        : Routes.subject.list;
+        : Routes.course.list;
       await router.push(
         `${generateRedirectUrl}/${data?.slug}/edit`,
         undefined,
