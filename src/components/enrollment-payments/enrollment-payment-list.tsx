@@ -111,6 +111,20 @@ const EnrollmentPaymentList = ({
       ),
     },
     {
+      title: t('table:table-item-payment-month'),
+      dataIndex: 'payment_month',
+      key: 'payment_month',
+      align: alignLeft,
+      width: 150,
+      render: (payment_month: number, record: EnrollmentPayment) => (
+        <div
+          className="overflow-hidden truncate whitespace-nowrap"
+        >
+          {record.payment_year}-{payment_month}
+        </div>
+      ),
+    },
+    {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
@@ -120,8 +134,8 @@ const EnrollmentPaymentList = ({
         <LanguageSwitcher
           slug={id}
           record={record}
-          deleteModalView="DELETE_ENROLLMENT"
-          routes={Routes?.enrollment}
+          // deleteModalView="DELETE_ENROLLMENT"
+          routes={Routes?.enrollmentPayment}
         />
       ),
     },
