@@ -22,8 +22,8 @@ import { useSubjectsQuery } from '@/data/subject';
 import Label from '../ui/label';
 import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
-import { useUsersQuery } from '@/data/user';
 import { animateScroll } from 'react-scroll';
+import { useTeachersQuery } from '@/data/teacher';
 
 function SelectSubject({
   control,
@@ -37,10 +37,10 @@ function SelectSubject({
   const { subjects, loading } = useSubjectsQuery({ language: locale });
   return (
     <div className="mb-5">
-      <Label>{t('form:input-label-subjects')}</Label>
       <SelectInput
         name="subject"
         control={control}
+        label={t('form:input-label-subjects')}
         getOptionLabel={(option: any) => option.name}
         getOptionValue={(option: any) => option.slug}
         options={subjects!}
@@ -60,18 +60,20 @@ function SelectTeacher({
   errors: FieldErrors;
 }) {
   const { t } = useTranslation();
-  const { users, paginatorInfo, loading, error } = useUsersQuery({
+  const { teachers, paginatorInfo, loading, error } = useTeachersQuery({
     limit: 20,
   });
   return (
     <div className="mb-5">
-      <Label>{t('form:input-label-teacher')}</Label>
       <SelectInput
         name="teacher"
         control={control}
-        getOptionLabel={(option: any) => option.username}
-        getOptionValue={(option: any) => option.slug}
-        options={users!}
+        label={t('form:input-label-teacher')}
+        getOptionLabel={(option: any) =>
+          `${option.user.first_name} ${option.user.last_name}`
+        }
+        getOptionValue={(option: any) => option.id}
+        options={teachers!}
         isLoading={loading}
         required
       />
@@ -275,8 +277,8 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
             className="text-sm md:text-base"
           >
             {initialValues
-              ? t('form:button-label-update-subject')
-              : t('form:button-label-add-subject')}
+              ? t('form:button-label-update-course')
+              : t('form:button-label-add-course')}
           </Button>
         </div>
       </StickyFooterPanel>
