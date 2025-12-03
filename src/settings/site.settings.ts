@@ -81,68 +81,68 @@ export const siteSettings = {
           {
             href: '',
             label: 'sidebar-nav-item-subjects',
-            icon: 'ShopIcon',
+            icon: 'ProductsIcon',
             childMenu: [
               {
                 href: Routes.subject.list,
                 label: 'text-all-subjects',
-                icon: 'MyShopIcon',
+                icon: 'ProductsIcon',
               },
               {
                 href: Routes.subject.create,
                 label: 'text-add-all-subjects',
-                icon: 'ShopIcon',
+                icon: 'ProductsIcon',
               },
             ],
           },
           {
             href: '',
             label: 'sidebar-nav-item-courses',
-            icon: 'ShopIcon',
+            icon: 'InventoryIcon',
             childMenu: [
               {
                 href: Routes.course.list,
                 label: 'text-all-courses',
-                icon: 'MyShopIcon',
+                icon: 'InventoryIcon',
               },
               {
                 href: Routes.course.create,
                 label: 'text-add-all-courses',
-                icon: 'ShopIcon',
+                icon: 'InventoryIcon',
               },
             ],
           },
           {
             href: '',
             label: 'sidebar-nav-item-enrollments',
-            icon: 'ShopIcon',
+            icon: 'TagIcon',
             childMenu: [
               {
                 href: Routes.enrollment.list,
                 label: 'text-all-enrollments',
-                icon: 'MyShopIcon',
+                icon: 'TagIcon',
               },
               {
                 href: Routes.enrollment.create,
                 label: 'text-add-all-enrollments',
-                icon: 'ShopIcon',
+                icon: 'TagIcon',
               },
             ],
           },
           {
             href: '',
             label: 'sidebar-nav-item-enrollment-payments',
-            icon: 'ShopIcon',
+            icon: 'TaxesIcon',
             childMenu: [
               {
                 href: Routes.enrollmentPayment.list,
                 label: 'text-all-enrollment-payments',
-                icon: 'MyShopIcon',
+                icon: 'TaxesIcon',
               },
               {
                 href: Routes.enrollmentPayment.create,
-                label: 'text-add-all-enrollments',
-                icon: 'ShopIcon',
+                label: 'text-add-payments',
+                icon: 'TaxesIcon',
               },
             ],
           },
