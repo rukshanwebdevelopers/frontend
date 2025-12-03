@@ -100,6 +100,13 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
   const { t } = useTranslation();
   const isNewTranslation = router?.query?.action === 'translate';
 
+  const d = new Date();
+  let month = d.getMonth();
+
+  const currentMonthOption = monthOptions.filter(
+    (monthOption) => monthOption.value == month + 1,
+  );
+
   const {
     handleSubmit,
     setError,
@@ -205,7 +212,7 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
               label="Payment Month"
               name="payment_month"
               control={control}
-              options={monthOptions}
+              options={currentMonthOption}
               required
             />
             <ValidationError message={t(errors.payment_month?.message)} />
