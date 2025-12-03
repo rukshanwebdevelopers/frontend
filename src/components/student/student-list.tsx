@@ -160,7 +160,7 @@ const StudentList = ({
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (id: string, record: Subject) => (
+      render: (id: string, record: Student) => (
         <LanguageSwitcher
           slug={id}
           record={record}
@@ -190,10 +190,10 @@ const StudentList = ({
           data={students}
           rowKey="id"
           scroll={{ x: 1000 }}
-          expandable={{
-            expandedRowRender: () => ' ',
-            rowExpandable: rowExpandable,
-          }}
+          // expandable={{
+          //   expandedRowRender: () => ' ',
+          //   rowExpandable: rowExpandable,
+          // }}
         />
       </div>
 
