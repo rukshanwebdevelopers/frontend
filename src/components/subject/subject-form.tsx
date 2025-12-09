@@ -80,46 +80,33 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
   const { mutate: updateSubject, isLoading: updating } =
     useUpdateSubjectMutation();
 
+  const handleMutationError = (error: any) => {
+    Object.keys(error?.response?.data).forEach((field: any) => {
+      setError(field, {
+        type: 'manual',
+        message: error?.response?.data[field],
+      });
+    });
+    animateScroll.scrollToTop();
+  };
+
   const onSubmit = async (values: FormValues) => {
     const input = {
       name: values.name,
       slug: slugAutoSuggest,
       code: values.code,
     };
+    const mutationOptions = { onError: handleMutationError };
+
     if (!initialValues) {
-      createSubject(
-        {
-          ...input,
-        },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
-      );
+      createSubject(input, mutationOptions);
     } else {
       updateSubject(
         {
           ...input,
           id: initialValues.slug!,
         },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
+        mutationOptions,
       );
     }
   };
@@ -169,6 +156,7 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
             <Input
               label={t('form:input-label-slug')}
               {...register('slug')}
+              error={t(errors.slug?.message!)}
               value={slugAutoSuggest}
               variant="outline"
               className="mb-5"
