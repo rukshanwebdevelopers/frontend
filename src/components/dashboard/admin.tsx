@@ -28,6 +28,7 @@ import { ShoppingIcon } from '@/components/icons/summary/shopping';
 import { BasketIcon } from '@/components/icons/summary/basket';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import Search from '@/components/common/search';
+import { CustomersIcon } from '../icons/summary/customers';
 
 // const TotalOrderByStatus = dynamic(
 //   () => import('@/components/dashboard/total-order-by-status')
@@ -57,7 +58,7 @@ const TopRatedProducts = dynamic(
 export default function Dashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  // const { data, isLoading: loading } = useAnalyticsQuery();
+  const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
@@ -65,11 +66,11 @@ export default function Dashboard() {
   //   data?.todayTotalOrderByStatus,
   // );
 
-  // const { price: total_revenue } = usePrice(
-  //   data && {
-  //     amount: data?.totalRevenue!,
-  //   },
-  // );
+  const { price: total_revenue } = usePrice(
+    data && {
+      amount: data?.total_revenue!,
+    },
+  );
   // const { price: todays_revenue } = usePrice(
   //   data && {
   //     amount: data?.todaysRevenue!,
@@ -195,7 +196,7 @@ export default function Dashboard() {
           </h3>
         </div>
 
-        {/* <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
             titleTransKey="sticker-card-title-rev"
             subtitleTransKey="sticker-card-subtitle-rev"
@@ -204,28 +205,28 @@ export default function Dashboard() {
             price={total_revenue}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-order"
+            titleTransKey="sticker-card-title-student"
             subtitleTransKey="sticker-card-subtitle-order"
-            icon={<ShoppingIcon className="h-8 w-8" />}
+            icon={<CustomersIcon className="h-8 w-8" />}
             color="#865DFF"
-            price={data?.totalOrders}
+            price={data?.student_count}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-vendor"
+            titleTransKey="sticker-card-title-enrollment"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#D74EFF"
-            price={data?.totalVendors}
+            price={data?.enrollment_count}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
+            titleTransKey="sticker-card-title-active-enrollment"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#E157A0"
-            price={data?.totalShops}
+            price={data?.active_enrollment_count}
           />
-        </div> */}
+        </div>
       </div>
 
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+      {/* <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
             {t('text-order-status')}
@@ -254,7 +255,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* <OrderStatusWidget
+        <OrderStatusWidget
           order={orderDataRange}
           timeFrame={activeTimeFrame}
           allowedStatus={[
@@ -264,8 +265,8 @@ export default function Dashboard() {
             'cancel',
             // 'out-for-delivery',
           ]}
-        /> */}
-      </div>
+        />
+      </div> */}
 
       {/* <RecentOrders
         className="col-span-full"
@@ -282,7 +283,7 @@ export default function Dashboard() {
           />
         }
       /> */}
-      <div className="lg:col-span-full 2xl:col-span-8">
+      {/* <div className="lg:col-span-full 2xl:col-span-8">
         <ColumnChart
           widgetTitle={t('common:sale-history')}
           colors={['#6073D4']}
@@ -302,7 +303,7 @@ export default function Dashboard() {
             t('common:december'),
           ]}
         />
-      </div>
+      </div> */}
 
       {/* <PopularProductList
         products={popularProductData}
