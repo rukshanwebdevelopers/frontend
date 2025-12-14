@@ -8,14 +8,17 @@ import {
   STORE_OWNER,
   SUPER_ADMIN,
   TOKEN,
+  STUDENT,
 } from './constants';
 
-export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF];
+export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF, STUDENT];
 export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];
+export const adminAndStudentOnly = [SUPER_ADMIN, STUDENT];
 export const adminOnly = [SUPER_ADMIN];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
+export const studentOnly = [STUDENT];
 
 export function setAuthCredentials(token: string, permissions: any, role: any, refresh: string) {
   Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions, role, refresh }));
