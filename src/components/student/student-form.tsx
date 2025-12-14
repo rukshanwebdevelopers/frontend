@@ -11,44 +11,17 @@ import { useSettingsQuery } from '@/data/settings';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { studentValidationSchema } from './student-validation-schema';
 import Label from '../ui/label';
-import { useGradeLevelsQuery } from '@/data/grade-level';
 import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
 import { useAcademicYearsQuery } from '@/data/academic-year';
+import { useState } from 'react';
+import Alert from '@/components/ui/alert';
+import { animateScroll } from 'react-scroll';
+import SelectGradeLevel from '@/components/grade-level/select-grade-level';
 import {
   useCreateStudentMutation,
   useUpdateStudentMutation,
 } from '@/data/student';
-import { useState } from 'react';
-import Alert from '@/components/ui/alert';
-import { animateScroll } from 'react-scroll';
-
-function SelectGradeLevel({
-  control,
-  errors,
-}: {
-  control: Control<FormValues>;
-  errors: FieldErrors;
-}) {
-  const { locale } = useRouter();
-  const { t } = useTranslation();
-  const { gradeLevels, loading } = useGradeLevelsQuery({ language: locale });
-  return (
-    <div className="mb-5">
-      <Label>{t('form:input-label-grade-level')}</Label>
-      <SelectInput
-        name="grade_level"
-        control={control}
-        getOptionLabel={(option: any) => option.name}
-        getOptionValue={(option: any) => option.id}
-        options={gradeLevels!}
-        isLoading={loading}
-        required
-      />
-      <ValidationError message={t(errors.grade_level?.message)} />
-    </div>
-  );
-}
 
 function SelectAcademicYear({
   control,
@@ -83,7 +56,7 @@ type FormValues = {
   first_name: string;
   last_name: string;
   email: string;
-  username: string;
+  // username: string;
   password: string;
   date_of_birth: string;
   parent_guardian_name: string;
@@ -96,9 +69,9 @@ const defaultValues = {
   first_name: '',
   last_name: '',
   email: '',
-  username: '',
+  // username: '',
   password: '',
-  date_of_birth: '',
+  date_of_birth: null,
   parent_guardian_name: '',
   parent_guardian_phone: '',
 };
@@ -150,53 +123,41 @@ export default function CreateOrUpdateStudentForm({ initialValues }: IProps) {
   const { mutate: updateStudent, isLoading: updating } =
     useUpdateStudentMutation();
 
+  const handleMutationError = (error: any) => {
+    Object.keys(error?.response?.data).forEach((field: any) => {
+      setError(field, {
+        type: 'manual',
+        message: error?.response?.data[field],
+      });
+    });
+    setErrorMessage('PICKBAZAR_ERROR.SOMETHING_WENT_WRONG');
+    animateScroll.scrollToTop();
+  };
+
   const onSubmit = async (values: FormValues) => {
     const input = {
-      username: values.username,
+      // username: values.username,
       password: values.password,
       first_name: values.first_name,
       last_name: values.last_name,
       email: values.email,
-      date_of_birth: values.date_of_birth,
-      parent_guardian_name: values.parent_guardian_name,
-      parent_guardian_phone: values.parent_guardian_phone,
+      date_of_birth: values.date_of_birth == '' ? null : values.date_of_birth,
+      // parent_guardian_name: values.parent_guardian_name,
+      // parent_guardian_phone: values.parent_guardian_phone,
       current_grade: values.grade_level.id,
       current_academic_year: values.academic_year.id,
     };
+    const mutationOptions = { onError: handleMutationError };
+
     if (!initialValues) {
-      createStudent(
-        {
-          ...input,
-        },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
-      );
+      createStudent(input, mutationOptions);
     } else {
       updateStudent(
         {
           ...input,
           id: initialValues.id!,
         },
-        {
-          onError: (error: any) => {
-            Object.keys(error?.response?.data).forEach((field: any) => {
-              setError(field, {
-                type: 'manual',
-                message: error?.response?.data[field],
-              });
-            });
-            animateScroll.scrollToTop();
-          },
-        },
+        mutationOptions,
       );
     }
   };
@@ -248,14 +209,14 @@ export default function CreateOrUpdateStudentForm({ initialValues }: IProps) {
               className="mb-5"
               required
             />
-            <Input
+            {/* <Input
               label={t('form:input-label-username')}
               {...register('username')}
               error={t(errors.username?.message!)}
               variant="outline"
               className="mb-5"
               required
-            />
+            /> */}
             {!initialValues && (
               <Input
                 label={t('form:input-label-password')}
@@ -274,7 +235,6 @@ export default function CreateOrUpdateStudentForm({ initialValues }: IProps) {
               error={t(errors.date_of_birth?.message!)}
               variant="outline"
               className="mb-5"
-              required
             />
           </Card>
         </div>
@@ -295,7 +255,7 @@ export default function CreateOrUpdateStudentForm({ initialValues }: IProps) {
           </Card>
         </div>
 
-        <div className="flex flex-wrap my-5 sm:my-8">
+        {/* <div className="flex flex-wrap my-5 sm:my-8">
           <Description
             title={t('form:input-label-description')}
             details={`${
@@ -323,7 +283,7 @@ export default function CreateOrUpdateStudentForm({ initialValues }: IProps) {
               required
             />
           </Card>
-        </div>
+        </div> */}
         <StickyFooterPanel className="z-0">
           <div className="text-end">
             {initialValues && (
