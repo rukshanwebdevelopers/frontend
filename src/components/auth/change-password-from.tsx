@@ -10,17 +10,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 interface FormValues {
-  oldPassword: string;
-  newPassword: string;
+  old_password: string;
+  new_password: string;
   passwordConfirmation: string;
 }
 
 const changePasswordSchema = yup.object().shape({
-  oldPassword: yup.string().required('form:error-old-password-required'),
-  newPassword: yup.string().required('form:error-password-required'),
+  old_password: yup.string().required('form:error-old-password-required'),
+  new_password: yup.string().required('form:error-password-required'),
   passwordConfirmation: yup
     .string()
-    .oneOf([yup.ref('newPassword')], 'form:error-match-passwords')
+    .oneOf([yup.ref('new_password')], 'form:error-match-passwords')
     .required('form:error-confirm-password'),
 });
 
@@ -33,7 +33,6 @@ const ChangePasswordForm = () => {
     handleSubmit,
     setError,
     reset,
-
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(changePasswordSchema),
@@ -42,8 +41,8 @@ const ChangePasswordForm = () => {
   async function onSubmit(values: FormValues) {
     changePassword(
       {
-        oldPassword: values.oldPassword,
-        newPassword: values.newPassword,
+        old_password: values.old_password,
+        new_password: values.new_password,
       },
       {
         onError: (error: any) => {
@@ -55,15 +54,17 @@ const ChangePasswordForm = () => {
           });
         },
         onSuccess: (data) => {
-          if (!data?.success) {
-            setError('oldPassword', {
-              type: 'manual',
-              message: data?.message ?? '',
-            });
-          } else if (data?.success) {
-            toast.success(t('common:password-changed-successfully'));
-            reset();
-          }
+          toast.success(t('common:password-changed-successfully'));
+          reset();
+          // if (!data?.success) {
+          //   setError('old_password', {
+          //     type: 'manual',
+          //     message: data?.message ?? '',
+          //   });
+          // } else if (data?.success) {
+          //   toast.success(t('common:password-changed-successfully'));
+          //   reset();
+          // }
         },
       }
     );
@@ -81,16 +82,16 @@ const ChangePasswordForm = () => {
         <Card className="mb-5 w-full sm:w-8/12 md:w-2/3">
           <PasswordInput
             label={t('form:input-label-old-password')}
-            {...register('oldPassword')}
+            {...register('old_password')}
             variant="outline"
-            error={t(errors.oldPassword?.message!)}
+            error={t(errors.old_password?.message!)}
             className="mb-5"
           />
           <PasswordInput
             label={t('form:input-label-new-password')}
-            {...register('newPassword')}
+            {...register('new_password')}
             variant="outline"
-            error={t(errors.newPassword?.message!)}
+            error={t(errors.new_password?.message!)}
             className="mb-5"
           />
           <PasswordInput
