@@ -2,6 +2,7 @@ import StoreNoticeDeleteView from '@/components/store-notice/store-notice-delete
 import Modal from '@/components/ui/modal/modal';
 import dynamic from 'next/dynamic';
 import { MODAL_VIEWS, useModalAction, useModalState } from './modal.context';
+import EnrollmentPaymentView from '@/components/enrollment-payments/enrollment-payment-view';
 
 const SubjectDeleteView = dynamic(
   () => import('@/components/subject/subject-delete-view'),
@@ -193,6 +194,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <EnrollmentDeleteView />;
     case 'DELETE_TEACHER':
       return <TeacherDeleteView />;
+    case 'ENROLLMENT_PAYMENT_VIEW':
+      return <EnrollmentPaymentView />;
     case 'DELETE_COUPON':
       return <CouponDeleteView />;
     case 'DELETE_TAX':
