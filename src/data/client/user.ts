@@ -18,6 +18,11 @@ import {
   KeyInput,
   LicensedDomainPaginator,
   LicenseAdditionalData,
+  CoursePaginator,
+  CourseQueryOptions,
+  Course,
+  Enrollment,
+  EnrollmentQueryOptions,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { HttpClient } from './http-client';
@@ -36,7 +41,7 @@ export const userClient = {
     return HttpClient.post<AuthResponse>(API_ENDPOINTS.REGISTER, variables);
   },
   update: ({ id, input }: { id: string; input: UpdateUser }) => {
-    return HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${id}`, input);
+    return HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${id}/`, input);
   },
   changePassword: (variables: ChangePasswordInput) => {
     return HttpClient.post<any>(API_ENDPOINTS.CHANGE_PASSWORD, variables);
@@ -121,6 +126,13 @@ export const userClient = {
       searchJoin: 'and',
       ...params,
       search: HttpClient.formatSearchParams({ name, is_active }),
+    });
+  },
+  getMyEnrollments: ({ name, ...params }: Partial<EnrollmentQueryOptions>) => {
+    return HttpClient.get<Enrollment[]>(API_ENDPOINTS.MY_ENROLLMENTS, {
+      searchJoin: 'and',
+      ...params,
+      search: HttpClient.formatSearchParams({ name })
     });
   },
   

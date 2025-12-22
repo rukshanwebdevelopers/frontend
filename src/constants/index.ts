@@ -1,5 +1,7 @@
 // import { CourseType, EventType, GenderType, GradeType, RoleType } from '@/types';
 
+import { CourseType, GradeType } from "@/types";
+
 // export const roleOptions = [
 //   { value: RoleType.SUPER_ADMIN, label: 'Super Admin' },
 //   { value: RoleType.ADMIN, label: 'Admin' },
@@ -8,19 +10,19 @@
 //   { value: RoleType.CASHIER, label: 'Cashier' },
 // ]
 
-// export const gradeOptions = [
-//   { value: GradeType.GRADE_6, label: 'Grade 6' },
-//   { value: GradeType.GRADE_7, label: 'Grade 7' },
-//   { value: GradeType.GRADE_8, label: 'Grade 8' },
-//   { value: GradeType.GRADE_9, label: 'Grade 9' },
-//   { value: GradeType.GRADE_10, label: 'Grade 10' },
-//   { value: GradeType.GRADE_11, label: 'Grade 11' },
-// ];
+export const gradeOptions = [
+  { value: GradeType.GRADE_6, label: 'Grade 6' },
+  { value: GradeType.GRADE_7, label: 'Grade 7' },
+  { value: GradeType.GRADE_8, label: 'Grade 8' },
+  { value: GradeType.GRADE_9, label: 'Grade 9' },
+  { value: GradeType.GRADE_10, label: 'Grade 10' },
+  { value: GradeType.GRADE_11, label: 'Grade 11' },
+];
 
-// export const courseTypeOptions = [
-//   { value: CourseType.ONLINE, label: 'ONLINE' },
-//   { value: CourseType.PHYSICAL, label: 'PHYSICAL' },
-// ];
+export const courseTypeOptions = [
+  { value: CourseType.ONLINE, label: 'ONLINE' },
+  { value: CourseType.PHYSICAL, label: 'PHYSICAL' },
+];
 
 // export const eventTypeOptions = [
 //   { value: EventType.COURSE, label: 'Course' },
@@ -46,3 +48,4 @@ export const monthOptions = [
   { value: 11, label: 'November' },
   { value: 12, label: 'December' },
 ];
+

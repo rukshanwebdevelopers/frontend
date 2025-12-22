@@ -21,6 +21,21 @@ export enum ProductType {
   Simple = 'simple',
   Variable = 'variable',
 }
+
+export enum GradeType {
+  GRADE_6 = 'GRADE_6',
+  GRADE_7 = 'GRADE_7',
+  GRADE_8 = 'GRADE_8',
+  GRADE_9 = 'GRADE_9',
+  GRADE_10 = 'GRADE_10',
+  GRADE_11 = 'GRADE_11',
+}
+
+export enum CourseType {
+  ONLINE = 'ONLINE',
+  PHYSICAL = 'PHYSICAL',
+}
+
 export enum StoreNoticePriorityType {
   High = 'high',
   Medium = 'medium',
@@ -165,7 +180,7 @@ export enum Permission {
 
 export interface GetParams {
   slug: string;
-  language: string;
+  language?: string;
 }
 
 export interface QueryOptions {
@@ -251,6 +266,7 @@ export interface Subject {
   id: string;
   name: string;
   slug: string;
+  code: string;
 }
 
 export interface Course {
@@ -260,6 +276,19 @@ export interface Course {
   fee: number;
 }
 
+export interface CourseOffering {
+  id: string;
+  batch: number;
+  teacher: Teacher;
+  fee: number;
+}
+
+export interface MonthData {
+  paid: boolean;
+  amount?: number;
+  attended?: boolean;
+};
+
 export interface Enrollment {
   id: string;
   student: Student;
@@ -267,6 +296,20 @@ export interface Enrollment {
   status: EnrollmentStatusType;
   last_payment_month: number;
   last_payment_year: number;
+  months: {
+    jan?: MonthData;
+    feb?: MonthData;
+    mar?: MonthData;
+    apr?: MonthData;
+    may?: MonthData;
+    jun?: MonthData;
+    jul?: MonthData;
+    aug?: MonthData;
+    sep?: MonthData;
+    oct?: MonthData;
+    nov?: MonthData;
+    dec?: MonthData;
+  };
 }
 
 export interface EnrollmentPayment {
@@ -547,9 +590,9 @@ export interface LicenseAdditionalData {
 }
 
 export interface UpdateUser {
-  name?: string;
-  profile?: UserProfileInput;
-  address?: UserAddressUpsertInput[];
+  display_name?: string;
+  // profile?: UserProfileInput;
+  // address?: UserAddressUpsertInput[];
 }
 
 export interface Profile {
@@ -1011,14 +1054,14 @@ export interface CreateUserInput {
   email: string;
 }
 export interface CreateStudentInput {
-  username: string;
+  // username: string;
   password: string;
   first_name: string;
   last_name: string;
   email: string;
-  date_of_birth: string;
-  parent_guardian_name: string;
-  parent_guardian_phone: string;
+  date_of_birth: string | null;
+  // parent_guardian_name: string;
+  // parent_guardian_phone: string;
   current_grade: string;
   current_academic_year: string;
 }
@@ -1036,6 +1079,15 @@ export interface CreateTeacherInput {
 export interface CreateCourseInput {
   name: string;
   slug: string;
+}
+
+export interface CreateCourseOfferingInput {
+  course: string;
+  teacher: string;
+  grade_level: string;
+  year: number;
+  batch: number;
+  fee: number;
 }
 
 export interface CreateEnrollmentInput {
@@ -1660,8 +1712,8 @@ export interface RegisterInput {
 }
 
 export interface ChangePasswordInput {
-  oldPassword: string;
-  newPassword: string;
+  old_password: string;
+  new_password: string;
 }
 
 export interface ForgetPasswordInput {
@@ -1932,6 +1984,10 @@ export interface TeacherQueryOptions extends QueryOptions {
 }
 
 export interface CourseQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface CourseOfferingQueryOptions extends QueryOptions {
   name: string;
 }
 
@@ -2212,6 +2268,8 @@ export interface StudentPaginator extends PaginatorInfo<Student> {}
 export interface TeacherPaginator extends PaginatorInfo<Teacher> {}
 
 export interface CoursePaginator extends PaginatorInfo<Course> {}
+
+export interface CourseOfferingPaginator extends PaginatorInfo<CourseOffering> {}
 
 export interface EnrollmentPaginator extends PaginatorInfo<Enrollment> {}
 

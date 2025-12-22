@@ -1,8 +1,10 @@
 import {
   adminAndOwnerOnly,
+  adminAndStudentOnly,
   adminOnly,
   adminOwnerAndStaffOnly,
   ownerAndStaffOnly,
+  studentOnly,
 } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 
@@ -35,26 +37,26 @@ export const siteSettings = {
       href: Routes.profileUpdate,
       labelTransKey: 'authorized-nav-item-profile',
       icon: 'UserIcon',
-      permission: adminOwnerAndStaffOnly,
+      permission: adminAndStudentOnly,
     },
-    {
-      href: Routes.shop.create,
-      labelTransKey: 'common:text-create-shop',
-      icon: 'ShopIcon',
-      permission: adminAndOwnerOnly,
-    },
+    // {
+    //   href: Routes.shop.create,
+    //   labelTransKey: 'common:text-create-shop',
+    //   icon: 'ShopIcon',
+    //   permission: adminAndOwnerOnly,
+    // },
 
-    {
-      href: Routes.settings,
-      labelTransKey: 'authorized-nav-item-settings',
-      icon: 'SettingsIcon',
-      permission: adminOnly,
-    },
+    // {
+    //   href: Routes.settings,
+    //   labelTransKey: 'authorized-nav-item-settings',
+    //   icon: 'SettingsIcon',
+    //   permission: adminOnly,
+    // },
     {
       href: Routes.logout,
       labelTransKey: 'authorized-nav-item-logout',
       icon: 'LogOutIcon',
-      permission: adminOwnerAndStaffOnly,
+      permission: adminAndStudentOnly,
     },
   ],
   currencyCode: 'USD',
@@ -108,6 +110,23 @@ export const siteSettings = {
               {
                 href: Routes.course.create,
                 label: 'text-add-all-courses',
+                icon: 'InventoryIcon',
+              },
+            ],
+          },
+          {
+            href: '',
+            label: 'sidebar-nav-item-course-offerings',
+            icon: 'InventoryIcon',
+            childMenu: [
+              {
+                href: Routes.courseOffering.list,
+                label: 'text-all-course-offerings',
+                icon: 'InventoryIcon',
+              },
+              {
+                href: Routes.courseOffering.create,
+                label: 'text-add-all-course-offerings',
                 icon: 'InventoryIcon',
               },
             ],
@@ -381,57 +400,57 @@ export const siteSettings = {
       //   ],
       // },
 
-      layout: {
-        href: '',
-        label: 'text-page-control',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: Routes.type.list,
-            label: 'text-groups',
-            icon: 'HomeIcon',
-          },
-          {
-            href: '',
-            label: 'text-faqs',
-            icon: 'FaqIcon',
-            childMenu: [
-              {
-                href: Routes.faqs.list,
-                label: 'text-all-faqs',
-                icon: 'FaqIcon',
-              },
-              {
-                href: Routes.faqs.create,
-                label: 'text-new-faq',
-                icon: 'TypesIcon',
-              },
-            ],
-          },
-          {
-            href: '',
-            label: 'text-terms-conditions',
-            icon: 'TermsIcon',
-            childMenu: [
-              {
-                href: Routes.termsAndCondition.list,
-                label: 'text-all-terms',
-                icon: 'TermsIcon',
-              },
-              {
-                href: Routes.termsAndCondition.create,
-                label: 'text-new-terms',
-                icon: 'TermsIcon',
-              },
-            ],
-          },
-          {
-            href: Routes.becomeSeller,
-            label: 'Become a seller Page',
-            icon: 'TermsIcon',
-          },
-        ],
-      },
+      // layout: {
+      //   href: '',
+      //   label: 'text-page-control',
+      //   icon: 'SettingsIcon',
+      //   childMenu: [
+      //     {
+      //       href: Routes.type.list,
+      //       label: 'text-groups',
+      //       icon: 'HomeIcon',
+      //     },
+      //     {
+      //       href: '',
+      //       label: 'text-faqs',
+      //       icon: 'FaqIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.faqs.list,
+      //           label: 'text-all-faqs',
+      //           icon: 'FaqIcon',
+      //         },
+      //         {
+      //           href: Routes.faqs.create,
+      //           label: 'text-new-faq',
+      //           icon: 'TypesIcon',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       href: '',
+      //       label: 'text-terms-conditions',
+      //       icon: 'TermsIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.termsAndCondition.list,
+      //           label: 'text-all-terms',
+      //           icon: 'TermsIcon',
+      //         },
+      //         {
+      //           href: Routes.termsAndCondition.create,
+      //           label: 'text-new-terms',
+      //           icon: 'TermsIcon',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       href: Routes.becomeSeller,
+      //       label: 'Become a seller Page',
+      //       icon: 'TermsIcon',
+      //     },
+      //   ],
+      // },
 
       user: {
         href: '',
@@ -451,12 +470,12 @@ export const siteSettings = {
           { 
             href: Routes.teacher.list,
             label: 'text-teacher-list',
-            icon: 'AdminListIcon',
+            icon: 'StaffIcon',
           },
           {
             href: Routes.student.list,
             label: 'text-student-list',
-            icon: 'AdminListIcon',
+            icon: 'CustomersIcon',
           },
           // {
           //   href: '',
@@ -588,75 +607,75 @@ export const siteSettings = {
       //   ],
       // },
 
-      settings: {
-        href: '',
-        label: 'text-site-management',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: Routes.settings,
-            label: 'sidebar-nav-item-settings',
-            icon: 'SettingsIcon',
-            childMenu: [
-              {
-                href: Routes.settings,
-                label: 'text-general-settings',
-                icon: 'SettingsIcon',
-              },
-              {
-                href: Routes.paymentSettings,
-                label: 'text-payment-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.seoSettings,
-                label: 'text-seo-settings',
-                icon: 'StoreNoticeIcon',
-              },
-              {
-                href: Routes.eventSettings,
-                label: 'text-events-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.shopSettings,
-                label: 'text-shop-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes?.maintenance,
-                label: 'text-maintenance-settings',
-                icon: 'InformationIcon',
-              },
-              {
-                href: Routes?.companyInformation,
-                label: 'text-company-settings',
-                icon: 'InformationIcon',
-              },
-              {
-                href: Routes?.promotionPopup,
-                label: 'text-popup-settings',
-                icon: 'InformationIcon',
-              },
-              // {
-              //   href: '',
-              //   label: 'Social settings',
-              //   icon: 'RefundsIcon',
-              // },
-            ],
-          },
-          // {
-          //   href: '',
-          //   label: 'Company Information',
-          //   icon: 'InformationIcon',
-          // },
-          // {
-          //   href: '',
-          //   label: 'Maintenance',
-          //   icon: 'MaintenanceIcon',
-          // },
-        ],
-      },
+      // settings: {
+      //   href: '',
+      //   label: 'text-site-management',
+      //   icon: 'SettingsIcon',
+      //   childMenu: [
+      //     {
+      //       href: Routes.settings,
+      //       label: 'sidebar-nav-item-settings',
+      //       icon: 'SettingsIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.settings,
+      //           label: 'text-general-settings',
+      //           icon: 'SettingsIcon',
+      //         },
+      //         {
+      //           href: Routes.paymentSettings,
+      //           label: 'text-payment-settings',
+      //           icon: 'RefundsIcon',
+      //         },
+      //         {
+      //           href: Routes.seoSettings,
+      //           label: 'text-seo-settings',
+      //           icon: 'StoreNoticeIcon',
+      //         },
+      //         {
+      //           href: Routes.eventSettings,
+      //           label: 'text-events-settings',
+      //           icon: 'RefundsIcon',
+      //         },
+      //         {
+      //           href: Routes.shopSettings,
+      //           label: 'text-shop-settings',
+      //           icon: 'RefundsIcon',
+      //         },
+      //         {
+      //           href: Routes?.maintenance,
+      //           label: 'text-maintenance-settings',
+      //           icon: 'InformationIcon',
+      //         },
+      //         {
+      //           href: Routes?.companyInformation,
+      //           label: 'text-company-settings',
+      //           icon: 'InformationIcon',
+      //         },
+      //         {
+      //           href: Routes?.promotionPopup,
+      //           label: 'text-popup-settings',
+      //           icon: 'InformationIcon',
+      //         },
+      //         // {
+      //         //   href: '',
+      //         //   label: 'Social settings',
+      //         //   icon: 'RefundsIcon',
+      //         // },
+      //       ],
+      //     },
+      //     // {
+      //     //   href: '',
+      //     //   label: 'Company Information',
+      //     //   icon: 'InformationIcon',
+      //     // },
+      //     // {
+      //     //   href: '',
+      //     //   label: 'Maintenance',
+      //     //   icon: 'MaintenanceIcon',
+      //     // },
+      //   ],
+      // },
 
       // license: {
       //   href: '',
@@ -671,6 +690,21 @@ export const siteSettings = {
       //   ],
       // },
     },
+
+    student: [
+      {
+        href: Routes.dashboard,
+        label: 'sidebar-nav-item-dashboard',
+        icon: 'DashboardIcon',
+        permissions: studentOnly,
+      },
+      {
+        href: Routes.myCourses.list,
+        label: 'sidebar-nav-item-my-courses',
+        icon: 'DiaryIcon',
+        permissions: studentOnly,
+      },
+    ],
 
     shop: {
       root: {

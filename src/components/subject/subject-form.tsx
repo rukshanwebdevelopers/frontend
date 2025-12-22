@@ -10,7 +10,6 @@ import { useState } from 'react';
 import { Subject } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSettingsQuery } from '@/data/settings';
 import { formatSlug } from '@/utils/use-slug';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import {
@@ -67,13 +66,6 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
   });
 
   const slugAutoSuggest = formatSlug(watch('name'));
-  const { locale } = router;
-  const {
-    // @ts-ignore
-    settings: { options },
-  } = useSettingsQuery({
-    language: locale!,
-  });
 
   const { mutate: createSubject, isLoading: creating } =
     useCreateSubjectMutation();
@@ -120,7 +112,7 @@ export default function CreateOrUpdateSubjectForm({ initialValues }: IProps) {
             initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-          } ${t('form:category-description-helper-text')}`}
+          } ${t('form:subject-description-helper-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
 

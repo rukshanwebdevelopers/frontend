@@ -14,6 +14,11 @@ import {
   UserQueryOptions,
   LicensedDomainPaginator,
   LicenseAdditionalData,
+  CourseQueryOptions,
+  CoursePaginator,
+  Course,
+  EnrollmentQueryOptions,
+  Enrollment,
 } from '@/types';
 import { mapPaginatorData } from '@/utils/data-mappers';
 import axios from 'axios';
@@ -333,6 +338,23 @@ export const useMyStaffsQuery = (params: Partial<UserQueryOptions & { shop_id: s
   return {
     myStaffs: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data as any),
+    loading: isLoading,
+    error,
+  };
+};
+
+export const useMyEnrollmentsQuery = (params: Partial<EnrollmentQueryOptions>) => {
+  const { data, isLoading, error } = useQuery<Enrollment[], Error>(
+    [API_ENDPOINTS.MY_ENROLLMENTS, params],
+    () => userClient.getMyEnrollments(params),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    myEnrollments: data ?? [],
+    // paginatorInfo: mapPaginatorData(data as any),
     loading: isLoading,
     error,
   };

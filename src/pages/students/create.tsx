@@ -1,7 +1,6 @@
 import Layout from '@/components/layouts/admin';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import CreateOrUpdateSubjectForm from '@/components/subject/subject-form';
 import CreateOrUpdateStudentForm from '@/components/student/student-form';
 
 export default function CreateStudentPage() {

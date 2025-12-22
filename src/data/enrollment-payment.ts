@@ -13,10 +13,12 @@ import {
 import { mapPaginatorData } from '@/utils/data-mappers';
 import { enrollmentPaymentClient } from './client/enrollment-payment';
 import { Config } from '@/config';
+import { useModalAction } from '@/components/ui/modal/modal.context';
 
 export const useCreateEnrollmentPaymentMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const { closeModal } = useModalAction();
 
   return useMutation(enrollmentPaymentClient.create, {
     onSuccess: () => {
@@ -24,6 +26,7 @@ export const useCreateEnrollmentPaymentMutation = () => {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-created'));
+      closeModal();
     },
     // Always refetch after error or success:
     onSettled: () => {

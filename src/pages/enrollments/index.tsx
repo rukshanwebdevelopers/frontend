@@ -15,6 +15,12 @@ import { Config } from '@/config';
 import PageHeading from '@/components/common/page-heading';
 import { useEnrollmentsQuery } from '@/data/enrollment';
 import EnrollmentList from '@/components/enrollment/enrollment-list';
+import EnrollmentMonthList from '@/components/enrollment/enrollment-month-list';
+import { EaringIcon } from '@/components/icons/summary/earning';
+import { ChecklistIcon } from '@/components/icons/summary/checklist';
+import { BasketIcon } from '@/components/icons/summary/basket';
+import AnalyticCard from '@/components/widgets/analytic-card';
+import { CustomersIcon } from '@/components/icons/summary/customers';
 
 export default function Enrollments() {
   const { locale } = useRouter();
@@ -74,7 +80,37 @@ export default function Enrollments() {
           </div>
         </div>
       </Card>
-      <EnrollmentList
+      <Card className="mb-8 flex flex-col">
+        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <AnalyticCard
+            titleTransKey="Total Students"
+            subtitleTransKey="sticker-card-subtitle-rev"
+            icon={<CustomersIcon className="h-8 w-8" />}
+            color="#1EAE98"
+            price={paginatorInfo?.total}
+          />
+          <AnalyticCard
+            titleTransKey="Active Students"
+            subtitleTransKey="sticker-card-subtitle-order"
+            icon={<ChecklistIcon className="h-8 w-8" />}
+            color="#865DFF"
+            price={12}
+          />
+          <AnalyticCard
+            titleTransKey="Growth"
+            icon={<ChecklistIcon className="h-8 w-8" />}
+            color="#D74EFF"
+            price={12}
+          />
+          <AnalyticCard
+            titleTransKey="Income"
+            icon={<EaringIcon className="h-8 w-8" />}
+            color="#E157A0"
+            price={12}
+          />
+        </div>
+      </Card>
+      <EnrollmentMonthList
         enrollments={enrollments}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}

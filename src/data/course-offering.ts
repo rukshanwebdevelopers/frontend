@@ -6,28 +6,28 @@ import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from './client/api-endpoints';
 import {
   GetParams,
-  Course,
-  CoursePaginator,
   CourseQueryOptions,
+  CourseOfferingPaginator,
+  CourseOffering,
 } from '@/types';
 import { mapPaginatorData } from '@/utils/data-mappers';
-import { courseClient } from './client/course';
+import { courseOfferingClient } from './client/course-offering';
 import { Config } from '@/config';
 
-export const useCreateCourseMutation = () => {
+export const useCreateCourseOfferingMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation(courseClient.create, {
+  return useMutation(courseOfferingClient.create, {
     onSuccess: () => {
-      Router.push(Routes.course.list, undefined, {
+      Router.push(Routes.courseOffering.list, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-created'));
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COURSES);
+      queryClient.invalidateQueries(API_ENDPOINTS.COURSE_OFFERING);
     },
   });
 };
@@ -36,28 +36,28 @@ export const useDeleteCourseMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation(courseClient.delete, {
+  return useMutation(courseOfferingClient.delete, {
     onSuccess: () => {
       toast.success(t('common:successfully-deleted'));
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COURSES);
+      queryClient.invalidateQueries(API_ENDPOINTS.COURSE_OFFERING);
     },
   });
 };
 
-export const useUpdateCourseMutation = () => {
+export const useUpdateCourseOfferingMutation = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(courseClient.update, {
+  return useMutation(courseOfferingClient.update, {
     onSuccess: async (data) => {
       const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.course.list}`
-        : Routes.course.list;
+        ? `/${router.query.shop}${Routes.courseOffering.list}`
+        : Routes.courseOffering.list;
       await router.push(
-        `${generateRedirectUrl}/${data?.slug}/edit`,
+        `${generateRedirectUrl}/${data?.id}/edit`,
         undefined,
         {
           locale: Config.defaultLanguage,
@@ -70,36 +70,36 @@ export const useUpdateCourseMutation = () => {
     // },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COURSES);
+      queryClient.invalidateQueries(API_ENDPOINTS.COURSE_OFFERING);
     },
   });
 };
 
 export const useCourseQuery = ({ slug }: GetParams) => {
-  const { data, error, isLoading } = useQuery<Course, Error>(
-    [API_ENDPOINTS.COURSES, { slug }],
-    () => courseClient.get({ slug })
+  const { data, error, isLoading } = useQuery<CourseOffering, Error>(
+    [API_ENDPOINTS.COURSE_OFFERING, { slug }],
+    () => courseOfferingClient.get({ slug })
   );
 
   return {
-    course: data,
+    courseOffering: data,
     error,
     isLoading,
   };
 };
 
-export const useCoursesQuery = (options: Partial<CourseQueryOptions>) => {
-  const { data, error, isLoading } = useQuery<CoursePaginator, Error>(
-    [API_ENDPOINTS.COURSES, options],
+export const useCourseOfferingsQuery = (options: Partial<CourseQueryOptions>) => {
+  const { data, error, isLoading } = useQuery<CourseOfferingPaginator, Error>(
+    [API_ENDPOINTS.COURSE_OFFERING, options],
     ({ queryKey, pageParam }) =>
-      courseClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+      courseOfferingClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     }
   );
 
   return {
-    courses: data?.data ?? [],
+    courseOfferings: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,

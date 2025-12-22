@@ -13,7 +13,7 @@ import { Routes } from '@/config/routes';
 import { Config } from '@/config';
 
 const AdminDashboard = dynamic(() => import('@/components/dashboard/admin'));
-const OwnerDashboard = dynamic(() => import('@/components/dashboard/owner'));
+const StudentDashboard = dynamic(() => import('@/components/dashboard/student'));
 
 export default function Dashboard({
   userPermissions,
@@ -23,7 +23,7 @@ export default function Dashboard({
   if (userPermissions?.includes(SUPER_ADMIN)) {
     return <AdminDashboard />;
   }
-  return <OwnerDashboard />;
+  return <StudentDashboard />;
 }
 
 Dashboard.Layout = AppLayout;

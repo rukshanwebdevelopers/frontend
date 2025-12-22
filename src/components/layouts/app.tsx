@@ -2,7 +2,7 @@ import { SUPER_ADMIN } from '@/utils/constants';
 import dynamic from 'next/dynamic';
 
 const AdminLayout = dynamic(() => import('@/components/layouts/admin'));
-const OwnerLayout = dynamic(() => import('@/components/layouts/owner'));
+const StudentLayout = dynamic(() => import('@/components/layouts/student'));
 
 export default function AppLayout({
   userPermissions,
@@ -13,5 +13,6 @@ export default function AppLayout({
   if (userPermissions?.includes(SUPER_ADMIN)) {
     return <AdminLayout {...props} />;
   }
-  return <OwnerLayout {...props} />;
+  return <StudentLayout {...props} />;
+  // return <OwnerLayout {...props} />;
 }

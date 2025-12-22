@@ -6,6 +6,9 @@ export const Routes = {
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   adminMyShops: '/my-shops',
+  myCourses: {
+    ...routesFactory('/my-courses')
+  },
   profile: '/profile',
   verifyCoupons: '/coupons/verify',
   settings: '/settings',
@@ -84,6 +87,9 @@ export const Routes = {
   },
   course: {
     ...routesFactory('/courses'),
+  },
+  courseOffering: {
+    ...routesFactory('/course-offerings'),
   },
   enrollment: {
     ...routesFactory('/enrollments'),
