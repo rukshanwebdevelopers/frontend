@@ -3,7 +3,7 @@ import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import { useRouter } from 'next/router';
-import { Course, Enrollment, Student } from '@/types';
+import { Course, CourseOffering, Enrollment, Student } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSettingsQuery } from '@/data/settings';
@@ -19,8 +19,9 @@ import {
   useUpdateEnrollmentMutation,
 } from '@/data/enrollment';
 import { useStudentsQuery } from '@/data/student';
+import { useCourseOfferingsQuery } from '@/data/course-offering';
 
-function SelectCourse({
+function SelectCourseOffering({
   control,
   errors,
 }: {
@@ -29,16 +30,16 @@ function SelectCourse({
 }) {
   const { locale } = useRouter();
   const { t } = useTranslation();
-  const { courses, loading } = useCoursesQuery({ language: locale });
+  const { courseOfferings, loading } = useCourseOfferingsQuery({ language: locale });
   return (
     <div className="mb-5">
       <Label>{t('form:input-label-courses')}</Label>
       <SelectInput
-        name="course"
+        name="courseOffering"
         control={control}
-        getOptionLabel={(option: any) => option.name}
-        getOptionValue={(option: any) => option.slug}
-        options={courses!}
+        getOptionLabel={(option: any) => `${option.course.name} ${option.year} - batch ${option.batch}`}
+        getOptionValue={(option: any) => option.id}
+        options={courseOfferings!}
         isLoading={loading}
         required
       />
@@ -79,12 +80,12 @@ function SelectStudent({
 
 type FormValues = {
   student: Student;
-  course: Course;
+  courseOffering: CourseOffering;
 };
 
 const defaultValues = {
   student: '',
-  course: '',
+  courseOffering: '',
 };
 
 type IProps = {
@@ -141,9 +142,10 @@ export default function CreateOrUpdateEnrollmentForm({
   };
 
   const onSubmit = async (values: FormValues) => {
+    console.log('values-----: ', values)
     const input = {
       student: values.student.id,
-      course: values.course.id,
+      course_offering: values.courseOffering.id,
     };
     const mutationOptions = { onError: handleMutationError };
 
@@ -175,7 +177,7 @@ export default function CreateOrUpdateEnrollmentForm({
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <SelectStudent control={control} errors={errors} />
-          <SelectCourse control={control} errors={errors} />
+          <SelectCourseOffering control={control} errors={errors} />
         </Card>
       </div>
       <StickyFooterPanel className="z-0">
