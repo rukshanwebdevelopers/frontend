@@ -9,6 +9,7 @@ import {
   Enrollment,
   EnrollmentPaginator,
   EnrollmentQueryOptions,
+  EnrollmentWithMonthsPaginator,
 } from '@/types';
 import { mapPaginatorData } from '@/utils/data-mappers';
 import { enrollmentClient } from './client/enrollment';
@@ -100,6 +101,24 @@ export const useEnrollmentsQuery = (options: Partial<EnrollmentQueryOptions>) =>
 
   return {
     enrollments: data?.data ?? [],
+    paginatorInfo: mapPaginatorData(data),
+    error,
+    loading: isLoading,
+  };
+};
+
+export const useEnrollmentsWithMonthsQuery = (options: Partial<EnrollmentQueryOptions>) => {
+  const { data, error, isLoading } = useQuery<EnrollmentWithMonthsPaginator, Error>(
+    [API_ENDPOINTS.ENROLLMENTS, options],
+    ({ queryKey, pageParam }) =>
+      enrollmentClient.enrollmentWithMonthPaginated(Object.assign({}, queryKey[1], pageParam)),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    enrollmentsWithMonths: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
