@@ -1,6 +1,14 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { Course, Enrollment, MonthData, SortOrder, Student } from '@/types';
+import {
+  Course,
+  CourseOffering,
+  Enrollment,
+  EnrollmentWithMonth,
+  MonthData,
+  SortOrder,
+  Student,
+} from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
@@ -13,14 +21,14 @@ import Avatar from '@/components/common/avatar';
 import { useModalAction } from '../ui/modal/modal.context';
 
 export type IProps = {
-  enrollments: Enrollment[] | undefined;
+  enrollmentsWithMonths: EnrollmentWithMonth[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (key: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
 const EnrollmentMonthList = ({
-  enrollments,
+  enrollmentsWithMonths,
   paginatorInfo,
   onPagination,
   onSort,
@@ -37,7 +45,7 @@ const EnrollmentMonthList = ({
     column: null,
   });
 
-  // console.log('enrollments----------: ', enrollments)
+  // console.log('enrollments----------: ', enrollmentsWithMonths);
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
@@ -73,11 +81,14 @@ const EnrollmentMonthList = ({
 
   const handleMonthClick = (
     month: number,
-    courseId: string,
+    courseOfferingId: string,
     studentId: string,
   ) => {
-    console.log('month clicked');
-    openModal('ENROLLMENT_PAYMENT_VIEW', { month, courseId, studentId });
+    openModal('ENROLLMENT_PAYMENT_VIEW', {
+      month,
+      courseOfferingId,
+      studentId,
+    });
   };
 
   const monthColumns = MONTHS.map((m) => ({
@@ -86,14 +97,18 @@ const EnrollmentMonthList = ({
     key: m.key,
     align: 'center' as const,
     width: 90,
-    render: (_month: MonthData, record: Enrollment) => (
+    render: (_month: MonthData, record: EnrollmentWithMonth) => (
       <span>
         {_month?.paid ? (
           '✔️'
         ) : (
           <button
             onClick={() =>
-              handleMonthClick(m.number, record.course.id, record.student.id)
+              handleMonthClick(
+                m.number,
+                record.course_offering.id,
+                record.student.id,
+              )
             }
             className="text-gray-500 hover:text-blue-600"
           >
@@ -139,16 +154,19 @@ const EnrollmentMonthList = ({
     },
     {
       title: t('table:table-item-course'),
-      dataIndex: 'course',
-      key: 'course',
+      dataIndex: 'course_offering',
+      key: 'course_offering',
       align: alignLeft,
-      width: 70,
-      render: (course: Course) => (
+      width: 120,
+      render: (courseOffering: CourseOffering) => (
         <div
-          className="overflow-hidden truncate whitespace-nowrap"
-          title={course?.name}
+          className="flex flex-col whitespace-nowrap font-medium ms-2"
+          title={courseOffering?.course?.name}
         >
-          {course?.name}
+          {courseOffering?.course?.name} - B{courseOffering?.batch}
+          <span className="text-[13px] font-normal text-gray-500/80">
+            G{courseOffering?.grade_level.level}
+          </span>
         </div>
       ),
     },
@@ -187,7 +205,7 @@ const EnrollmentMonthList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={enrollments}
+          data={enrollmentsWithMonths}
           rowKey="id"
           scroll={{ x: 1000 }}
         />
