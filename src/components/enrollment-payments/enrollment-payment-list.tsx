@@ -1,6 +1,6 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { Course, Enrollment, EnrollmentPayment, SortOrder, Student } from '@/types';
+import { Enrollment, EnrollmentPayment, SortOrder } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
@@ -10,7 +10,6 @@ import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import Avatar from '@/components/common/avatar';
-import Badge from '@/components/ui/badge/badge';
 
 export type IProps = {
   enrollmentPayments: EnrollmentPayment[] | undefined;
@@ -87,7 +86,8 @@ const EnrollmentPaymentList = ({
         <div className="flex items-center">
           <Avatar name={email} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {enrollment?.student?.user.first_name} {enrollment?.student?.user.last_name}
+            {enrollment?.student?.user.first_name}{' '}
+            {enrollment?.student?.user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
               ST No. {enrollment?.student?.student_number}
             </span>
@@ -104,9 +104,9 @@ const EnrollmentPaymentList = ({
       render: (enrollment: Enrollment) => (
         <div
           className="overflow-hidden truncate whitespace-nowrap"
-          title={enrollment?.course?.name}
+          title={enrollment?.course_offering?.course?.name}
         >
-          {enrollment?.course?.name}
+          {enrollment?.course_offering?.course?.name}
         </div>
       ),
     },
@@ -117,9 +117,7 @@ const EnrollmentPaymentList = ({
       align: alignLeft,
       width: 150,
       render: (payment_month: number, record: EnrollmentPayment) => (
-        <div
-          className="overflow-hidden truncate whitespace-nowrap"
-        >
+        <div className="overflow-hidden truncate whitespace-nowrap">
           {record.payment_year}-{payment_month}
         </div>
       ),
