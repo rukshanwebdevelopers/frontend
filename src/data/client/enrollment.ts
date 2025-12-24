@@ -3,6 +3,7 @@ import {
   Enrollment,
   EnrollmentPaginator,
   EnrollmentQueryOptions,
+  EnrollmentWithMonthsPaginator,
   QueryOptions,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
@@ -20,5 +21,21 @@ export const enrollmentClient = {
       ...params,
       search: HttpClient.formatSearchParams({ name }),
     });
+  },
+  enrollmentWithMonthPaginated: ({
+    name,
+    batch,
+    grade_level,
+    ...params
+  }: Partial<EnrollmentQueryOptions>) => {
+    return HttpClient.get<EnrollmentWithMonthsPaginator>(
+      API_ENDPOINTS.ENROLLMENTS,
+      {
+        searchJoin: 'and',
+        self,
+        ...params,
+        search: HttpClient.formatSearchParams({ name, batch }),
+      },
+    );
   },
 };
