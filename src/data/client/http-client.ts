@@ -91,6 +91,9 @@ interface SearchParamOptions {
   product_type: string;
   is_read: boolean;
   transaction_identifier: string;
+  grade: string;
+  batch: string;
+  grade_level: string;
 }
 
 export class HttpClient {
