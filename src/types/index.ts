@@ -278,9 +278,12 @@ export interface Course {
 
 export interface CourseOffering {
   id: string;
-  batch: number;
+  course: Course;
   teacher: Teacher;
+  batch: number;
   fee: number;
+  year: number;
+  grade_level: GradeLevel;
 }
 
 export interface MonthData {
@@ -292,7 +295,16 @@ export interface MonthData {
 export interface Enrollment {
   id: string;
   student: Student;
-  course: Course;
+  course_offering: CourseOffering;
+  status: EnrollmentStatusType;
+  last_payment_month: number;
+  last_payment_year: number;
+}
+
+export interface EnrollmentWithMonth {
+  id: string;
+  student: Student;
+  course_offering: CourseOffering;
   status: EnrollmentStatusType;
   last_payment_month: number;
   last_payment_year: number;
@@ -1091,12 +1103,12 @@ export interface CreateCourseOfferingInput {
 }
 
 export interface CreateEnrollmentInput {
-  course: string;
+  course_offering: string;
   student: string;
 }
 
 export interface CreateEnrollmentPaymentInput {
-  course: string;
+  course_offering: string;
   student: string;
 }
 
@@ -1998,6 +2010,8 @@ export interface StudentEnrolledCourseQueryOptions extends QueryOptions {
 
 export interface EnrollmentQueryOptions extends QueryOptions {
   name: string;
+  grade_level: string;
+  batch: string;  
 }
 
 export interface EnrollmentPaymentQueryOptions extends QueryOptions {
@@ -2272,6 +2286,8 @@ export interface CoursePaginator extends PaginatorInfo<Course> {}
 export interface CourseOfferingPaginator extends PaginatorInfo<CourseOffering> {}
 
 export interface EnrollmentPaginator extends PaginatorInfo<Enrollment> {}
+
+export interface EnrollmentWithMonthsPaginator extends PaginatorInfo<EnrollmentWithMonth> {}
 
 export interface EnrollmentPaymentPaginator extends PaginatorInfo<EnrollmentPayment> {}
 
