@@ -53,7 +53,7 @@ const EnrollmentPaymentView = () => {
 
     const input = {
       student: data.studentId,
-      course: data.courseId,
+      course_offering: data.courseOfferingId,
       amount: amount,
       payment_month: data.month,
       payment_year: currentYear,
