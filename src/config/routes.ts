@@ -91,6 +91,9 @@ export const Routes = {
   courseOffering: {
     ...routesFactory('/course-offerings'),
   },
+  gradeLevel: {
+    ...routesFactory('/grade-levels'),
+  },
   enrollment: {
     ...routesFactory('/enrollments'),
   },
