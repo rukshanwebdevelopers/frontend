@@ -1055,7 +1055,8 @@ export interface CreateAcademicYearInput {
 
 export interface CreateGradeLevelInput {
   name: string;
-  slug: string;
+  level: number;
+  description?: string;
 }
 
 export interface CreateUserInput {
