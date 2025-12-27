@@ -20,7 +20,7 @@ export const useCreateGradeLevelMutation = () => {
 
   return useMutation(gradeLevelClient.create, {
     onSuccess: () => {
-      Router.push(Routes.subject.list, undefined, {
+      Router.push(Routes.gradeLevel.list, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-created'));
@@ -54,8 +54,8 @@ export const useUpdateGradeLevelMutation = () => {
   return useMutation(gradeLevelClient.update, {
     onSuccess: async (data) => {
       const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.subject.list}`
-        : Routes.subject.list;
+        ? `/${router.query.shop}${Routes.gradeLevel.list}`
+        : Routes.gradeLevel.list;
       await router.push(
         `${generateRedirectUrl}/${data?.name}/edit`,
         undefined,
@@ -65,9 +65,6 @@ export const useUpdateGradeLevelMutation = () => {
       );
       toast.success(t('common:successfully-updated'));
     },
-    // onSuccess: () => {
-    //   toast.success(t('common:successfully-updated'));
-    // },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.GRADE_LEVEL);
