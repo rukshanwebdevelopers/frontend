@@ -14,12 +14,12 @@ export const enrollmentClient = {
   ...crudFactory<Enrollment, QueryOptions, CreateEnrollmentInput>(
     API_ENDPOINTS.ENROLLMENTS,
   ),
-  paginated: ({ name, ...params }: Partial<EnrollmentQueryOptions>) => {
+  paginated: ({ name, grade_level, ...params }: Partial<EnrollmentQueryOptions>) => {
     return HttpClient.get<EnrollmentPaginator>(API_ENDPOINTS.ENROLLMENTS, {
       searchJoin: 'and',
       self,
       ...params,
-      search: HttpClient.formatSearchParams({ name }),
+      search: HttpClient.formatSearchParams({ name, grade_level }),
     });
   },
   enrollmentWithMonthPaginated: ({
@@ -34,7 +34,7 @@ export const enrollmentClient = {
         searchJoin: 'and',
         self,
         ...params,
-        search: HttpClient.formatSearchParams({ name, batch }),
+        search: HttpClient.formatSearchParams({ name, batch, grade_level }),
       },
     );
   },

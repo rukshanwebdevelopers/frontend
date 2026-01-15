@@ -5,7 +5,7 @@ import LinkButton from '@/components/ui/link-button';
 import { useState } from 'react';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { SortOrder } from '@/types';
+import { GradeLevel, SortOrder } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Routes } from '@/config/routes';
@@ -35,12 +35,14 @@ export default function Enrollments() {
     limit: 20,
     page,
     name: searchTerm,
-    // grade_level: grade,
+    grade_level: grade,
     batch: batch,
     orderBy,
     sortedBy,
     language: locale,
   });
+
+  console.log('grade', grade)
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -70,8 +72,8 @@ export default function Enrollments() {
 
             <GradeFilter
               className="md:ms-6"
-              onGradeFilter={(grade: { label: string; value: string }) => {
-                setGrade(grade?.value!);
+              onGradeFilter={(grade_level: GradeLevel) => {
+                setGrade(grade_level?.name!);
                 setPage(1);
               }}
             />

@@ -3,6 +3,8 @@ import React from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { ActionMeta } from 'react-select';
+import { useGradeLevelsQuery } from '@/data/grade-level';
+import { GradeLevel } from '@/types';
 
 type Props = {
   onGradeFilter: (newValue: any, actionMeta: ActionMeta<unknown>) => void;
@@ -11,39 +13,17 @@ type Props = {
 
 export default function GradeFilter({ onGradeFilter, className }: Props) {
   const { t } = useTranslation();
-
-  const gradeOptions = [
-    {
-      label: 'Grade 6',
-      value: '1',
-    },
-    {
-      label: 'Grade 7',
-      value: '2',
-    },
-    {
-      label: 'Grade 8',
-      value: '3',
-    },
-    {
-      label: 'Grade 9',
-      value: '4',
-    },
-    {
-      label: 'Grade 10',
-      value: '5',
-    },
-    {
-      label: 'Grade 11',
-      value: '6',
-    },
-  ];
+  const { gradeLevels } = useGradeLevelsQuery({});
 
   return (
     <div className={cn('flex w-full', className)}>
       <div className="w-full">
         <Select
-          options={gradeOptions}
+          options={gradeLevels}
+          //@ts-ignore
+          getOptionLabel={(option: GradeLevel) => option.name}
+          //@ts-ignore
+          getOptionValue={(option: GradeLevel) => option.name}
           placeholder={t('common:filter-by-grade-placeholder')}
           onChange={onGradeFilter}
           isClearable={true}
