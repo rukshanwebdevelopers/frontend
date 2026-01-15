@@ -43,7 +43,7 @@ function SelectCourseOffering({
         isLoading={loading}
         required
       />
-      <ValidationError message={t(errors.course?.message)} />
+      <ValidationError message={t(errors.course_offering?.message)} />
     </div>
   );
 }
