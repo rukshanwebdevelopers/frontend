@@ -3,7 +3,7 @@ import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import { useRouter } from 'next/router';
-import { Course, Enrollment, Student } from '@/types';
+import { Enrollment, Student } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
@@ -11,12 +11,12 @@ import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
 import { animateScroll } from 'react-scroll';
 import { useUpdateEnrollmentMutation } from '@/data/enrollment';
-import { useStudentsQuery } from '@/data/student';
+import { useStudentEnrollmentsQuery, useStudentsQuery } from '@/data/student';
 import { useCreateEnrollmentPaymentMutation } from '@/data/enrollment-payment';
 import { enrollmentPaymentValidationSchema } from './enrollment-payment-validation-schema';
 import { monthOptions } from '@/constants';
-import { useStudentEnrolledCoursesQuery } from '@/data/student-enrolled-course';
 import { useEffect, useRef } from 'react';
+import Input from '@/components/ui/input';
 
 function SelectCourse({
   control,
@@ -25,26 +25,29 @@ function SelectCourse({
 }: {
   control: Control<FormValues>;
   errors: FieldErrors;
-  studentId?: string;
+  studentId: string;
 }) {
   const { t } = useTranslation();
-  const { courses, loading } = useStudentEnrolledCoursesQuery({
-    student_id: studentId,
-    enabled: !!studentId,
+  const { enrollments, loading } = useStudentEnrollmentsQuery({
+    studentId: studentId,
   });
   return (
     <div className="mb-5">
       <SelectInput
-        label={t('form:input-label-courses')}
-        name="course"
+        label={t('form:input-label-enrollments')}
+        name="enrollment"
         control={control}
-        getOptionLabel={(option: any) => `${option.name} - Rs. ${option.fee}`}
-        getOptionValue={(option: any) => option.slug}
-        options={courses!}
+        //@ts-ignore
+        getOptionLabel={(enrollment: Enrollment) =>
+          `${enrollment.course_offering.course.name} - ${enrollment.course_offering.grade_level.name} - Batch ${enrollment.course_offering.batch} `
+        }
+        //@ts-ignore
+        getOptionValue={(enrollment: Enrollment) => enrollment.id}
+        options={enrollments!}
         isLoading={loading}
         required
       />
-      <ValidationError message={t(errors.course?.message)} />
+      <ValidationError message={t(errors.enrollment?.message)} />
     </div>
   );
 }
@@ -81,14 +84,12 @@ function SelectStudent({
 
 type FormValues = {
   student: Student;
-  course: Course;
-  payment_month: { label: string; value: number };
+  enrollment: Enrollment | null;
+  payment_month: { label: string; value: number } | null;
+  fee: number | null;
 };
 
-const defaultValues = {
-  // student: '',
-  // course: '',
-};
+const defaultValues = {};
 
 type IProps = {
   initialValues?: Enrollment | undefined;
@@ -108,9 +109,12 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
   );
 
   const {
+    register,
     handleSubmit,
+    setValue,
     setError,
     control,
+    reset,
     resetField,
     formState: { errors },
   } = useForm<FormValues>({
@@ -133,19 +137,44 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
     name: 'student',
   });
 
+  const currentFee = useWatch({
+    control,
+    name: 'fee',
+  });
+
+  const selectedEnrollment = useWatch({
+    control,
+    name: 'enrollment',
+  });
+
+  useEffect(() => {
+    if (selectedEnrollment?.course_offering?.fee) {
+      setValue('fee', selectedEnrollment.course_offering.fee, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    } else {
+      setValue('fee', 0);
+    }
+  }, [selectedEnrollment, setValue]);
+
   const prevStudentIdRef = useRef<string | undefined>();
 
   // Reset course field when student changes
   useEffect(() => {
     const currentStudentId = selectedStudent?.id;
+
     if (
-      prevStudentIdRef.current !== undefined &&
+      prevStudentIdRef.current &&
       prevStudentIdRef.current !== currentStudentId
     ) {
-      resetField('course');
+      setValue('enrollment', null);
+      setValue('payment_month', null);
+      setValue('fee', null);
     }
+
     prevStudentIdRef.current = currentStudentId;
-  }, [selectedStudent?.id, resetField]);
+  }, [selectedStudent, reset, currentFee]);
 
   const { mutate: createEnrollmentPayment, isLoading: creating } =
     useCreateEnrollmentPaymentMutation();
@@ -165,12 +194,14 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
   const onSubmit = async (values: FormValues) => {
     const currentYear = new Date().getFullYear();
 
+    if (!values.enrollment || !values.payment_month || !values.fee) return;
+
     const input = {
       student: values.student.id,
-      course: values.course.id,
-      amount: values.course.fee,
+      enrollment_id: values.enrollment.id,
       payment_month: values.payment_month.value,
       payment_year: currentYear,
+      amount: values.fee,
     };
     const mutationOptions = { onError: handleMutationError };
 
@@ -217,6 +248,16 @@ export default function CreateOrUpdateEnrollmentPaymentForm({
             />
             <ValidationError message={t(errors.payment_month?.message)} />
           </div>
+          <Input
+            label={t('form:input-label-fee')}
+            {...register('fee')}
+            type="number"
+            variant="outline"
+            className="mb-4"
+            required
+            readOnly
+            error={t(errors.fee?.message!)}
+          />
         </Card>
       </div>
       <StickyFooterPanel className="z-0">

@@ -13,12 +13,12 @@ export const courseOfferingClient = {
   ...crudFactory<CourseOffering, QueryOptions, CreateCourseOfferingInput>(
     API_ENDPOINTS.COURSE_OFFERING,
   ),
-  paginated: ({ name, ...params }: Partial<CourseOfferingQueryOptions>) => {
+  paginated: ({ grade_level, ...params }: Partial<CourseOfferingQueryOptions>) => {
     return HttpClient.get<CourseOfferingPaginator>(API_ENDPOINTS.COURSE_OFFERING, {
       searchJoin: 'and',
       self,
       ...params,
-      search: HttpClient.formatSearchParams({ name }),
+      search: HttpClient.formatSearchParams({ grade_level }),
     });
   },
 };

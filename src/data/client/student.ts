@@ -1,5 +1,7 @@
 import {
   CreateStudentInput,
+  Enrollment,
+  EnrollmentPaginator,
   QueryOptions,
   Student,
   StudentPaginator,
@@ -11,7 +13,7 @@ import { HttpClient } from './http-client';
 
 export const studentClient = {
   ...crudFactory<Student, QueryOptions, CreateStudentInput>(
-    API_ENDPOINTS.STUDENTS
+    API_ENDPOINTS.STUDENTS,
   ),
   paginated: ({ name, ...params }: Partial<StudentQueryOptions>) => {
     return HttpClient.get<StudentPaginator>(API_ENDPOINTS.STUDENTS, {
@@ -20,5 +22,14 @@ export const studentClient = {
       ...params,
       search: HttpClient.formatSearchParams({ name }),
     });
+  },
+  enrollments: (studentId: string) => {
+    return HttpClient.get<Enrollment[]>(
+      `${API_ENDPOINTS.STUDENTS}/${studentId}/enrollments`,
+      {
+        searchJoin: 'and',
+        self,
+      },
+    );
   },
 };

@@ -9,6 +9,7 @@ import {
   CourseQueryOptions,
   CourseOfferingPaginator,
   CourseOffering,
+  CourseOfferingQueryOptions,
 } from '@/types';
 import { mapPaginatorData } from '@/utils/data-mappers';
 import { courseOfferingClient } from './client/course-offering';
@@ -88,7 +89,7 @@ export const useCourseQuery = ({ slug }: GetParams) => {
   };
 };
 
-export const useCourseOfferingsQuery = (options: Partial<CourseQueryOptions>) => {
+export const useCourseOfferingsQuery = (options: Partial<CourseOfferingQueryOptions>) => {
   const { data, error, isLoading } = useQuery<CourseOfferingPaginator, Error>(
     [API_ENDPOINTS.COURSE_OFFERING, options],
     ({ queryKey, pageParam }) =>

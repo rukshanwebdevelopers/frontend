@@ -2,7 +2,14 @@ import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
 import { getIcon } from '@/utils/get-icon';
 import * as categoriesIcon from '@/components/icons/category';
-import { AcademicYear, GradeLevel, SortOrder, Student, Subject, User } from '@/types';
+import {
+  AcademicYear,
+  GradeLevel,
+  SortOrder,
+  Student,
+  Subject,
+  User,
+} from '@/types';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
@@ -43,7 +50,9 @@ const StudentList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -56,14 +65,14 @@ const StudentList = ({
   });
 
   const columns = [
-    {
-      title: t('table:table-item-id'),
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
-      width: 120,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: t('table:table-item-id'),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft,
+    //   width: 120,
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: (
         <TitleWithSort
@@ -78,17 +87,17 @@ const StudentList = ({
       dataIndex: 'student_number',
       key: 'student_number',
       align: alignLeft,
-      width: 250,
+      width: 180,
       ellipsis: true,
       onHeaderCell: () => onHeaderClick('student_number'),
       render: (
         student_number: string,
-        { profile, email, user }: { profile: any; email: string, user: User }
+        { profile, email, user }: { profile: any; email: string; user: User },
       ) => (
         <div className="flex items-center">
           <Avatar name={email} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {user.first_name} {user.last_name} 
+            {user.first_name} {user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
               ST No. {student_number}
             </span>
@@ -111,7 +120,7 @@ const StudentList = ({
         </div>
       ),
     },
-        {
+    {
       title: t('table:table-item-acedemic-year'),
       dataIndex: 'current_academic_year',
       key: 'current_academic_year',

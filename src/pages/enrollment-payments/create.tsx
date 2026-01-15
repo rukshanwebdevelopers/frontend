@@ -3,7 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import CreateOrUpdateEnrollmentPaymentForm from '@/components/enrollment-payments/enrollment-payment-form';
 
-export default function CreateEnrollmentPage() {
+export default function CreateEnrollmentPaymentPage() {
   const { t } = useTranslation();
   return (
     <>
@@ -17,7 +17,7 @@ export default function CreateEnrollmentPage() {
   );
 }
 
-CreateEnrollmentPage.Layout = Layout;
+CreateEnrollmentPaymentPage.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

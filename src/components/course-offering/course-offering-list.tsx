@@ -2,7 +2,13 @@ import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
 import { getIcon } from '@/utils/get-icon';
 import * as categoriesIcon from '@/components/icons/category';
-import { Course, CourseOffering, SortOrder, Teacher } from '@/types';
+import {
+  Course,
+  CourseOffering,
+  GradeLevel,
+  SortOrder,
+  Teacher,
+} from '@/types';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
@@ -57,26 +63,41 @@ const CourseOfferingList = ({
   });
 
   const columns = [
-    {
-      title: t('table:table-item-id'),
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
-      width: 120,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: t('table:table-item-id'),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft,
+    //   width: 120,
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: t('table:table-item-course'),
       dataIndex: 'course',
       key: 'course',
       align: alignLeft,
-      width: 150,
+      width: 120,
       render: (course: Course) => (
         <div
           className="overflow-hidden truncate whitespace-nowrap"
           title={course?.name}
         >
           {course?.name}
+        </div>
+      ),
+    },
+    {
+      title: t('table:table-item-grade'),
+      dataIndex: 'grade_level',
+      key: 'grade_level',
+      align: alignLeft,
+      width: 120,
+      render: (grade_level: GradeLevel) => (
+        <div
+          className="overflow-hidden truncate whitespace-nowrap"
+          title={grade_level?.name}
+        >
+          {grade_level?.name}
         </div>
       ),
     },

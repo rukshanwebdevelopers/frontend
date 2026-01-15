@@ -3,13 +3,12 @@ import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import { useRouter } from 'next/router';
-import { Course, CourseOffering, Enrollment, Student } from '@/types';
+import { CourseOffering, Enrollment, Student } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSettingsQuery } from '@/data/settings';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { enrollmentValidationSchema } from './enrollment-validation-schema';
-import { useCoursesQuery } from '@/data/course';
 import Label from '../ui/label';
 import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
@@ -24,20 +23,21 @@ import { useCourseOfferingsQuery } from '@/data/course-offering';
 function SelectCourseOffering({
   control,
   errors,
+  gradeLevel,
 }: {
   control: Control<FormValues>;
   errors: FieldErrors;
+  gradeLevel?: string;
 }) {
-  const { locale } = useRouter();
   const { t } = useTranslation();
-  const { courseOfferings, loading } = useCourseOfferingsQuery({ language: locale });
+  const { courseOfferings, loading } = useCourseOfferingsQuery({ grade_level: gradeLevel });
   return (
     <div className="mb-5">
       <Label>{t('form:input-label-courses')}</Label>
       <SelectInput
-        name="courseOffering"
+        name="course_offering"
         control={control}
-        getOptionLabel={(option: any) => `${option.course.name} ${option.year} - batch ${option.batch}`}
+        getOptionLabel={(option: any) => `${option.course.name} ${option.year} - ${option.grade_level.name} - batch ${option.batch}`}
         getOptionValue={(option: any) => option.id}
         options={courseOfferings!}
         isLoading={loading}
@@ -66,7 +66,7 @@ function SelectStudent({
         name="student"
         control={control}
         getOptionLabel={(option: any) =>
-          `${option.user.first_name} ${option.user.last_name}`
+          `${option.user.first_name} ${option.user.last_name} - ${option.current_grade.name}`
         }
         getOptionValue={(option: any) => option.id}
         options={students!}
@@ -80,12 +80,12 @@ function SelectStudent({
 
 type FormValues = {
   student: Student;
-  courseOffering: CourseOffering;
+  course_offering: CourseOffering;
 };
 
 const defaultValues = {
   student: '',
-  courseOffering: '',
+  course_offering: '',
 };
 
 type IProps = {
@@ -99,6 +99,7 @@ export default function CreateOrUpdateEnrollmentForm({
   const isNewTranslation = router?.query?.action === 'translate';
 
   const {
+    watch,
     handleSubmit,
     setError,
     control,
@@ -141,11 +142,12 @@ export default function CreateOrUpdateEnrollmentForm({
     animateScroll.scrollToTop();
   };
 
+  const student = watch('student');
+
   const onSubmit = async (values: FormValues) => {
-    console.log('values-----: ', values)
     const input = {
       student: values.student.id,
-      course_offering: values.courseOffering.id,
+      course_offering: values.course_offering.id,
     };
     const mutationOptions = { onError: handleMutationError };
 
@@ -177,7 +179,7 @@ export default function CreateOrUpdateEnrollmentForm({
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <SelectStudent control={control} errors={errors} />
-          <SelectCourseOffering control={control} errors={errors} />
+          <SelectCourseOffering control={control} errors={errors} gradeLevel={student?.current_grade?.name} />
         </Card>
       </div>
       <StickyFooterPanel className="z-0">

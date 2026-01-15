@@ -294,6 +294,7 @@
   "error-subject-required": "Subject is required",
   "error-student-required": "Student is required",
   "error-course-required": "Course is required",
+  "error-enrollment-required": "Enrollment is required",
   "error-grade-required": "Grade is required",
   "error-year-required": "Year is required",
   "error-month-required": "Month is required",

@@ -117,17 +117,34 @@ export const siteSettings = {
           {
             href: '',
             label: 'sidebar-nav-item-course-offerings',
-            icon: 'InventoryIcon',
+            icon: 'OrdersIcon',
             childMenu: [
               {
                 href: Routes.courseOffering.list,
                 label: 'text-all-course-offerings',
-                icon: 'InventoryIcon',
+                icon: 'OrdersIcon',
               },
               {
                 href: Routes.courseOffering.create,
                 label: 'text-add-all-course-offerings',
-                icon: 'InventoryIcon',
+                icon: 'OrdersIcon',
+              },
+            ],
+          },
+          {
+            href: '',
+            label: 'sidebar-nav-item-grade-levels',
+            icon: 'InformationIcon',
+            childMenu: [
+              {
+                href: Routes.gradeLevel.list,
+                label: 'text-all-grade-levels',
+                icon: 'InformationIcon',
+              },
+              {
+                href: Routes.gradeLevel.create,
+                label: 'text-add-all-grade-levels',
+                icon: 'InformationIcon',
               },
             ],
           },
@@ -155,7 +172,7 @@ export const siteSettings = {
             childMenu: [
               {
                 href: Routes.enrollmentPayment.list,
-                label: 'text-all-enrollment-payments',
+                label: 'text-all-payments',
                 icon: 'TaxesIcon',
               },
               {

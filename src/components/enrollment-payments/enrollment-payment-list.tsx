@@ -54,14 +54,14 @@ const EnrollmentPaymentList = ({
   });
 
   const columns = [
-    {
-      title: t('table:table-item-id'),
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
-      width: 120,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: t('table:table-item-id'),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft,
+    //   width: 120,
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: (
         <TitleWithSort
@@ -101,14 +101,18 @@ const EnrollmentPaymentList = ({
       key: 'enrollment',
       align: alignLeft,
       width: 150,
-      render: (enrollment: Enrollment) => (
-        <div
-          className="overflow-hidden truncate whitespace-nowrap"
-          title={enrollment?.course_offering?.course?.name}
-        >
-          {enrollment?.course_offering?.course?.name}
-        </div>
-      ),
+      render: (enrollment: Enrollment) => {
+        const courseOffering = enrollment?.course_offering;
+        return (
+          <div
+            className="overflow-hidden truncate whitespace-nowrap"
+            title={courseOffering?.course?.name}
+          >
+            {courseOffering?.course?.name} - {courseOffering?.grade_level.name}{' '}
+            - B{courseOffering?.batch}
+          </div>
+        );
+      },
     },
     {
       title: t('table:table-item-payment-month'),
@@ -122,21 +126,21 @@ const EnrollmentPaymentList = ({
         </div>
       ),
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'id',
-      key: 'actions',
-      align: alignRight,
-      width: 120,
-      render: (id: string, record: EnrollmentPayment) => (
-        <LanguageSwitcher
-          slug={id}
-          record={record}
-          // deleteModalView="DELETE_ENROLLMENT"
-          routes={Routes?.enrollmentPayment}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'id',
+    //   key: 'actions',
+    //   align: alignRight,
+    //   width: 120,
+    //   render: (id: string, record: EnrollmentPayment) => (
+    //     <LanguageSwitcher
+    //       slug={id}
+    //       record={record}
+    //       // deleteModalView="DELETE_ENROLLMENT"
+    //       routes={Routes?.enrollmentPayment}
+    //     />
+    //   ),
+    // },
   ];
 
   return (

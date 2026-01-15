@@ -5,7 +5,7 @@ import LinkButton from '@/components/ui/link-button';
 import { useState } from 'react';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { SortOrder, Type } from '@/types';
+import { SortOrder } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Routes } from '@/config/routes';
@@ -13,26 +13,30 @@ import { adminOnly } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import { Config } from '@/config';
 import PageHeading from '@/components/common/page-heading';
-import { useEnrollmentsQuery } from '@/data/enrollment';
-import EnrollmentList from '@/components/enrollment/enrollment-list';
+import { useEnrollmentsWithMonthsQuery } from '@/data/enrollment';
 import EnrollmentMonthList from '@/components/enrollment/enrollment-month-list';
 import { EaringIcon } from '@/components/icons/summary/earning';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
-import { BasketIcon } from '@/components/icons/summary/basket';
 import AnalyticCard from '@/components/widgets/analytic-card';
 import { CustomersIcon } from '@/components/icons/summary/customers';
+import BatchFilter from '@/components/enrollment/batch-filter';
+import GradeFilter from '@/components/enrollment/grade-filter';
 
 export default function Enrollments() {
   const { locale } = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
+  const [grade, setGrade] = useState('');
+  const [batch, setBatch] = useState('');
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const { enrollments, paginatorInfo, loading, error } = useEnrollmentsQuery({
+  const { enrollmentsWithMonths, paginatorInfo, loading, error } = useEnrollmentsWithMonthsQuery({
     limit: 20,
     page,
     name: searchTerm,
+    // grade_level: grade,
+    batch: batch,
     orderBy,
     sortedBy,
     language: locale,
@@ -62,6 +66,22 @@ export default function Enrollments() {
             <Search
               onSearch={handleSearch}
               placeholderText={t('form:input-placeholder-search-name')}
+            />
+
+            <GradeFilter
+              className="md:ms-6"
+              onGradeFilter={(grade: { label: string; value: string }) => {
+                setGrade(grade?.value!);
+                setPage(1);
+              }}
+            />
+
+            <BatchFilter
+              className="md:ms-6"
+              onBatchFilter={(batch: { label: string; value: string }) => {
+                setBatch(batch?.value!);
+                setPage(1);
+              }}
             />
 
             {locale === Config.defaultLanguage && (
@@ -111,7 +131,7 @@ export default function Enrollments() {
         </div>
       </Card>
       <EnrollmentMonthList
-        enrollments={enrollments}
+        enrollmentsWithMonths={enrollmentsWithMonths}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

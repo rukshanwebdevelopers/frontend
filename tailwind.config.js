@@ -16,10 +16,12 @@ module.exports = {
         '3xl': '1900px',
       },
       fontFamily: {
-        // body: ['Open Sans', 'system-ui', 'sans-serif'],
-        // heading: ['Open Sans', 'system-ui', 'sans-serif'],
-        body: [`Inter, sans-serif`],
-        heading: [`Inter, sans-serif`],
+        body: ['Open Sans', 'system-ui', 'sans-serif'],
+        heading: ['Open Sans', 'system-ui', 'sans-serif'],
+        // body: [`Inter, sans-serif`],
+        // heading: [`Inter, sans-serif`],
+        // body: ['Cairo', 'system-ui', 'sans-serif'],
+        // heading: ['Cairo', 'system-ui', 'sans-serif'],
       },
       colors: {
         light: withOpacity('--color-light'),

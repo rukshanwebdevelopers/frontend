@@ -5,6 +5,8 @@ import { useTranslation } from 'next-i18next';
 import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from './client/api-endpoints';
 import {
+  Enrollment,
+  EnrollmentPaginator,
   GetParams,
   Student,
   StudentPaginator,
@@ -57,13 +59,9 @@ export const useUpdateStudentMutation = () => {
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.student.list}`
         : Routes.student.list;
-      await router.push(
-        `${generateRedirectUrl}/${data?.id}/edit`,
-        undefined,
-        {
-          locale: Config.defaultLanguage,
-        }
-      );
+      await router.push(`${generateRedirectUrl}/${data?.id}/edit`, undefined, {
+        locale: Config.defaultLanguage,
+      });
       toast.success(t('common:successfully-updated'));
     },
     // onSuccess: () => {
@@ -83,7 +81,7 @@ export const useUpdateStudentMutation = () => {
 export const useStudentQuery = ({ slug, language }: GetParams) => {
   const { data, error, isLoading } = useQuery<Student, Error>(
     [API_ENDPOINTS.STUDENTS, { slug, language }],
-    () => studentClient.get({ slug, language })
+    () => studentClient.get({ slug, language }),
   );
 
   return {
@@ -100,12 +98,35 @@ export const useStudentsQuery = (options: Partial<StudentQueryOptions>) => {
       studentClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
     students: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
+    error,
+    loading: isLoading,
+  };
+};
+
+export const useStudentEnrollmentsQuery = ({
+  studentId,
+}: {
+  studentId: string;
+}) => {
+  const { data, error, isLoading } = useQuery<Enrollment[], Error>(
+    [`${API_ENDPOINTS.STUDENTS}/${studentId}/enrollments`],
+    ({ queryKey, pageParam }) =>
+      studentClient.enrollments(studentId),
+    {
+      keepPreviousData: true,
+      enabled: !!studentId,
+    },
+  );
+
+  return {
+    enrollments: data ?? [],
+    // paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
   };

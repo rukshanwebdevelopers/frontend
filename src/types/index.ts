@@ -1109,8 +1109,9 @@ export interface CreateEnrollmentInput {
 }
 
 export interface CreateEnrollmentPaymentInput {
-  course_offering: string;
+  enrollment_id: string;
   student: string;
+  amount: number;
 }
 
 export interface CreateWithdrawInput {
@@ -1992,6 +1993,10 @@ export interface StudentQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface StudentEnrollmentQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface TeacherQueryOptions extends QueryOptions {
   name: string;
 }
@@ -2002,6 +2007,7 @@ export interface CourseQueryOptions extends QueryOptions {
 
 export interface CourseOfferingQueryOptions extends QueryOptions {
   name: string;
+  grade_level: string;
 }
 
 export interface StudentEnrolledCourseQueryOptions extends QueryOptions {
