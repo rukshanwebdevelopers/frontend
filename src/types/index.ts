@@ -577,6 +577,7 @@ export interface User {
   username: string;
   first_name: string;
   last_name: string;
+  display_name: string;
   shops: Shop[];
   managed_shop: Shop;
   is_active: boolean;
