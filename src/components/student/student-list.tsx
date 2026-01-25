@@ -95,7 +95,7 @@ const StudentList = ({
         { profile, email, user }: { profile: any; email: string; user: User },
       ) => (
         <div className="flex items-center">
-          <Avatar name={email} src={profile?.avatar?.thumbnail} />
+          <Avatar name={`${user.first_name} ${user.last_name}`} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {user.first_name} {user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">

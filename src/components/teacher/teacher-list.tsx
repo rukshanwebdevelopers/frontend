@@ -1,6 +1,6 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { AcademicYear, GradeLevel, SortOrder, Teacher, Subject, User } from '@/types';
+import { SortOrder, Teacher, User } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
@@ -40,7 +40,9 @@ const TeacherList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -80,12 +82,15 @@ const TeacherList = ({
       onHeaderCell: () => onHeaderClick('teacher_number'),
       render: (
         teacher_number: string,
-        { profile, email, user }: { profile: any; email: string, user: User }
+        { profile, email, user }: { profile: any; email: string; user: User },
       ) => (
         <div className="flex items-center">
-          <Avatar name={email} src={profile?.avatar?.thumbnail} />
+          <Avatar
+            name={`${user.first_name} ${user.last_name}`}
+            src={profile?.avatar?.thumbnail}
+          />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {user.first_name} {user.last_name} 
+            {user.first_name} {user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
               {user?.email}
             </span>

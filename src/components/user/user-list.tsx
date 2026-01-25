@@ -1,15 +1,7 @@
 import Pagination from '@/components/ui/pagination';
-import Image from 'next/image';
 import { Table } from '@/components/ui/table';
 import ActionButtons from '@/components/common/action-buttons';
-import { siteSettings } from '@/settings/site.settings';
-import {
-  Category,
-  MappedPaginatorInfo,
-  SortOrder,
-  User,
-  UserPaginator,
-} from '@/types';
+import { MappedPaginatorInfo, SortOrder, User } from '@/types';
 import { useMeQuery } from '@/data/user';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
@@ -46,7 +38,9 @@ const UserList = ({
   const onHeaderClick = (column: any | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
 
       onOrder(column);
@@ -59,24 +53,24 @@ const UserList = ({
     },
   });
   const columns = [
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-id')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-          }
-          isActive={sortingObj.column === 'id'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
-      width: 150,
-      onHeaderCell: () => onHeaderClick('id'),
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('table:table-item-id')}
+    //       ascending={
+    //         sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+    //       }
+    //       isActive={sortingObj.column === 'id'}
+    //     />
+    //   ),
+    //   className: 'cursor-pointer',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft,
+    //   width: 150,
+    //   onHeaderCell: () => onHeaderClick('id'),
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: (
         <TitleWithSort
@@ -97,10 +91,13 @@ const UserList = ({
       render: (
         first_name: string,
         record: User,
-        { profile, email }: { profile: any; email: string }
+        { profile, email }: { profile: any; email: string },
       ) => (
         <div className="flex items-center">
-          <Avatar name={first_name} src={profile?.avatar?.thumbnail} />
+          <Avatar
+            name={`${first_name} ${record.last_name}`}
+            src={profile?.avatar?.thumbnail}
+          />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {first_name} {record?.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
@@ -110,7 +107,7 @@ const UserList = ({
         </div>
       ),
     },
-        {
+    {
       title: t('table:table-item-role'),
       dataIndex: 'role_name',
       key: 'role_name',
