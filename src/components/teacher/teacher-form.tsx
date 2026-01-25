@@ -12,6 +12,8 @@ import { teacherValidationSchema } from './teacher-validation-schema';
 import { useState } from 'react';
 import Alert from '@/components/ui/alert';
 import { animateScroll } from 'react-scroll';
+import PhoneNumberInput from '@/components/ui/phone-input';
+import PasswordInput from '@/components/ui/password-input';
 import {
   useCreateTeacherMutation,
   useUpdateTeacherMutation,
@@ -24,6 +26,7 @@ type FormValues = {
   username: string;
   password: string;
   department: string;
+  mobile_number: string;
 };
 
 const defaultValues = {
@@ -43,6 +46,8 @@ export default function CreateOrUpdateTeacherForm({ initialValues }: IProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation();
   const {
+    control,
+    watch,
     register,
     handleSubmit,
     setError,
@@ -76,6 +81,8 @@ export default function CreateOrUpdateTeacherForm({ initialValues }: IProps) {
     animateScroll.scrollToTop();
   };
 
+  const passwordSuggest = watch('mobile_number');
+
   const onSubmit = async (values: FormValues) => {
     const input = {
       username: values.username,
@@ -84,6 +91,7 @@ export default function CreateOrUpdateTeacherForm({ initialValues }: IProps) {
       last_name: values.last_name,
       email: values.email,
       department: values.department,
+      mobile_number: values.mobile_number,
     };
 
     const mutationOptions = { onError: handleMutationError };
@@ -156,16 +164,32 @@ export default function CreateOrUpdateTeacherForm({ initialValues }: IProps) {
               className="mb-5"
               required
             />
+            <PhoneNumberInput
+              label={t('form:input-label-contact')}
+              {...register('mobile_number')}
+              control={control}
+              error={t(errors.mobile_number?.message!)}
+              required
+            />
             {!initialValues && (
-              <Input
+              <PasswordInput
                 label={t('form:input-label-password')}
-                type="password"
                 {...register('password')}
-                error={t(errors.password?.message!)}
+                error={t(errors?.password?.message!)}
                 variant="outline"
-                className="mb-5"
+                className="mb-4"
                 required
               />
+              // <Input
+              //   label={t('form:input-label-password')}
+              //   type="password"
+              //   // value={passwordSuggest}
+              //   {...register('password')}
+              //   error={t(errors.password?.message!)}
+              //   variant="outline"
+              //   className="mb-5"
+              //   required
+              // />
             )}
             <Input
               label={t('form:input-label-department')}
