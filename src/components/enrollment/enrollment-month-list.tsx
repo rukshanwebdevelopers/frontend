@@ -142,7 +142,7 @@ const EnrollmentMonthList = ({
         { profile, email }: { profile: any; email: string },
       ) => (
         <div className="flex items-center">
-          <Avatar name={email} src={profile?.avatar?.thumbnail} />
+          <Avatar name={student?.user.first_name} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {student?.user.first_name} {student?.user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
@@ -185,6 +185,7 @@ const EnrollmentMonthList = ({
           slug={id}
           record={record}
           routes={Routes?.enrollment}
+          deleteModalView="DELETE_ENROLLMENT"
         />
       ),
     },
