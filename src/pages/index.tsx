@@ -7,13 +7,18 @@ import {
   hasAccess,
   isAuthenticated,
 } from '@/utils/auth-utils';
-import { SUPER_ADMIN } from '@/utils/constants';
+import { SUPER_ADMIN, TEACHER } from '@/utils/constants';
 import AppLayout from '@/components/layouts/app';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
 
 const AdminDashboard = dynamic(() => import('@/components/dashboard/admin'));
-const StudentDashboard = dynamic(() => import('@/components/dashboard/student'));
+const TeacherDashboard = dynamic(
+  () => import('@/components/dashboard/teacher'),
+);
+const StudentDashboard = dynamic(
+  () => import('@/components/dashboard/student'),
+);
 
 export default function Dashboard({
   userPermissions,
@@ -22,6 +27,9 @@ export default function Dashboard({
 }) {
   if (userPermissions?.includes(SUPER_ADMIN)) {
     return <AdminDashboard />;
+  }
+  if (userPermissions?.includes(TEACHER)) {
+    return <TeacherDashboard />;
   }
   return <StudentDashboard />;
 }
