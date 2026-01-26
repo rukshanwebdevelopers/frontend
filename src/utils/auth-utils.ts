@@ -9,9 +9,11 @@ import {
   SUPER_ADMIN,
   TOKEN,
   STUDENT,
+  ADMIN,
+  TEACHER,
 } from './constants';
 
-export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF, STUDENT];
+export const allowedRoles = [SUPER_ADMIN, TEACHER, STORE_OWNER, STAFF, STUDENT];
 export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];
 export const adminAndStudentOnly = [SUPER_ADMIN, STUDENT];

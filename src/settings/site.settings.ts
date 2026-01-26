@@ -484,7 +484,7 @@ export const siteSettings = {
             label: 'text-admin-list',
             icon: 'AdminListIcon',
           },
-          { 
+          {
             href: Routes.teacher.list,
             label: 'text-teacher-list',
             icon: 'StaffIcon',
@@ -706,6 +706,46 @@ export const siteSettings = {
       //     },
       //   ],
       // },
+    },
+
+    teacher: {
+      root: {
+        href: Routes.dashboard,
+        label: 'Main',
+        icon: 'DashboardIcon',
+        childMenu: [
+          {
+            href: Routes.dashboard,
+            label: 'sidebar-nav-item-dashboard',
+            icon: 'DashboardIcon',
+          },
+        ],
+      },
+
+      content: {
+        href: '',
+        label: 'text-content-management',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'sidebar-nav-item-subjects',
+            icon: 'ProductsIcon',
+            childMenu: [
+              {
+                href: Routes.subject.list,
+                label: 'text-all-subjects',
+                icon: 'ProductsIcon',
+              },
+              {
+                href: Routes.subject.create,
+                label: 'text-add-all-subjects',
+                icon: 'ProductsIcon',
+              },
+            ],
+          },
+        ],
+      },
     },
 
     student: [

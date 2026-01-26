@@ -7,6 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Config } from '@/config';
 import CreateOrUpdateSubjectForm from '@/components/subject/subject-form';
 import { useSubjectQuery } from '@/data/subject';
+import { adminOnly } from '@/utils/auth-utils';
 
 export default function UpdateSubjectPage() {
   const { query, locale } = useRouter();
@@ -36,7 +37,9 @@ export default function UpdateSubjectPage() {
     </>
   );
 }
-
+UpdateSubjectPage.authenticate = {
+  permissions: adminOnly,
+};
 UpdateSubjectPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
