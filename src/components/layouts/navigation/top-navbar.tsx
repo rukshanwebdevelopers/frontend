@@ -15,7 +15,6 @@ import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 import { useUI } from '@/contexts/ui.context';
 import { useSettingsQuery } from '@/data/settings';
-import { useShopQuery } from '@/data/shop';
 import { useMeQuery } from '@/data/user';
 import {
   adminAndOwnerOnly,
@@ -65,17 +64,6 @@ const Navbar = () => {
   const { width } = useWindowSize();
   const { settings, loading } = useSettingsQuery({ language: locale! });
 
-  const {
-    data: shop,
-    isLoading: shopLoading,
-    error,
-  } = useShopQuery(
-    {
-      slug: query?.shop as string,
-    },
-    { enabled: Boolean(query?.shop) },
-  );
-
   useEffect(() => {
     if (
       settings?.options?.maintenance?.start &&
@@ -112,48 +100,6 @@ const Navbar = () => {
     settings?.options?.isUnderMaintenance,
   ]);
 
-  useEffect(() => {
-    if (
-      query?.shop &&
-      shop?.settings?.shopMaintenance?.start &&
-      shop?.settings?.shopMaintenance?.until &&
-      shop?.settings?.isShopUnderMaintenance
-    ) {
-      const beforeDay = isBefore(
-        new Date(),
-        new Date(shop?.settings?.shopMaintenance?.start as Date),
-      );
-      // Calculate maintenance start time
-      const maintenanceStartTime = new Date(
-        shop?.settings?.shopMaintenance?.start as Date,
-      );
-      const maintenanceEndTime = new Date(
-        shop?.settings?.shopMaintenance?.until as Date,
-      );
-      maintenanceStartTime.setMinutes(maintenanceStartTime.getMinutes());
-
-      // Check if the current time has passed the maintenance start time
-      const currentTime = new Date();
-      const checkIsMaintenanceStart =
-        currentTime >= maintenanceStartTime &&
-        currentTime < maintenanceEndTime &&
-        shop?.settings?.isShopUnderMaintenance;
-      const checkIsMaintenance =
-        beforeDay && shop?.settings?.isShopUnderMaintenance;
-      setUnderMaintenance(checkIsMaintenance as boolean);
-      setUnderMaintenanceStart(checkIsMaintenanceStart as boolean);
-    }
-  }, [
-    query?.shop,
-    shop?.settings?.shopMaintenance?.start,
-    shop?.settings?.shopMaintenance?.until,
-    shop?.settings?.isShopUnderMaintenance,
-  ]);
-
-  if (loading || shopLoading) {
-    return <Loader showText={false} />;
-  }
-
   const { options } = settings!;
 
   function handleClick() {
@@ -163,31 +109,6 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 z-40 w-full bg-white shadow">
-      {width >= RESPONSIVE_WIDTH && isMaintenanceMode ? (
-        <Alert
-          message={
-            (settings?.options?.isUnderMaintenance &&
-              `Site ${t('text-maintenance-mode-title')}`) ||
-            (shop?.settings?.isShopUnderMaintenance &&
-              `${shop?.name} ${t('text-maintenance-mode-title')}`)
-          }
-          variant="info"
-          className="sticky top-0 left-0 z-50"
-          childClassName="flex justify-center items-center w-full gap-4 font-bold"
-        >
-          <CountdownTimer
-            date={
-              (settings?.options?.isUnderMaintenance &&
-                new Date(options?.maintenance?.start)) ||
-              (shop?.settings?.isShopUnderMaintenance &&
-                new Date(shop?.settings?.shopMaintenance?.start as Date))
-            }
-            className="text-blue-600 [&>p]:bg-blue-200 [&>p]:p-2 [&>p]:text-xs [&>p]:text-blue-600"
-          />
-        </Alert>
-      ) : (
-        ''
-      )}
       {width >= RESPONSIVE_WIDTH && isMaintenanceModeStart ? (
         <Alert
           message={t('text-maintenance-mode-start-title')}

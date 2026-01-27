@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { LangSwitcherIcon } from '@/components/icons/lang-switcher-icon';
 import { languageMenu } from '@/utils/locals';
-import { useCart } from '@/contexts/quick-cart/cart.context';
 import Cookies from 'js-cookie';
 import { WorldIcon } from '@/components/icons/worldIcon';
 
@@ -12,7 +11,6 @@ export default function LanguageSwitcher() {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { asPath, locale, locales } = router;
-  const { resetCart } = useCart();
 
   let filterItem = languageMenu?.filter((element) =>
     locales?.includes(element?.id)
@@ -26,7 +24,6 @@ export default function LanguageSwitcher() {
   function handleItemClick(values: any) {
     Cookies.set('NEXT_LOCALE', values?.value, { expires: 365 });
     setSelectedItem(values);
-    resetCart();
     router.push(asPath, undefined, {
       locale: values?.value,
     });

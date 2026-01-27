@@ -14,7 +14,6 @@ import { appWithTranslation } from 'next-i18next';
 import { ModalProvider } from '@/components/ui/modal/modal.context';
 import DefaultSeo from '@/components/ui/default-seo';
 import ManagedModal from '@/components/ui/modal/managed-modal';
-import { CartProvider } from '@/contexts/quick-cart/cart.context';
 import { useState } from 'react';
 import type { NextPageWithLayout } from '@/types';
 import { useRouter } from 'next/router';
@@ -52,22 +51,20 @@ const CustomApp = ({ Component, pageProps }: AppPropsWithLayout) => {
             <UIProvider>
               <ModalProvider>
                 <>
-                  <CartProvider>
-                    <DefaultSeo />
-                    {authProps ? (
-                      <PrivateRoute authProps={authProps}>
-                        <Layout {...pageProps}>
-                          <Component {...pageProps} />
-                        </Layout>
-                      </PrivateRoute>
-                    ) : (
+                  <DefaultSeo />
+                  {authProps ? (
+                    <PrivateRoute authProps={authProps}>
                       <Layout {...pageProps}>
                         <Component {...pageProps} />
                       </Layout>
-                    )}
-                    <ToastContainer autoClose={2000} theme="colored" />
-                    <ManagedModal />
-                  </CartProvider>
+                    </PrivateRoute>
+                  ) : (
+                    <Layout {...pageProps}>
+                      <Component {...pageProps} />
+                    </Layout>
+                  )}
+                  <ToastContainer autoClose={2000} theme="colored" />
+                  <ManagedModal />
                 </>
               </ModalProvider>
             </UIProvider>

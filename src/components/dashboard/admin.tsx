@@ -1,27 +1,14 @@
-import RecentOrders from '@/components/order/recent-orders';
 import { motion } from 'framer-motion';
-import PopularProductList from '@/components/product/popular-product-list';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import ColumnChart from '@/components/widgets/column-chart';
 import StickerCard from '@/components/widgets/sticker-card';
-import WithdrawTable from '@/components/withdraw/withdraw-table';
 import Button from '@/components/ui/button';
-import {
-  useAnalyticsQuery,
-  usePopularProductsQuery,
-  useLowProductStockQuery,
-  useProductByCategoryQuery,
-  useTopRatedProductsQuery,
-} from '@/data/dashboard';
-import { useOrdersQuery } from '@/data/order';
-import { useWithdrawsQuery } from '@/data/withdraw';
 import usePrice from '@/utils/use-price';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import LowStockProduct from '@/components/product/product-stock';
 import { useEffect, useState } from 'react';
 import { EaringIcon } from '@/components/icons/summary/earning';
 import { ShoppingIcon } from '@/components/icons/summary/shopping';
@@ -58,7 +45,6 @@ const TopRatedProducts = dynamic(
 export default function Dashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
@@ -66,11 +52,6 @@ export default function Dashboard() {
   //   data?.todayTotalOrderByStatus,
   // );
 
-  const { price: total_revenue } = usePrice(
-    data && {
-      amount: data?.total_revenue!,
-    },
-  );
   // const { price: todays_revenue } = usePrice(
   //   data && {
   //     amount: data?.todaysRevenue!,
@@ -196,7 +177,7 @@ export default function Dashboard() {
           </h3>
         </div>
 
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {/* <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
             titleTransKey="sticker-card-title-rev"
             subtitleTransKey="sticker-card-subtitle-rev"
@@ -223,7 +204,7 @@ export default function Dashboard() {
             color="#E157A0"
             price={data?.active_enrollment_count}
           />
-        </div>
+        </div> */}
       </div>
 
       {/* <div className="col-span-full rounded-lg bg-light p-6 md:p-7">

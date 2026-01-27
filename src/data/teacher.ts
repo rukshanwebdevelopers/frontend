@@ -5,6 +5,8 @@ import { useTranslation } from 'next-i18next';
 import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from './client/api-endpoints';
 import {
+  CourseOfferingPaginator,
+  CourseQueryOptions,
   GetParams,
   Teacher,
   TeacherPaginator,
@@ -30,8 +32,8 @@ export const useCreateTeacherMutation = () => {
       queryClient.invalidateQueries(API_ENDPOINTS.TEACHERS);
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message)
-    }
+      toast.error(error?.response?.data?.message);
+    },
   });
 };
 
@@ -59,13 +61,9 @@ export const useUpdateTeacherMutation = () => {
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.teacher.list}`
         : Routes.teacher.list;
-      await router.push(
-        `${generateRedirectUrl}/${data?.id}/edit`,
-        undefined,
-        {
-          locale: Config.defaultLanguage,
-        }
-      );
+      await router.push(`${generateRedirectUrl}/${data?.id}/edit`, undefined, {
+        locale: Config.defaultLanguage,
+      });
       toast.success(t('common:successfully-updated'));
     },
     // onSuccess: () => {
@@ -85,7 +83,7 @@ export const useUpdateTeacherMutation = () => {
 export const useTeacherQuery = ({ slug, language }: GetParams) => {
   const { data, error, isLoading } = useQuery<Teacher, Error>(
     [API_ENDPOINTS.TEACHERS, { slug, language }],
-    () => teacherClient.get({ slug, language })
+    () => teacherClient.get({ slug, language }),
   );
 
   return {
@@ -102,7 +100,7 @@ export const useTeachersQuery = (options: Partial<TeacherQueryOptions>) => {
       teacherClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -110,5 +108,40 @@ export const useTeachersQuery = (options: Partial<TeacherQueryOptions>) => {
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
+  };
+};
+
+export const useTeacherCourseOfferingsQuery = (
+  options: Partial<CourseQueryOptions>,
+) => {
+  const { data, error, isLoading } = useQuery<CourseOfferingPaginator, Error>(
+    [API_ENDPOINTS.TEACHERS, options],
+    ({ queryKey, pageParam }) =>
+      teacherClient.myCourseOfferingsPaginated(
+        Object.assign({}, queryKey[1], pageParam),
+      ),
+    {
+      keepPreviousData: true,
+    },
+  );
+
+  return {
+    courseOfferings: data?.data ?? [],
+    paginatorInfo: mapPaginatorData(data),
+    error,
+    loading: isLoading,
+  };
+};
+
+export const useTeacherCourseOfferingQuery = ({ slug, language }: GetParams) => {
+  const { data, error, isLoading } = useQuery<Teacher, Error>(
+    [API_ENDPOINTS.TEACHERS, { slug, language }],
+    () => teacherClient.get({ slug, language }),
+  );
+
+  return {
+    courseOffering: data,
+    error,
+    isLoading,
   };
 };

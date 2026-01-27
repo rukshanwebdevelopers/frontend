@@ -1,31 +1,14 @@
-import { motion } from 'framer-motion';
-import ColumnChart from '@/components/widgets/column-chart';
-import StickerCard from '@/components/widgets/sticker-card';
-import Button from '@/components/ui/button';
-import { useAnalyticsQuery } from '@/data/dashboard';
 import usePrice from '@/utils/use-price';
 import { useTranslation } from 'next-i18next';
-import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { EaringIcon } from '@/components/icons/summary/earning';
-import { BasketIcon } from '@/components/icons/summary/basket';
-import { ChecklistIcon } from '@/components/icons/summary/checklist';
-import { CustomersIcon } from '../icons/summary/customers';
 
 export default function StudentDashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
-
-  const { price: total_revenue } = usePrice(
-    data && {
-      amount: data?.total_revenue!,
-    },
-  );
 
   let salesByYear: number[] = Array.from({ length: 12 }, (_) => 0);
 

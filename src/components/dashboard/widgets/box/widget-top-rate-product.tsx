@@ -4,10 +4,8 @@ import usePrice from '@/utils/use-price';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { Swiper, SwiperSlide, Pagination } from '@/components/ui/slider';
-import { Product, ProductType } from '@/types';
 
 import { StarIcon } from '@/components/icons/star-icon';
-import { useTypeQuery } from '@/data/type';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import { useTranslation } from 'react-i18next';
 import { isEmpty } from 'lodash';
@@ -42,10 +40,6 @@ function SoldProductCard({ product }: { product: any }) {
   } = product ?? {};
   const router = useRouter();
   const { locale } = router;
-  const { data } = useTypeQuery({
-    slug: type_slug as string,
-    language: locale!,
-  });
 
   const { price: currentPrice, basePrice } = usePrice({
     amount: sale_price ? sale_price : price!,
@@ -61,7 +55,7 @@ function SoldProductCard({ product }: { product: any }) {
   return (
     <>
       <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-border-200/60 2xl:aspect-[1/0.88]">
-        <div>
+        {/* <div>
           <div
             className={cn(
               'relative w-52 sm:w-80 md:w-96 lg:w-48 xl:w-72 2xl:w-80',
@@ -78,7 +72,7 @@ function SoldProductCard({ product }: { product: any }) {
               sizes="(max-width: 768px) 100vw"
             />
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex items-start justify-between pt-4">
         <div className="w-full max-w-[calc(100%-110px)]">
@@ -89,7 +83,7 @@ function SoldProductCard({ product }: { product: any }) {
             {description}
           </p>
 
-          {product_type === ProductType.Variable ? (
+          {/* {product_type === ProductType.Variable ? (
             <div className="block">
               <span className="text-base font-semibold text-heading/80">
                 {minPrice}
@@ -110,7 +104,7 @@ function SoldProductCard({ product }: { product: any }) {
                 </del>
               )}
             </div>
-          )}
+          )} */}
         </div>
         <div className="pt-1.5">{getRating(actual_rating)}</div>
       </div>
@@ -119,12 +113,12 @@ function SoldProductCard({ product }: { product: any }) {
 }
 
 export type IProps = {
-  products: Product[] | undefined;
+  // products: Product[] | undefined;
   title: string;
   className?: string;
 };
 
-const TopRatedProductWidget = ({ products, title, className }: IProps) => {
+const TopRatedProductWidget = ({ title, className }: IProps) => {
   const { t } = useTranslation();
   return (
     <>
@@ -139,7 +133,7 @@ const TopRatedProductWidget = ({ products, title, className }: IProps) => {
             {t(title)}
           </h3>
         </div>
-        {isEmpty(products) ? (
+        {/* {isEmpty(products) ? (
           <div className="flex h-[calc(100%-60px)] items-center justify-center">
             <div className="flex flex-col items-center py-7">
               <NoDataFound className="w-52" />
@@ -163,7 +157,7 @@ const TopRatedProductWidget = ({ products, title, className }: IProps) => {
               </SwiperSlide>
             ))}
           </Swiper>
-        )}
+        )} */}
       </div>
     </>
   );

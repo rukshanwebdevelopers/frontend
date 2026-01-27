@@ -1,14 +1,4 @@
-// import { CourseType, EventType, GenderType, GradeType, RoleType } from '@/types';
-
-import { CourseType, GradeType } from "@/types";
-
-// export const roleOptions = [
-//   { value: RoleType.SUPER_ADMIN, label: 'Super Admin' },
-//   { value: RoleType.ADMIN, label: 'Admin' },
-//   { value: RoleType.TEACHER, label: 'Teacher' },
-//   { value: RoleType.STUDENT, label: 'Student' },
-//   { value: RoleType.CASHIER, label: 'Cashier' },
-// ]
+import { CourseType, GradeType } from '@/types';
 
 export const gradeOptions = [
   { value: GradeType.GRADE_6, label: 'Grade 6' },
@@ -24,16 +14,6 @@ export const courseTypeOptions = [
   { value: CourseType.PHYSICAL, label: 'PHYSICAL' },
 ];
 
-// export const eventTypeOptions = [
-//   { value: EventType.COURSE, label: 'Course' },
-//   { value: EventType.EXAM, label: 'Exam' },
-// ];
-
-// export const genderTypeOptions = [
-//   { value: GenderType.MALE, label: 'MALE' },
-//   { value: GenderType.FEMALE, label: 'FEMALE' },
-// ];
-
 export const monthOptions = [
   { value: 1, label: 'January' },
   { value: 2, label: 'February' },
@@ -48,4 +28,3 @@ export const monthOptions = [
   { value: 11, label: 'November' },
   { value: 12, label: 'December' },
 ];
-

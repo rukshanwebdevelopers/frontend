@@ -1,5 +1,4 @@
 import StickerCard from '@/components/widgets/sticker-card';
-import { useAnalyticsQuery } from '@/data/dashboard';
 import usePrice from '@/utils/use-price';
 import { useTranslation } from 'next-i18next';
 import { EaringIcon } from '@/components/icons/summary/earning';
@@ -9,12 +8,6 @@ import { CustomersIcon } from '../icons/summary/customers';
 
 export default function Dashboard() {
   const { t } = useTranslation();
-  const { data, isLoading: loading } = useAnalyticsQuery();
-  const { price: total_revenue } = usePrice(
-    data && {
-      amount: data?.total_revenue!,
-    },
-  );
 
   return (
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">

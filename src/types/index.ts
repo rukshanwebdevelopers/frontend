@@ -11,17 +11,6 @@ export enum SortOrder {
   Desc = 'desc',
 }
 
-export enum CouponType {
-  FIXED = 'fixed',
-  PERCENTAGE = 'percentage',
-  FREE_SHIPPING = 'free_shipping',
-}
-
-export enum ProductType {
-  Simple = 'simple',
-  Variable = 'variable',
-}
-
 export enum GradeType {
   GRADE_6 = 'GRADE_6',
   GRADE_7 = 'GRADE_7',
@@ -53,72 +42,6 @@ export enum EnrollmentStatusType {
   LOCKED = 'LOCKED',
 }
 
-export enum PaymentGateway {
-  STRIPE = 'STRIPE',
-  COD = 'CASH_ON_DELIVERY',
-  CASH = 'CASH',
-  FULL_WALLET_PAYMENT = 'FULL_WALLET_PAYMENT',
-  PAYPAL = 'PAYPAL',
-  MOLLIE = 'MOLLIE',
-  RAZORPAY = 'RAZORPAY',
-  PAYMONGO = 'PAYMONGO',
-  PAYSTACK = 'PAYSTACK',
-  XENDIT = 'XENDIT',
-  SSLCOMMERZ = 'SSLCOMMERZ',
-  IYZICO = 'IYZICO',
-  BKASH = 'BKASH',
-  FLUTTERWAVE = 'FLUTTERWAVE',
-}
-
-export enum ProductStatus {
-  Publish = 'publish',
-  Draft = 'draft',
-  UnderReview = 'under_review',
-  Approved = 'approved',
-  UnPublish = 'unpublish',
-  Rejected = 'rejected',
-}
-export enum WithdrawStatus {
-  Approved = 'APPROVED',
-  Pending = 'PENDING',
-  OnHold = 'ON_HOLD',
-  Rejected = 'REJECTED',
-  Processing = 'PROCESSING',
-}
-
-export enum ShippingType {
-  Fixed = 'fixed',
-  Percentage = 'percentage',
-  Free = 'free_shipping',
-}
-
-export enum AddressType {
-  Billing = 'billing',
-  Shipping = 'shipping',
-}
-export enum RefundPolicyTarget {
-  vendor = 'vendor',
-  customer = 'customer',
-}
-export enum RefundPolicyStatus {
-  Approved = 'approved',
-  Pending = 'pending',
-}
-
-export interface GoogleMapLocation {
-  lat?: number | string;
-  lng?: number | string;
-  street_number?: string;
-  route?: string;
-  street_address?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  zip?: string;
-  formattedAddress?: string;
-  formatted_address?: string;
-}
-
 export type QueryOptionsType = {
   page?: number;
   name?: string;
@@ -127,17 +50,6 @@ export type QueryOptionsType = {
   orderBy?: string;
   sortedBy?: SortOrder;
 };
-
-export enum OrderStatus {
-  PENDING = 'order-pending',
-  PROCESSING = 'order-processing',
-  COMPLETED = 'order-completed',
-  CANCELLED = 'order-cancelled',
-  REFUNDED = 'order-refunded',
-  FAILED = 'order-failed',
-  AT_LOCAL_FACILITY = 'order-at-local-facility',
-  OUT_FOR_DELIVERY = 'order-out-for-delivery',
-}
 
 export enum FlashSaleType {
   PERCENTAGE = 'percentage',
@@ -219,22 +131,9 @@ export interface LoginInput {
 
 export interface AuthResponse {
   token: string;
-  tokens: {access: string, refresh: string}
+  tokens: { access: string; refresh: string };
   permissions: string[];
   role: string;
-}
-
-export interface Type {
-  id: string;
-  name: string;
-  icon: string;
-  slug: string;
-  promotional_sliders?: AttachmentInput[];
-  settings?: TypeSettings;
-  products?: ProductPaginator;
-  created_at: string;
-  updated_at: string;
-  translated_languages: string[];
 }
 
 export interface CreateTypeInput {
@@ -244,22 +143,6 @@ export interface CreateTypeInput {
   gallery?: AttachmentInput[];
   icon?: string;
   banner_text?: string;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  translated_languages: string[];
-  parent?: number;
-  children: Category[];
-  details?: string;
-  image?: Attachment;
-  icon?: string;
-  type: Type;
-  products: Product[];
-  created_at: string;
-  updated_at: string;
 }
 
 export interface Subject {
@@ -290,7 +173,7 @@ export interface MonthData {
   paid: boolean;
   amount?: number;
   attended?: boolean;
-};
+}
 
 export interface Enrollment {
   id: string;
@@ -368,61 +251,6 @@ export interface Teacher {
   office_hours: string;
   bio: string;
   is_active: boolean;
-}
-
-export interface Attribute {
-  id: string;
-  name: string;
-  slug: string;
-  values: AttributeValue[];
-  shop_id?: number;
-  translated_languages: string[];
-  language?: string;
-}
-
-export interface AttributeValueInput {
-  id?: number;
-  value: string;
-  meta?: string;
-}
-
-export interface CreateAttributeInput {
-  name: string;
-  shop_id: number;
-  language?: string;
-  values: AttributeValueInput;
-}
-
-export interface AttributeValueCreateInput {
-  value: string;
-  meta: string;
-  attribute_id?: number;
-}
-
-export interface VariationProductPivot {
-  price?: number;
-}
-
-export interface AttributeValue {
-  id: string;
-  value?: string;
-  attribute?: Attribute;
-  products: Product[];
-  pivot?: VariationProductPivot;
-  meta?: string;
-}
-
-export interface Variation {
-  id?: string;
-  title?: string;
-  image?: Attachment;
-  digital_files?: DigitalFile;
-  price?: number;
-  sku?: string;
-  is_disable?: boolean;
-  sale_price?: number;
-  quantity?: number;
-  options?: VariationOption[];
 }
 
 export interface DigitalFile {
@@ -586,7 +414,6 @@ export interface User {
   updated_at: string;
   profile?: Profile;
   address: Address[];
-  orders?: OrderPaginator;
   email_verified: boolean;
 }
 
@@ -630,37 +457,6 @@ export interface Address {
   type?: string;
   customer?: User;
   location: GoogleMapLocation;
-}
-
-export interface Coupon {
-  id: string;
-  code: string;
-  description: string;
-  translated_languages: string[];
-  orders: Order[];
-  type: string;
-  image: string;
-  amount: number;
-  active_from: string;
-  expire_at: string;
-  created_at: string;
-  updated_at: string;
-  target?: boolean;
-  shop_id?: string;
-  is_approve?: boolean;
-}
-
-export interface CouponInput {
-  code: string;
-  type: CouponType;
-  amount: number;
-  minimum_cart_amount: number;
-  description?: string;
-  image?: AttachmentInput;
-  active_from: string;
-  expire_at: string;
-  language?: string;
-  shop_id?: string;
 }
 
 export interface StoreNotice {
@@ -717,27 +513,6 @@ export interface FAQsInput {
   slug?: string;
 }
 
-export interface FlashSale {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  image?: Attachment;
-  cover_image?: Attachment;
-  type: string;
-  rate: string;
-  sale_status: boolean;
-  sale_builder: any;
-  language: string;
-  translated_languages: string[];
-  products: Product[];
-  deleted_at?: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface FlashSaleInput {
   title: string;
   description: string;
@@ -777,46 +552,6 @@ export interface TermsAndConditionsInput {
 export interface StoreNoticeUserToNotifyInput {
   type: string;
 }
-export interface WalletPoint {
-  id: number;
-  amount: number;
-  order_id: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Order {
-  id: string;
-  tracking_number: string;
-  customer_contact: string;
-  customer_name: string;
-  customer_id: number;
-  customer?: User;
-  amount: number;
-  sales_tax: number;
-  total: number;
-  paid_total: number;
-  payment_id?: string;
-  parent_id: string | null;
-  payment_gateway?: string;
-  coupon?: Coupon;
-  discount?: number;
-  wallet_point?: WalletPoint;
-  delivery_fee?: number;
-  delivery_time: string;
-  products: Product[];
-  created_at: string;
-  updated_at: string;
-  billing_address?: UserAddress;
-  shipping_address?: UserAddress;
-  translated_languages: string[];
-  language: string;
-  order_status: string;
-  payment_status: string;
-  shop_id?: string;
-  shop?: Shop;
-  note?: string;
-}
 
 export interface NotifyLogs {
   id: string;
@@ -830,218 +565,6 @@ export interface NotifyLogs {
 
 export interface ReadAllNotifyLogs {
   set_all_read: boolean;
-}
-
-export interface OrderProductPivot {
-  order_quantity?: number;
-  unit_price?: number;
-  subtotal?: number;
-  variation_option_id?: string;
-}
-
-export interface VerifyCheckoutInputType {
-  amount: number;
-  customer_id: string;
-  products: any;
-  billing_address: Address;
-  shipping_address: Address;
-}
-
-export type VerifyCouponInputType = {
-  code: string;
-  sub_total: number;
-};
-export interface VerifyCouponResponse {
-  is_valid: boolean;
-  coupon?: Coupon;
-  message?: string;
-}
-
-export interface Product {
-  id: string;
-  translated_languages: string[];
-  shop_id: string;
-  name: string;
-  slug: string;
-  type: Type;
-  product_type: ProductType;
-  max_price?: number;
-  min_price?: number;
-  categories: Category[];
-  variations?: AttributeValue[];
-  variation_options?: Variation[];
-  digital_file?: DigitalFile;
-  pivot?: OrderProductPivot;
-  orders: Order[];
-  description?: string;
-  in_stock?: boolean;
-  is_digital?: boolean;
-  is_external?: boolean;
-  is_taxable?: boolean;
-  sale_price?: number;
-  video?: {
-    url: string;
-  }[];
-  sku?: string;
-  gallery?: Attachment[];
-  image?: Attachment;
-  status?: ProductStatus;
-  height?: string;
-  length?: string;
-  width?: string;
-  price: number;
-  quantity?: number;
-  unit?: string;
-  external_product_url?: string;
-  external_product_button_text?: string;
-  created_at: string;
-  updated_at: string;
-  ratings: number;
-  in_flash_sale: boolean;
-}
-
-export interface CreateProduct {
-  name: string;
-  slug: string;
-  type_id: string;
-  price: number;
-  sale_price?: number;
-  quantity?: number;
-  unit: string;
-  description?: string;
-  categories?: string[];
-  variations?: AttributeProductPivot[];
-  in_stock?: boolean;
-  is_taxable?: boolean;
-  author_id?: string;
-  digital_file?: DigitalFileInput;
-  external_product_button_text?: string;
-  external_product_url?: string;
-  is_external?: boolean;
-  manufacturer_id?: string;
-  max_price?: number;
-  min_price?: number;
-  variation_options?: UpsertVariationsHasMany;
-  video: {
-    url: string;
-  }[];
-  sku?: string;
-  gallery?: AttachmentInput[];
-  image?: AttachmentInput;
-  status?: ProductStatus;
-  height?: string;
-  length?: string;
-  width?: string;
-  shop_id?: string;
-  in_flash_sale: boolean;
-}
-
-export interface AttributeProductPivot {
-  id: string;
-  price?: number;
-}
-
-export interface DigitalFileInput {
-  file_name: string;
-  attachment_id: string;
-  id?: string;
-  url: string;
-}
-
-export interface UpsertVariationsHasMany {
-  delete?: string[];
-  upsert?: VariationInput[];
-}
-
-export interface VariationInput {
-  digital_file?: DigitalFileInput;
-  id?: string;
-  image?: AttachmentInput;
-  is_digital?: boolean;
-  is_disable?: boolean;
-  options?: VariationOptionInput[];
-  price: number;
-  quantity: number;
-  sale_price?: number;
-  sku: number;
-  title: number;
-}
-
-export interface Tag {
-  id: string;
-  name: string;
-  slug: string;
-  details?: string;
-  image?: Attachment;
-  translated_languages: string[];
-  icon?: string;
-  type: Type;
-  products?: Product[];
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface CreateTagInput {
-  name: string;
-  type?: ConnectTypeBelongsTo;
-  details?: string;
-  image?: AttachmentInput;
-  icon?: string;
-}
-
-export interface Author {
-  bio?: string;
-  born?: string;
-  translated_languages: string[];
-  cover_image?: Attachment;
-  death?: string;
-  id: string;
-  image?: Attachment;
-  is_approved?: boolean;
-  language?: string;
-  name: string;
-  quote?: string;
-  slug?: string;
-  socials?: ShopSocials[];
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface CreateAuthorInput {
-  bio?: string;
-  born?: string;
-  cover_image?: AttachmentInput;
-  death?: string;
-  image?: AttachmentInput;
-  is_approved?: boolean;
-  language?: string;
-  name: string;
-  quote?: string;
-  shop_id?: string;
-  socials?: ShopSocialInput[];
-}
-export interface CreateRefundPolicyInput {
-  title: string;
-  slug: string;
-  target: string;
-  status: string;
-  language: string;
-  description?: string;
-  shop_id?: string;
-}
-export interface CreateRefundReasonInput {
-  name: string;
-  slug: string;
-  language: string;
-}
-
-export interface CreateCategoryInput {
-  name: string;
-  type_id?: string;
-  parent?: number;
-  details?: string;
-  image?: AttachmentInput;
-  icon?: string;
 }
 
 export interface CreateSubjectInput {
@@ -1123,11 +646,6 @@ export interface CreateWithdrawInput {
   note?: string;
 }
 
-export interface ApproveWithdrawInput {
-  id: string;
-  status: WithdrawStatus;
-}
-
 // -> TODO: Simplify this
 export interface MappedPaginatorInfo {
   currentPage: number;
@@ -1145,71 +663,12 @@ export interface MappedPaginatorInfo {
   hasMorePages: boolean;
 }
 
-export interface Manufacturer {
-  cover_image?: Attachment;
-  created_at?: string;
-  description?: string;
-  translated_languages: string[];
-  id: string;
-  image?: Attachment;
-  is_approved?: boolean;
-  name: string;
-  slug?: string;
-  socials?: ShopSocials[];
-  type: Type;
-  type_id?: string;
-  updated_at?: string;
-  website?: string;
-}
-
-export interface ConnectProductOrderPivot {
-  product_id: string;
-  order_quantity?: number;
-  unit_price?: number;
-  subtotal?: number;
-}
-
 export interface CardInput {
   number: string;
   expiryMonth: string;
   expiryYear: string;
   cvv: string;
   email?: string;
-}
-
-export declare type UserAddressInput = {
-  country?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  street_address?: string;
-};
-
-export interface CreateOrderStatusInput {
-  name: string;
-  color: string;
-  serial: number;
-  language?: string;
-}
-
-export interface CreateOrderInput {
-  tracking_number?: string;
-  customer_id: number;
-  order_status?: string;
-  products: ConnectProductOrderPivot[];
-  amount: number;
-  sales_tax?: number;
-  total: number;
-  paid_total: number;
-  payment_id?: string;
-  payment_gateway: string;
-  coupon_id?: number;
-  discount?: number;
-  delivery_fee?: number;
-  delivery_time?: string;
-  card?: CardInput;
-  billing_address?: UserAddressInput;
-  shipping_address?: UserAddressInput;
 }
 
 export interface CreateNotifyLogsInput {
@@ -1220,48 +679,6 @@ export interface CreateNotifyLogsInput {
   notify_receiver_type: string;
   is_read: boolean;
   notify_text: string;
-}
-
-export interface CreateManufacturerInput {
-  cover_image?: AttachmentInput;
-  description?: string;
-  image?: AttachmentInput;
-  is_approved?: boolean;
-  name: string;
-  shop_id?: string;
-  language?: string;
-  socials?: ShopSocialInput[];
-  type_id: string;
-  website?: string;
-}
-
-export interface Withdraw {
-  id?: string;
-  amount?: number;
-  status?: WithdrawStatus;
-  shop_id?: number;
-  shop?: Shop;
-  payment_method?: string;
-  details?: string;
-  note?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface Review {
-  id: number;
-  user_id: number;
-  product_id: number;
-  rating: number;
-  comment?: string;
-  photos?: Attachment[];
-  created_at: string;
-  updated_at: string;
-  positive_feedbacks_count?: number;
-  negative_feedbacks_count?: number;
-  product: Product;
-  user: User;
-  abusive_reports: AbusiveReport[];
 }
 
 export interface AbusiveReport {
@@ -1288,12 +705,6 @@ export interface CreateMessageInput {
 }
 export interface CreateMessageSeenInput {
   id: string;
-}
-
-export interface Tax {
-  id?: string;
-  name?: string;
-  rate?: number;
 }
 
 export interface SettingsOptions {
@@ -1447,28 +858,6 @@ export interface TaxInput {
   city?: string;
   priority?: number;
   on_shipping?: boolean;
-}
-
-export interface Shipping {
-  id?: string;
-  name?: string;
-  amount?: number;
-  is_global?: boolean;
-  type?: ShippingType;
-}
-
-export interface ShippingInput {
-  name: string;
-  amount: number;
-  is_global?: boolean;
-  type: ShippingType;
-}
-
-export interface ShippingUpdateInput {
-  name?: string;
-  amount?: number;
-  is_global?: boolean;
-  type?: ShippingType;
 }
 
 export interface SeoSettingsInput {
@@ -1810,143 +1199,11 @@ export interface ShopSettingsInput {
   shopMaintenance: shopMaintenanceInput;
 }
 
-export interface ShopInput {
-  name: string;
-  description?: string;
-  cover_image?: AttachmentInput;
-  logo?: AttachmentInput;
-  address?: UserAddressInput;
-  settings?: ShopSettingsInput;
-  categories?: Category[];
-  balance?: BalanceInput;
-}
-
-export declare type Question = {
-  id: string;
-  user_id: number;
-  product_id: number;
-  shop_id: number;
-  question?: string;
-  answer: string;
-  created_at: string;
-  updated_at: string;
-  positive_feedbacks_count?: number;
-  negative_feedbacks_count?: number;
-  product: Product;
-  user: User;
-};
-
-export interface TypeSettingsInput {
-  isHome?: boolean;
-  layoutType?: string;
-  productCard?: string;
-  bestSelling: {
-    enable?: boolean;
-    title?: string;
-  };
-  popularProducts: {
-    enable?: boolean;
-    title?: string;
-  };
-  category: {
-    enable?: boolean;
-    title?: string;
-  };
-  handpickedProducts: {
-    enable?: boolean;
-    title?: string;
-    products?: Product[];
-    enableSlider?: boolean;
-  };
-  newArrival: {
-    enable?: boolean;
-    title?: string;
-  };
-  authors: {
-    enable?: boolean;
-    title?: string;
-  };
-  manufactures: {
-    enable?: boolean;
-    title?: string;
-  };
-}
-
 export interface ReplyQuestion {
   question?: string;
   answer: string;
 }
 
-export interface TypeSettings {
-  isHome?: boolean;
-  layoutType?: string;
-  productCard?: string;
-  bestSelling: {
-    enable?: boolean;
-    title?: string;
-  };
-  popularProducts: {
-    enable?: boolean;
-    title?: string;
-  };
-  category: {
-    enable?: boolean;
-    title?: string;
-  };
-  handpickedProducts: {
-    enable?: boolean;
-    title?: string;
-    products?: Product[];
-    enableSlider?: boolean;
-  };
-  newArrival: {
-    enable?: boolean;
-    title?: string;
-  };
-  authors: {
-    enable?: boolean;
-    title?: string;
-  };
-  manufactures: {
-    enable?: boolean;
-    title?: string;
-  };
-}
-
-export interface UserAddressUpsertInput {
-  title: string;
-  default?: boolean;
-  address: UserAddressInput;
-  type: string;
-}
-export interface Refund {
-  id: number;
-  amount: number;
-  status: string;
-  title?: string;
-  description?: string;
-  images?: Attachment;
-  order_id?: Order;
-  customer_id?: User;
-  refund_policy_id?: number;
-}
-
-export interface RefundPolicy {
-  id: string;
-  title: string;
-  slug: string;
-  target: string;
-  status: string;
-  description?: string;
-  language: string;
-  shop_id?: string;
-  shop?: Shop;
-  refunds?: Refund[];
-  translated_languages: Array<string>;
-  created_at?: string;
-  updated_at?: string;
-  deleted_at?: string;
-}
 export interface RefundReason {
   id: string;
   name: string;
@@ -2019,7 +1276,7 @@ export interface StudentEnrolledCourseQueryOptions extends QueryOptions {
 export interface EnrollmentQueryOptions extends QueryOptions {
   name: string;
   grade_level: string;
-  batch: string;  
+  batch: string;
 }
 
 export interface EnrollmentPaymentQueryOptions extends QueryOptions {
@@ -2250,34 +1507,20 @@ export interface ItemProps {
 
 export interface ShopPaginator extends PaginatorInfo<Shop> {}
 
-export interface WithdrawPaginator extends PaginatorInfo<Withdraw> {}
-
 export interface UserPaginator extends PaginatorInfo<User> {}
 
 export interface LicensedDomainPaginator extends PaginatorInfo<Domain> {}
 
-export interface QuestionPaginator extends PaginatorInfo<Question> {}
-
 export interface StaffPaginator extends PaginatorInfo<User> {}
 
-export interface OrderPaginator extends PaginatorInfo<Order> {}
-
 export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
-
-export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 
 export interface FAQsPaginator extends PaginatorInfo<FAQs> {}
 
-export interface FlashSalePaginator extends PaginatorInfo<FlashSale> {}
-
 export interface TermsAndConditionsPaginator
   extends PaginatorInfo<TermsAndConditions> {}
-
-export interface ProductPaginator extends PaginatorInfo<Product> {}
-
-export interface CategoryPaginator extends PaginatorInfo<Category> {}
 
 export interface SubjectPaginator extends PaginatorInfo<Subject> {}
 
@@ -2291,53 +1534,24 @@ export interface TeacherPaginator extends PaginatorInfo<Teacher> {}
 
 export interface CoursePaginator extends PaginatorInfo<Course> {}
 
-export interface CourseOfferingPaginator extends PaginatorInfo<CourseOffering> {}
+export interface CourseOfferingPaginator
+  extends PaginatorInfo<CourseOffering> {}
 
 export interface EnrollmentPaginator extends PaginatorInfo<Enrollment> {}
 
-export interface EnrollmentWithMonthsPaginator extends PaginatorInfo<EnrollmentWithMonth> {}
+export interface EnrollmentWithMonthsPaginator
+  extends PaginatorInfo<EnrollmentWithMonth> {}
 
-export interface EnrollmentPaymentPaginator extends PaginatorInfo<EnrollmentPayment> {}
+export interface EnrollmentPaymentPaginator
+  extends PaginatorInfo<EnrollmentPayment> {}
 
 export interface TaxPaginator extends PaginatorInfo<Tax> {}
 
-export interface ReviewPaginator extends PaginatorInfo<Review> {}
-
-export interface TagPaginator extends PaginatorInfo<Tag> {}
-
-export interface AttributePaginator extends PaginatorInfo<Attribute> {}
-
-export interface AttributeValuePaginator
-  extends PaginatorInfo<AttributeValue> {}
-
-export interface ShippingPaginator extends PaginatorInfo<Shipping> {}
-
-export interface AuthorPaginator extends PaginatorInfo<Author> {}
-
-export interface RefundPolicyPaginator extends PaginatorInfo<RefundPolicy> {}
-
 export interface RefundReasonPaginator extends PaginatorInfo<RefundReason> {}
-
-export interface ManufacturerPaginator extends PaginatorInfo<Manufacturer> {}
-
-export interface OrderStatusPaginator extends PaginatorInfo<OrderStatus> {}
 
 export interface ConversionPaginator extends PaginatorInfo<Conversations> {}
 
 export interface MessagePaginator extends PaginatorInfo<Message> {}
-
-export interface FlashSaleProductsRequest {
-  id: string;
-  title: string;
-  flash_sale_id: string;
-  requested_product_ids: Product[];
-  request_status: string;
-  note: string;
-  deleted_at?: string;
-  created_at: string;
-  updated_at: string;
-  flash_sale: FlashSale;
-}
 
 export interface FlashSaleProductsRequestInput {
   title: string;
@@ -2347,20 +1561,10 @@ export interface FlashSaleProductsRequestInput {
   language?: string;
 }
 
-export interface FlashSaleProductsRequestQueryOptions extends QueryOptions {
-  title?: string;
-  requested_product_ids?: Product[];
-  request_status?: string;
-  shop_id?: string;
-}
-
 export interface FlashSaleRequestedProductsQueryOptions
   extends ProductQueryOptions {
   vendor_request_id: string;
 }
-
-export interface FlashSaleProductsRequestPaginator
-  extends PaginatorInfo<FlashSaleProductsRequest> {}
 
 export interface MessagePaginator extends PaginatorInfo<Message> {}
 
@@ -2430,7 +1634,7 @@ export interface BusinessPurposeItem {
   };
 }
 
-export interface SellingStepItem{
+export interface SellingStepItem {
   id?: string;
   description: string;
   title: string;
@@ -2523,24 +1727,6 @@ export enum OwnerShipTransferStatus {
   REJECTED = 'rejected',
 }
 
-export interface OwnershipTransfer {
-  created_by: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string;
-  id: string | number;
-  transaction_identifier: string;
-  previous_owner: User;
-  current_owner: User;
-  message?: string;
-  status: string;
-  shop: Shop;
-  refund_info?: Refund[];
-  withdrawal_info?: Withdraw[];
-  order_info: TodayTotalOrderByStatus;
-  balance_info: Balance;
-}
-
 export interface OwnershipTransferInput {
   id: string;
   transaction_identifier: string;
@@ -2554,9 +1740,6 @@ export interface OwnershipTransferInput {
   updated_at: string;
   deleted_at: string;
 }
-
-export interface OwnershipTransferPaginator
-  extends PaginatorInfo<OwnershipTransfer> {}
 
 export interface OwnershipTransferQueryOptions extends QueryOptions {
   transaction_identifier?: string;

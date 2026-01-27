@@ -728,21 +728,21 @@ export const siteSettings = {
         icon: 'ShopIcon',
         childMenu: [
           {
-            href: '',
-            label: 'sidebar-nav-item-subjects',
+            href: Routes.myCourseOfferings,
+            label: 'sidebar-nav-item-course-offerings',
             icon: 'ProductsIcon',
-            childMenu: [
-              {
-                href: Routes.subject.list,
-                label: 'text-all-subjects',
-                icon: 'ProductsIcon',
-              },
-              {
-                href: Routes.subject.create,
-                label: 'text-add-all-subjects',
-                icon: 'ProductsIcon',
-              },
-            ],
+            // childMenu: [
+            //   {
+            //     href: Routes.myCourseOfferings,
+            //     label: 'text-all-subjects',
+            //     icon: 'ProductsIcon',
+            //   },
+            //   {
+            //     href: Routes.subject.create,
+            //     label: 'text-add-all-subjects',
+            //     icon: 'ProductsIcon',
+            //   },
+            // ],
           },
         ],
       },

@@ -1,4 +1,7 @@
 import {
+  CourseOffering,
+  CourseOfferingPaginator,
+  CourseQueryOptions,
   CreateTeacherInput,
   QueryOptions,
   Teacher,
@@ -11,7 +14,7 @@ import { HttpClient } from './http-client';
 
 export const teacherClient = {
   ...crudFactory<Teacher, QueryOptions, CreateTeacherInput>(
-    API_ENDPOINTS.TEACHERS
+    API_ENDPOINTS.TEACHERS,
   ),
   paginated: ({ name, ...params }: Partial<TeacherQueryOptions>) => {
     return HttpClient.get<TeacherPaginator>(API_ENDPOINTS.TEACHERS, {
@@ -20,5 +23,24 @@ export const teacherClient = {
       ...params,
       search: HttpClient.formatSearchParams({ name }),
     });
+  },
+  myCourseOfferingsPaginated: ({
+    name,
+    ...params
+  }: Partial<CourseQueryOptions>) => {
+    return HttpClient.get<CourseOfferingPaginator>(
+      `${API_ENDPOINTS.TEACHERS}/me/course-offerings`,
+      {
+        searchJoin: 'and',
+        self,
+        ...params,
+        search: HttpClient.formatSearchParams({ name }),
+      },
+    );
+  },
+  myCourseOffering({ id }: { id: string }) {
+    return HttpClient.get<CourseOffering>(
+      `${API_ENDPOINTS.TEACHERS}/me/course-offerings${id}`,
+    );
   },
 };

@@ -1,3 +1,5 @@
+import MyCourseOfferings from "@/pages/my/course-offerings";
+
 export const Routes = {
   dashboard: '/',
   login: '/login',
@@ -10,7 +12,6 @@ export const Routes = {
     ...routesFactory('/my-courses')
   },
   profile: '/profile',
-  verifyCoupons: '/coupons/verify',
   settings: '/settings',
   paymentSettings: '/settings/payment',
   seoSettings: '/settings/seo',
@@ -34,21 +35,6 @@ export const Routes = {
   student: {
     ...routesFactory('/students'),
   },
-  type: {
-    ...routesFactory('/groups'),
-  },
-  category: {
-    ...routesFactory('/categories'),
-  },
-  attribute: {
-    ...routesFactory('/attributes'),
-  },
-  attributeValue: {
-    ...routesFactory('/attribute-values'),
-  },
-  tag: {
-    ...routesFactory('/tags'),
-  },
   reviews: {
     ...routesFactory('/reviews'),
   },
@@ -57,30 +43,6 @@ export const Routes = {
   },
   abuseReviewsReport: {
     ...routesFactory('/abusive_reports/reject'),
-  },
-  author: {
-    ...routesFactory('/authors'),
-  },
-  coupon: {
-    ...routesFactory('/coupons'),
-  },
-  manufacturer: {
-    ...routesFactory('/manufacturers'),
-  },
-  order: {
-    ...routesFactory('/orders'),
-  },
-  orderStatus: {
-    ...routesFactory('/order-status'),
-  },
-  orderCreate: {
-    ...routesFactory('/orders/create'),
-  },
-  product: {
-    ...routesFactory('/products'),
-  },
-  shop: {
-    ...routesFactory('/shops'),
   },
   subject: {
     ...routesFactory('/subjects'),
@@ -100,29 +62,14 @@ export const Routes = {
   enrollmentPayment: {
     ...routesFactory('/enrollment-payments'),
   },
-  tax: {
-    ...routesFactory('/taxes'),
-  },
-  shipping: {
-    ...routesFactory('/shippings'),
-  },
-  withdraw: {
-    ...routesFactory('/withdraws'),
-  },
   staff: {
     ...routesFactory('/staffs'),
-  },
-  refund: {
-    ...routesFactory('/refunds'),
   },
   question: {
     ...routesFactory('/questions'),
   },
   message: {
     ...routesFactory('/message'),
-  },
-  shopMessage: {
-    ...routesFactory('/shop-message'),
   },
   conversations: {
     ...routesFactory('/message/conversations'),
@@ -136,61 +83,15 @@ export const Routes = {
   notifyLogs: {
     ...routesFactory('/notify-logs'),
   },
-  faqs: {
-    ...routesFactory('/faqs'),
-  },
-  refundPolicies: {
-    ...routesFactory('/refund-policies'),
-  },
-  refundReasons: {
-    ...routesFactory('/refund-reasons'),
-  },
-  newShops: '/new-shops',
-  draftProducts: '/products/draft',
-  outOfStockOrLowProducts: '/products/product-stock',
-  productInventory: '/products/inventory',
-  transaction: '/orders/transaction',
-  termsAndCondition: {
-    ...routesFactory('/terms-and-conditions'),
-  },
+  myCourseOfferings: '/my/course-offerings',
   adminList: '/users/admins',
   vendorList: '/users/vendors',
   pendingVendorList: '/users/vendors/pending',
   customerList: '/users/customer',
   myStaffs: '/users/my-staffs',
   vendorStaffs: '/users/vendor-staffs',
-  flashSale: {
-    ...routesFactory('/flash-sale'),
-  },
   ownerDashboardNotice: '/notice',
-  ownerDashboardMessage: '/owner-message',
-  ownerDashboardMyShop: '/my-shop',
-  myProductsInFlashSale: '/flash-sale/my-products',
   ownerDashboardNotifyLogs: '/notify-logs',
-  inventory: {
-    editWithoutLang: (slug: string, shop?: string) => {
-      return shop ? `/${shop}/products/${slug}/edit` : `/products/${slug}/edit`;
-    },
-    edit: (slug: string, language: string, shop?: string) => {
-      return shop
-        ? `/${language}/${shop}/products/${slug}/edit`
-        : `/${language}/products/${slug}/edit`;
-    },
-    translate: (slug: string, language: string, shop?: string) => {
-      return shop
-        ? `/${language}/${shop}/products/${slug}/translate`
-        : `/${language}/products/${slug}/translate`;
-    },
-  },
-  visitStore: (slug: string) => `${process.env.NEXT_PUBLIC_SHOP_URL}/${slug}`,
-  vendorRequestForFlashSale: {
-    ...routesFactory('/flash-sale/vendor-request'),
-  },
-  becomeSeller: '/become-seller',
-  ownershipTransferRequest: {
-    ...routesFactory('/shop-transfer'),
-  },
-  ownerDashboardShopTransferRequest: '/shop-transfer/vendor',
 };
 
 function routesFactory(endpoint: string) {

@@ -16,11 +16,12 @@ import {
 export const allowedRoles = [SUPER_ADMIN, TEACHER, STORE_OWNER, STAFF, STUDENT];
 export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];
-export const adminAndStudentOnly = [SUPER_ADMIN, ADMIN, STUDENT];
+export const adminAndStudentOnly = [SUPER_ADMIN, ADMIN, TEACHER, STUDENT];
 export const adminOnly = [SUPER_ADMIN];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
 export const studentOnly = [STUDENT];
+export const teacherOnly = [TEACHER];
 
 export function setAuthCredentials(token: string, permissions: any, role: any, refresh: string) {
   Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions, role, refresh }));
