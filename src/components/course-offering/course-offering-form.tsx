@@ -1,18 +1,21 @@
-import Input from '@/components/ui/input';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
+import { animateScroll } from 'react-scroll';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+// components
+import Input from '@/components/ui/input';
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
-import { useRouter } from 'next/router';
-import { Course, CourseType, GradeLevel, GradeType, Teacher } from '@/types';
-import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { subjectValidationSchema } from './course-offering-validation-schema';
-import { animateScroll } from 'react-scroll';
 import SelectCourse from '@/components/course/select-course';
 import SelectTeacher from '@/components/teacher/select-teacher';
 import SelectGradeLevel from '@/components/grade-level/select-grade-level';
+// types
+import { Course, CourseOffering, CourseType, GradeLevel, Teacher } from '@/types';
+// hooks
 import {
   useCreateCourseOfferingMutation,
   useUpdateCourseOfferingMutation,
@@ -36,7 +39,7 @@ const defaultValues = {
 };
 
 type IProps = {
-  initialValues?: Course | undefined;
+  initialValues?: CourseOffering | undefined;
 };
 export default function CreateOrUpdateCourseOfferingForm({
   initialValues,
@@ -60,7 +63,7 @@ export default function CreateOrUpdateCourseOfferingForm({
     //@ts-ignore
     resolver: yupResolver(subjectValidationSchema),
   });
-
+  // mutations
   const { mutate: createCourseOffering, isLoading: creating } =
     useCreateCourseOfferingMutation();
   const { mutate: updateCourseOffering, isLoading: updating } =
@@ -77,7 +80,6 @@ export default function CreateOrUpdateCourseOfferingForm({
   };
 
   const onSubmit = async (values: FormValues) => {
-    console.log('values-------: ', values)
     const input = {
       course: values.course.id,
       teacher: values.teacher.id,
@@ -93,7 +95,7 @@ export default function CreateOrUpdateCourseOfferingForm({
       updateCourseOffering(
         {
           ...input,
-          id: initialValues.slug!,
+          id: initialValues.id!,
         },
         mutationOptions,
       );

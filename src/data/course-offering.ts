@@ -76,7 +76,7 @@ export const useUpdateCourseOfferingMutation = () => {
   });
 };
 
-export const useCourseQuery = ({ slug }: GetParams) => {
+export const useCourseOfferingQuery = ({ slug }: GetParams) => {
   const { data, error, isLoading } = useQuery<CourseOffering, Error>(
     [API_ENDPOINTS.COURSE_OFFERING, { slug }],
     () => courseOfferingClient.get({ slug })

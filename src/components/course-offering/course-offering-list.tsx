@@ -132,17 +132,17 @@ const CourseOfferingList = ({
     },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'slug',
+      dataIndex: 'id',
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (slug: string, record: CourseOffering) => (
+      render: (id: string, record: CourseOffering) => (
         <LanguageSwitcher
-          slug={slug}
+          slug={id}
           record={record}
           deleteModalView="DELETE_COURSE"
           deleteBySlug={record.id}
-          routes={Routes?.course}
+          routes={Routes?.courseOffering}
         />
       ),
     },
