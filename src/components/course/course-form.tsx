@@ -1,22 +1,27 @@
-import Input from '@/components/ui/input';
+import { useRouter } from 'next/router';
+import { animateScroll } from 'react-scroll';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Control, FieldErrors, useForm } from 'react-hook-form';
+// components
+import Input from '@/components/ui/input';
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
-import { useRouter } from 'next/router';
-import { Course, Subject } from '@/types';
-import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
+import SelectInput from '@/components/ui/select-input';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import { subjectValidationSchema } from './course-validation-schema';
-import { useSubjectsQuery } from '@/data/subject';
-import SelectInput from '../ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
-import { animateScroll } from 'react-scroll';
+// form-validations
+import { subjectValidationSchema } from './course-validation-schema';
+// types
+import { Course, Subject } from '@/types';
+// utils
 import {
   generateCourseCode,
   generateCourseName,
 } from '@/utils/use-code-generate';
+// hooks
+import { useSubjectsQuery } from '@/data/subject';
 import {
   useCreateCourseMutation,
   useUpdateCourseMutation,
@@ -96,7 +101,7 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
   const courseCode = generateCourseCode(
     subject?.code,
   );
-
+  // mutations
   const { mutate: createCourse, isLoading: creating } =
     useCreateCourseMutation();
   const { mutate: updateCourse, isLoading: updating } =
@@ -142,7 +147,7 @@ export default function CreateOrUpdateCourseForm({ initialValues }: IProps) {
             initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-          } ${t('form:category-description-helper-text')}`}
+          } ${t('form:course-description-helper-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
