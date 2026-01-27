@@ -1,24 +1,24 @@
-import Layout from '@/components/layouts/admin';
 import { useRouter } from 'next/router';
-import ErrorMessage from '@/components/ui/error-message';
-import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Config } from '@/config';
-import { useCourseQuery } from '@/data/course';
-import CreateOrUpdateCourseForm from '@/components/course/course-form';
+// hooks
+import { useCourseOfferingQuery } from '@/data/course-offering';
+// components
+import Layout from '@/components/layouts/teacher';
+import Loader from '@/components/ui/loader/loader';
+import ErrorMessage from '@/components/ui/error-message';
+import CreateOrUpdateCourseOfferingForm from '@/components/course-offering/course-offering-form';
 
 export default function ViewMyCourseOfferingPage() {
-  const { query, locale } = useRouter();
+  const { query } = useRouter();
   const { t } = useTranslation();
+  // query
   const {
-    course,
+    courseOffering,
     isLoading: loading,
     error,
-  } = useCourseQuery({
-    slug: query.courseSlug as string,
-    language:
-      query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
+  } = useCourseOfferingQuery({
+    slug: query.id as string,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -31,8 +31,7 @@ export default function ViewMyCourseOfferingPage() {
           {t('form:form-title-edit-course')}
         </h1>
       </div>
-
-      <CreateOrUpdateCourseForm initialValues={course} />
+      <CreateOrUpdateCourseOfferingForm initialValues={courseOffering} />
     </>
   );
 }

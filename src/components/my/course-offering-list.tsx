@@ -1,24 +1,15 @@
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import { getIcon } from '@/utils/get-icon';
-import * as categoriesIcon from '@/components/icons/category';
-import {
-  Course,
-  CourseOffering,
-  GradeLevel,
-  SortOrder,
-  Teacher,
-} from '@/types';
-import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@/utils/locals';
-import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import { MappedPaginatorInfo } from '@/types';
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { useTranslation } from 'next-i18next';
+// components
+import { Table } from '@/components/ui/table';
+import Pagination from '@/components/ui/pagination';
+import ActionButtons from '@/components/common/action-buttons';
 import { NoDataFound } from '@/components/icons/no-data-found';
-import { siteSettings } from '@/settings/site.settings';
+// types
+import { MappedPaginatorInfo } from '@/types';
+import { Course, CourseOffering, GradeLevel, Teacher } from '@/types';
+// utils
+import { useIsRTL } from '@/utils/locals';
 
 export type IProps = {
   courseOfferings: CourseOffering[] | undefined;
@@ -35,42 +26,9 @@ const MyCourseOfferingList = ({
   onOrder,
 }: IProps) => {
   const { t } = useTranslation();
-  const rowExpandable = (record: any) => record.children?.length;
   const { alignLeft, alignRight } = useIsRTL();
-  const [sortingObj, setSortingObj] = useState<{
-    sort: SortOrder;
-    column: string | null;
-  }>({
-    sort: SortOrder.Desc,
-    column: null,
-  });
-
-  const onHeaderClick = (column: string | null) => ({
-    onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
-
-      setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
-        column: column,
-      });
-    },
-  });
 
   const columns = [
-    // {
-    //   title: t('table:table-item-id'),
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft,
-    //   width: 120,
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
     {
       title: t('table:table-item-course'),
       dataIndex: 'course',
@@ -132,17 +90,14 @@ const MyCourseOfferingList = ({
     },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'slug',
+      dataIndex: 'id',
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (slug: string, record: CourseOffering) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_COURSE"
-          deleteBySlug={record.id}
-          routes={Routes?.course}
+      render: (id: string, record: CourseOffering) => (
+        <ActionButtons
+          id={id}
+          detailsUrl={`${Routes.myCourseOfferings.details(id)}`}
         />
       ),
     },

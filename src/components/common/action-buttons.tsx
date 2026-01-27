@@ -1,23 +1,27 @@
-import { AdminIcon } from '@/components/icons/admin-icon';
-import { BanUser } from '@/components/icons/ban-user';
-import { EyeIcon } from '@/components/icons/category/eyes-icon';
-import { CheckMarkCircle } from '@/components/icons/checkmark-circle';
-import { CloseFillIcon } from '@/components/icons/close-fill';
-import { EditIcon } from '@/components/icons/edit';
-import { Eye } from '@/components/icons/eye-icon';
-import { TrashIcon } from '@/components/icons/trash';
-import { WalletPointsIcon } from '@/components/icons/wallet-point';
-import Link from '@/components/ui/link';
-import { useModalAction } from '@/components/ui/modal/modal.context';
-import { getAuthCredentials } from '@/utils/auth-utils';
-import { STAFF, SUPER_ADMIN } from '@/utils/constants';
-import { useTranslation } from 'next-i18next';
+import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
-import { approveModalInitialValues } from '@/utils/constants';
-import { useAtom } from 'jotai';
+import { useTranslation } from 'next-i18next';
+// icons
+import { Eye } from '@/components/icons/eye-icon';
+import { EditIcon } from '@/components/icons/edit';
+import { TrashIcon } from '@/components/icons/trash';
+import { BanUser } from '@/components/icons/ban-user';
+import { AdminIcon } from '@/components/icons/admin-icon';
+import { CloseFillIcon } from '@/components/icons/close-fill';
+import { EyeIcon } from '@/components/icons/category/eyes-icon';
+import { WalletPointsIcon } from '@/components/icons/wallet-point';
 import { ExternalLinkIcon } from '@/components/icons/external-link';
+import { CheckMarkCircle } from '@/components/icons/checkmark-circle';
+// components
+import Link from '@/components/ui/link';
 import { Tooltip } from '@/components/ui/tooltip';
+// hooks
+import { useModalAction } from '@/components/ui/modal/modal.context';
+// utils
+import { STAFF, SUPER_ADMIN } from '@/utils/constants';
+import { getAuthCredentials } from '@/utils/auth-utils';
+import { approveModalInitialValues } from '@/utils/constants';
 
 type Props = {
   id: string;

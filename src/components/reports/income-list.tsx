@@ -3,52 +3,53 @@ import { useTranslation } from 'next-i18next';
 // components
 import { Table } from '@/components/ui/table';
 import Avatar from '@/components/common/avatar';
-import Badge from '@/components/ui/badge/badge';
 import Pagination from '@/components/ui/pagination';
 import TitleWithSort from '@/components/ui/title-with-sort';
-import ActionButtons from '@/components/common/action-buttons';
 import { NoDataFound } from '@/components/icons/no-data-found';
 // types
-import { MappedPaginatorInfo, SortOrder, User } from '@/types';
-// hooks
-import { useMeQuery } from '@/data/user';
+import {
+  MappedPaginatorInfo,
+  Enrollment,
+  EnrollmentPayment,
+  SortOrder,
+} from '@/types';
 // utils
+import usePrice from '@/utils/use-price';
 import { useIsRTL } from '@/utils/locals';
-import RoleColor from './role-color';
 
-type IProps = {
-  customers: User[] | undefined;
+export type IProps = {
+  enrollmentPayments: EnrollmentPayment[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
-  onPagination: (current: number) => void;
+  onPagination: (key: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
-const UserList = ({
-  customers,
+
+const IncomeList = ({
+  enrollmentPayments,
   paginatorInfo,
   onPagination,
   onSort,
   onOrder,
 }: IProps) => {
   const { t } = useTranslation();
-  const { alignLeft } = useIsRTL();
+  const { alignLeft, alignRight } = useIsRTL();
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
-    column: any | null;
+    column: string | null;
   }>({
     sort: SortOrder.Desc,
     column: null,
   });
 
-  const onHeaderClick = (column: any | null) => ({
+  const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
         currentSortDirection === SortOrder.Desc
           ? SortOrder.Asc
           : SortOrder.Desc,
       );
-
-      onOrder(column);
+      onOrder(column!);
 
       setSortingObj({
         sort:
@@ -57,11 +58,12 @@ const UserList = ({
       });
     },
   });
+
   const columns = [
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-title')}
+          title={t('table:table-item-student')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
@@ -69,89 +71,70 @@ const UserList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'first_name',
-      key: 'first_name',
+      dataIndex: 'enrollment',
+      key: 'enrollment',
       align: alignLeft,
       width: 250,
       ellipsis: true,
-      onHeaderCell: () => onHeaderClick('first_name'),
+      onHeaderCell: () => onHeaderClick('enrollment'),
       render: (
-        first_name: string,
-        record: User,
+        enrollment: Enrollment,
         { profile, email }: { profile: any; email: string },
       ) => (
         <div className="flex items-center">
-          <Avatar
-            name={`${first_name} ${record.last_name}`}
-            src={profile?.avatar?.thumbnail}
-          />
+          <Avatar name={email} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {first_name} {record?.last_name}
+            {enrollment?.student?.user.first_name}{' '}
+            {enrollment?.student?.user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {record?.email}
+              ST No. {enrollment?.student?.student_number}
             </span>
           </div>
         </div>
       ),
     },
     {
-      title: t('table:table-item-role'),
-      dataIndex: 'role_name',
-      key: 'role_name',
-      align: 'center',
+      title: t('table:table-item-course'),
+      dataIndex: 'enrollment',
+      key: 'enrollment',
+      align: alignLeft,
       width: 150,
-      render: (role_name: string) => (
-        <Badge text={t(role_name)} color={RoleColor(role_name)} />
-      ),
-    },
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      width: 150,
-      className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => (
-        <Badge
-          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-          color={
-            is_active
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
-      ),
-    },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'id',
-      key: 'actions',
-      align: 'right',
-      width: 120,
-      render: function Render(id: string, { is_active }: any) {
-        const { data } = useMeQuery();
+      render: (enrollment: Enrollment) => {
+        const courseOffering = enrollment?.course_offering;
         return (
-          <>
-            {data?.id != id && (
-              <ActionButtons
-                id={id}
-                userStatus={true}
-                isUserActive={is_active}
-                showMakeAdminButton={true}
-              />
-            )}
-          </>
+          <div
+            className="overflow-hidden truncate whitespace-nowrap"
+            title={courseOffering?.course?.name}
+          >
+            {courseOffering?.course?.name} - {courseOffering?.grade_level.name}{' '}
+            - B{courseOffering?.batch}
+          </div>
         );
+      },
+    },
+    {
+      title: t('table:table-item-payment-month'),
+      dataIndex: 'payment_month',
+      key: 'payment_month',
+      align: alignLeft,
+      width: 150,
+      render: (payment_month: number, record: EnrollmentPayment) => (
+        <div className="overflow-hidden truncate whitespace-nowrap">
+          {record.payment_year}-{payment_month}
+        </div>
+      ),
+    },
+    {
+      title: t('table:table-item-amount'),
+      dataIndex: 'amount',
+      key: 'amount',
+      align: alignLeft,
+      width: 150,
+      render: function Render(value: any) {
+        const { price } = usePrice({
+          amount: value,
+        });
+        return <span className="whitespace-nowrap">{price}</span>;
       },
     },
   ];
@@ -160,7 +143,7 @@ const UserList = ({
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
         <Table
-          // @ts-ignore
+          //@ts-ignore
           columns={columns}
           emptyText={() => (
             <div className="flex flex-col items-center py-7">
@@ -171,7 +154,7 @@ const UserList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={customers as any}
+          data={enrollmentPayments}
           rowKey="id"
           scroll={{ x: 1000 }}
         />
@@ -191,4 +174,4 @@ const UserList = ({
   );
 };
 
-export default UserList;
+export default IncomeList;

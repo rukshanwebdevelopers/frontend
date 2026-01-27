@@ -1,5 +1,3 @@
-import MyCourseOfferings from "@/pages/my/course-offerings";
-
 export const Routes = {
   dashboard: '/',
   login: '/login',
@@ -9,7 +7,7 @@ export const Routes = {
   resetPassword: '/reset-password',
   adminMyShops: '/my-shops',
   myCourses: {
-    ...routesFactory('/my-courses')
+    ...routesFactory('/my-courses'),
   },
   profile: '/profile',
   settings: '/settings',
@@ -83,7 +81,9 @@ export const Routes = {
   notifyLogs: {
     ...routesFactory('/notify-logs'),
   },
-  myCourseOfferings: '/my/course-offerings',
+  myCourseOfferings: {
+    ...routesFactory('/my/course-offerings'),
+  },
   adminList: '/users/admins',
   vendorList: '/users/vendors',
   pendingVendorList: '/users/vendors/pending',
@@ -92,6 +92,9 @@ export const Routes = {
   vendorStaffs: '/users/vendor-staffs',
   ownerDashboardNotice: '/notice',
   ownerDashboardNotifyLogs: '/notify-logs',
+  reports: {
+    incomeReport: '/reports/income-report',
+  },
 };
 
 function routesFactory(endpoint: string) {
