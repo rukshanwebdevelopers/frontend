@@ -1,7 +1,8 @@
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import { getIcon } from '@/utils/get-icon';
-import * as categoriesIcon from '@/components/icons/category';
+import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+// config
+import { Routes } from '@/config/routes';
+// types
 import {
   Course,
   CourseOffering,
@@ -9,33 +10,29 @@ import {
   SortOrder,
   Teacher,
 } from '@/types';
-import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@/utils/locals';
-import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
 import { MappedPaginatorInfo } from '@/types';
-import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// utils
+import { useIsRTL } from '@/utils/locals';
+// components
+import { Table } from '@/components/ui/table';
+import Pagination from '@/components/ui/pagination';
+import TitleWithSort from '@/components/ui/title-with-sort';
 import { NoDataFound } from '@/components/icons/no-data-found';
-import { siteSettings } from '@/settings/site.settings';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   courseOfferings: CourseOffering[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (key: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const CourseOfferingList = ({
   courseOfferings,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
-  const rowExpandable = (record: any) => record.children?.length;
   const { alignLeft, alignRight } = useIsRTL();
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
@@ -47,30 +44,20 @@ const CourseOfferingList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
   });
 
   const columns = [
-    // {
-    //   title: t('table:table-item-id'),
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft,
-    //   width: 120,
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
     {
       title: t('table:table-item-course'),
       dataIndex: 'course',
@@ -117,18 +104,36 @@ const CourseOfferingList = ({
       ),
     },
     {
-      title: t('table:table-item-year'),
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-year')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'year'
+          }
+          isActive={sortingObj.column === 'year'}
+        />
+      ),
       dataIndex: 'year',
       key: 'year',
       align: alignLeft,
       width: 120,
+      onHeaderCell: () => onHeaderClick('year'),
     },
     {
-      title: t('table:table-item-batch'),
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-batch')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'batch'
+          }
+          isActive={sortingObj.column === 'batch'}
+        />
+      ),
       dataIndex: 'batch',
       key: 'batch',
       align: alignLeft,
       width: 120,
+      onHeaderCell: () => onHeaderClick('batch'),
     },
     {
       title: t('table:table-item-actions'),

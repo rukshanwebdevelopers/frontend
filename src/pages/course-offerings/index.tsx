@@ -13,8 +13,6 @@ import LinkButton from '@/components/ui/link-button';
 import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
 import CourseOfferingList from '@/components/course-offering/course-offering-list';
-// types
-import { SortOrder } from '@/types';
 // utils
 import { adminOnly } from '@/utils/auth-utils';
 // hooks
@@ -26,16 +24,14 @@ export default function CourseOfferings() {
   // states
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [ordering, setOrdering] = useState('created_at');
   // query
   const { courseOfferings, paginatorInfo, loading, error } =
     useCourseOfferingsQuery({
       limit: 20,
       page,
       name: searchTerm,
-      orderBy,
-      sortedBy,
+      ordering,
       language: locale,
     });
 
@@ -85,8 +81,7 @@ export default function CourseOfferings() {
         courseOfferings={courseOfferings}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
-        onOrder={setOrder}
-        onSort={setColumn}
+        onOrdering={setOrdering}
       />
     </>
   );
