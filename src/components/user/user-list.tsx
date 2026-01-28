@@ -20,15 +20,13 @@ type IProps = {
   customers: User[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const UserList = ({
   customers,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -42,21 +40,20 @@ const UserList = ({
 
   const onHeaderClick = (column: any | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
-      onOrder(column);
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
 
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
   });
+
   const columns = [
     {
       title: (

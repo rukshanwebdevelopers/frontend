@@ -1,33 +1,33 @@
+import { useState } from 'react';
+import { Routes } from '@/config/routes';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// components
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
 import Search from '@/components/common/search';
 import UserList from '@/components/user/user-list';
-import LinkButton from '@/components/ui/link-button';
-import { useState } from 'react';
-import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { useUsersQuery } from '@/data/user';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Routes } from '@/config/routes';
-import { SortOrder } from '@/types';
-import { adminOnly } from '@/utils/auth-utils';
+import LinkButton from '@/components/ui/link-button';
+import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
+// hooks
+import { useUsersQuery } from '@/data/user';
 
 export default function AllUsersPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
   const { t } = useTranslation();
-
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-
+  // states
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [ordering, setOrdering] = useState('created_at');
+  // query
   const { users, paginatorInfo, loading, error } = useUsersQuery({
     limit: 20,
     page,
     name: searchTerm,
-    orderBy,
-    sortedBy,
+    ordering,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -64,15 +64,12 @@ export default function AllUsersPage() {
         </div>
       </Card>
 
-      {loading ? null : (
-        <UserList
-          customers={users}
-          paginatorInfo={paginatorInfo}
-          onPagination={handlePagination}
-          onOrder={setOrder}
-          onSort={setColumn}
-        />
-      )}
+      <UserList
+        customers={users}
+        paginatorInfo={paginatorInfo}
+        onPagination={handlePagination}
+        onOrdering={setOrdering}
+      />
     </>
   );
 }

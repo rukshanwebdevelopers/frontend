@@ -1268,6 +1268,10 @@ export interface CourseOfferingQueryOptions extends QueryOptions {
   grade_level: string;
 }
 
+export interface UserQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface StudentEnrolledCourseQueryOptions extends QueryOptions {
   student_id: string;
   course_name: string;

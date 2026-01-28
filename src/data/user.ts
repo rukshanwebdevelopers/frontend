@@ -257,7 +257,7 @@ export const useUserQuery = ({ id }: { id: string }) => {
   );
 };
 
-export const useUsersQuery = (params: Partial<QueryOptionsType>) => {
+export const useUsersQuery = (params: Partial<UserQueryOptions>) => {
   const { data, isLoading, error } = useQuery<UserPaginator, Error>(
     [API_ENDPOINTS.USERS, params],
     () => userClient.fetchUsers(params),
