@@ -1,32 +1,32 @@
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import { getIcon } from '@/utils/get-icon';
-import * as categoriesIcon from '@/components/icons/category';
-import { SortOrder, Subject } from '@/types';
 import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import { MappedPaginatorInfo } from '@/types';
+import { useTranslation } from 'next-i18next';
+// config
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
+// types
+import { SortOrder, Subject } from '@/types';
+import { MappedPaginatorInfo } from '@/types';
+// utils
+import { useIsRTL } from '@/utils/locals';
+// components
+import { Table } from '@/components/ui/table';
+import Pagination from '@/components/ui/pagination';
 import { siteSettings } from '@/settings/site.settings';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   subjects: Subject[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (key: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const SubjectList = ({
   subjects,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const rowExpandable = (record: any) => record.children?.length;
@@ -41,16 +41,14 @@ const SubjectList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },

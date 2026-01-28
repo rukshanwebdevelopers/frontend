@@ -1,36 +1,36 @@
-import CategoryList from '@/components/category/category-list';
+import { useState } from 'react';
+import { Config } from '@/config';
+import { useRouter } from 'next/router';
+import { Routes } from '@/config/routes';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// components
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
 import Search from '@/components/common/search';
-import LinkButton from '@/components/ui/link-button';
-import { useState } from 'react';
-import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { SortOrder, Type } from '@/types';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Routes } from '@/config/routes';
-import TypeFilter from '@/components/category/type-filter';
-import { adminOnly } from '@/utils/auth-utils';
-import { useRouter } from 'next/router';
-import { Config } from '@/config';
+import LinkButton from '@/components/ui/link-button';
+import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
-import { useSubjectsQuery } from '@/data/subject';
 import SubjectList from '@/components/subject/subject-list';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// hooks
+import { useSubjectsQuery } from '@/data/subject';
 
 export default function Subjects() {
   const { locale } = useRouter();
+  const { t } = useTranslation();
+  // states
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
-  const { t } = useTranslation();
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [ordering, setOrdering] = useState('created_at');
+  // query
   const { subjects, paginatorInfo, loading, error } = useSubjectsQuery({
     limit: 20,
     page,
     name: searchTerm,
-    orderBy,
-    sortedBy,
+    ordering,
     language: locale,
   });
 
@@ -80,8 +80,7 @@ export default function Subjects() {
         subjects={subjects}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
-        onOrder={setOrder}
-        onSort={setColumn}
+        onOrdering={setOrdering}
       />
     </>
   );
