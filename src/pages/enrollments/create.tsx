@@ -1,6 +1,7 @@
-import Layout from '@/components/layouts/admin';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// components
+import Layout from '@/components/layouts/admin';
 import CreateOrUpdateEnrollmentForm from '@/components/enrollment/enrollment-form';
 
 export default function CreateEnrollmentPage() {
