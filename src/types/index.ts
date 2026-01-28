@@ -99,7 +99,7 @@ export interface QueryOptions {
   language: string;
   limit?: number;
   page?: number;
-  orderBy?: string;
+  ordering?: string;
   sortedBy?: SortOrder;
 }
 
