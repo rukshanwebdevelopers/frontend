@@ -1,22 +1,28 @@
-import Card from '@/components/common/card';
-import Layout from '@/components/layouts/admin';
-import ErrorMessage from '@/components/ui/error-message';
-import Loader from '@/components/ui/loader/loader';
-import AdminsList from '@/components/user/user-admin-list';
-import { useAdminsQuery } from '@/data/user';
-import { SortOrder } from '@/types';
-import { adminOnly } from '@/utils/auth-utils';
+import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useState } from 'react';
+// types
+import { SortOrder } from '@/types';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// hooks
+import { useAdminsQuery } from '@/data/user';
+// components
+import Card from '@/components/common/card';
+import Layout from '@/components/layouts/admin';
+import Loader from '@/components/ui/loader/loader';
+import ErrorMessage from '@/components/ui/error-message';
+import AdminsList from '@/components/user/user-admin-list';
 import PageHeading from '@/components/common/page-heading';
+
 export default function Admins() {
   const { t } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState('');
+  // states
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-
+  // query
   const { admins, paginatorInfo, loading, error } = useAdminsQuery({
     limit: 20,
     page,

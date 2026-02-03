@@ -1468,6 +1468,15 @@ export interface QuestionQueryOptions extends Omit<QueryOptions, 'language'> {
   answer: string;
 }
 
+export interface PendingPaymentQueryOptions extends Omit<QueryOptions, 'language'> {
+  name: string;
+  type: string;
+  shop_id: string;
+  product_id: number;
+  answer: string;
+}
+
+
 export interface ReviewQueryOptions extends Omit<QueryOptions, 'language'> {
   name: string;
   type: string;
@@ -1509,9 +1518,22 @@ export interface ItemProps {
   title: string;
 }
 
+export interface AnalyticsResponse {
+  total_revenue: number;
+  student_count: number;
+  enrollment_count: number;
+  active_enrollment_count: number;
+}
+
+export interface PendingPayment {
+  student: Student;
+}
+
 export interface ShopPaginator extends PaginatorInfo<Shop> {}
 
 export interface UserPaginator extends PaginatorInfo<User> {}
+
+export interface PendingPaymentPaginator extends PaginatorInfo<PendingPayment> {}
 
 export interface LicensedDomainPaginator extends PaginatorInfo<Domain> {}
 

@@ -94,6 +94,7 @@ export const Routes = {
   ownerDashboardNotifyLogs: '/notify-logs',
   reports: {
     incomeReport: '/reports/income-report',
+    pendingPayments: '/reports/pending-payments',
   },
 };
 

@@ -203,12 +203,17 @@ export const siteSettings = {
       report: {
         href: '',
         label: 'text-reports',
-        icon: 'SettingsIcon',
+        icon: 'ReportIcon',
         childMenu: [
           {
             href: Routes.reports.incomeReport,
             label: 'text-income-report',
-            icon: 'TaxesIcon',
+            icon: 'ReportIcon',
+          },
+                    {
+            href: Routes.reports.pendingPayments,
+            label: 'text-pending-payments',
+            icon: 'ShiftPendingIcon',
           },
         ],
       },

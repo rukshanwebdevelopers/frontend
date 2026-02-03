@@ -1,7 +1,10 @@
-import Layout from '@/components/layouts/admin';
-import CustomerCreateForm from '@/components/user/user-form';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// components
+import Layout from '@/components/layouts/admin';
+import CustomerCreateForm from '@/components/user/user-form';
 
 export default function CreateCustomerPage() {
   const { t } = useTranslation();
@@ -16,6 +19,10 @@ export default function CreateCustomerPage() {
     </>
   );
 }
+
+CreateCustomerPage.authenticate = {
+  permissions: adminOnly,
+};
 CreateCustomerPage.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({

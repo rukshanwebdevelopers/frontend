@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
   SUBJECTS: 'subjects',
   ACADEMIC_YEARS: 'academicYears',
   TEACHERS: 'teachers',
+  REPORTS: 'reports',
   STUDENTS: 'students',
   GRADE_LEVEL: 'grade-levels',
   COURSES: 'courses',

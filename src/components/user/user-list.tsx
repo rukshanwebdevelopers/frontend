@@ -1,5 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+// types
+import { MappedPaginatorInfo, SortOrder, User } from '@/types';
+// hooks
+import { useMeQuery } from '@/data/user';
+// utils
+import { useIsRTL } from '@/utils/locals';
+// helpers
+import RoleColor from '@/helpers/role-color';
 // components
 import { Table } from '@/components/ui/table';
 import Avatar from '@/components/common/avatar';
@@ -8,13 +16,6 @@ import Pagination from '@/components/ui/pagination';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import ActionButtons from '@/components/common/action-buttons';
 import { NoDataFound } from '@/components/icons/no-data-found';
-// types
-import { MappedPaginatorInfo, SortOrder, User } from '@/types';
-// hooks
-import { useMeQuery } from '@/data/user';
-// utils
-import { useIsRTL } from '@/utils/locals';
-import RoleColor from './role-color';
 
 type IProps = {
   customers: User[] | undefined;

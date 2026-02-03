@@ -1,7 +1,8 @@
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
+import { useState } from 'react';
+import { Routes } from '@/config/routes';
+import { useTranslation } from 'next-i18next';
+// types
 import {
-  Course,
   CourseOffering,
   Enrollment,
   EnrollmentWithMonth,
@@ -9,16 +10,18 @@ import {
   SortOrder,
   Student,
 } from '@/types';
-import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@/utils/locals';
-import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
 import { MappedPaginatorInfo } from '@/types';
-import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
+// utils
+import { useIsRTL } from '@/utils/locals';
+// hooks
+import { useModalAction } from '@/components/ui/modal/modal.context';
+// components
+import { Table } from '@/components/ui/table';
 import Avatar from '@/components/common/avatar';
-import { useModalAction } from '../ui/modal/modal.context';
+import Pagination from '@/components/ui/pagination';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   enrollmentsWithMonths: EnrollmentWithMonth[] | undefined;
@@ -44,8 +47,6 @@ const EnrollmentMonthList = ({
     sort: SortOrder.Desc,
     column: null,
   });
-
-  // console.log('enrollments----------: ', enrollmentsWithMonths);
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
@@ -142,7 +143,10 @@ const EnrollmentMonthList = ({
         { profile, email }: { profile: any; email: string },
       ) => (
         <div className="flex items-center">
-          <Avatar name={student?.user.first_name} src={profile?.avatar?.thumbnail} />
+          <Avatar
+            name={student?.user.first_name}
+            src={profile?.avatar?.thumbnail}
+          />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {student?.user.first_name} {student?.user.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">

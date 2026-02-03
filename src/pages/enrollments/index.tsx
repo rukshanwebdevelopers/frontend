@@ -1,48 +1,54 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// configs
+import { Config } from '@/config';
+import { Routes } from '@/config/routes';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// types
+import { GradeLevel, SortOrder } from '@/types';
+// hooks
+import { useEnrollmentsWithMonthsQuery } from '@/data/enrollment';
+// components
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
 import Search from '@/components/common/search';
-import LinkButton from '@/components/ui/link-button';
-import { useState } from 'react';
-import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { GradeLevel, SortOrder } from '@/types';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Routes } from '@/config/routes';
-import { adminOnly } from '@/utils/auth-utils';
-import { useRouter } from 'next/router';
-import { Config } from '@/config';
+import LinkButton from '@/components/ui/link-button';
+import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
-import { useEnrollmentsWithMonthsQuery } from '@/data/enrollment';
-import EnrollmentMonthList from '@/components/enrollment/enrollment-month-list';
-import { EaringIcon } from '@/components/icons/summary/earning';
-import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import AnalyticCard from '@/components/widgets/analytic-card';
-import { CustomersIcon } from '@/components/icons/summary/customers';
 import BatchFilter from '@/components/enrollment/batch-filter';
 import GradeFilter from '@/components/enrollment/grade-filter';
+import { EaringIcon } from '@/components/icons/summary/earning';
+import { ChecklistIcon } from '@/components/icons/summary/checklist';
+import { CustomersIcon } from '@/components/icons/summary/customers';
+import EnrollmentMonthList from '@/components/enrollment/enrollment-month-list';
 
 export default function Enrollments() {
   const { locale } = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
+  // states
+  const [page, setPage] = useState(1);
   const [grade, setGrade] = useState('');
   const [batch, setBatch] = useState('');
-  const [page, setPage] = useState(1);
-  const { t } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const { enrollmentsWithMonths, paginatorInfo, loading, error } = useEnrollmentsWithMonthsQuery({
-    limit: 20,
-    page,
-    name: searchTerm,
-    grade_level: grade,
-    batch: batch,
-    orderBy,
-    sortedBy,
-    language: locale,
-  });
-
-  console.log('grade', grade)
+  // query
+  const { enrollmentsWithMonths, paginatorInfo, loading, error } =
+    useEnrollmentsWithMonthsQuery({
+      limit: 20,
+      page,
+      name: searchTerm,
+      grade_level: grade,
+      batch: batch,
+      ordering: orderBy,
+      sortedBy,
+      language: locale,
+    });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;

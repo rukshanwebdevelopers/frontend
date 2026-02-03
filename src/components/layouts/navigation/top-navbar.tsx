@@ -100,8 +100,6 @@ const Navbar = () => {
     settings?.options?.isUnderMaintenance,
   ]);
 
-  const { options } = settings!;
-
   function handleClick() {
     openModal('SEARCH_VIEW');
     setSearchModal(true);
